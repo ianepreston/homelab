@@ -34,3 +34,10 @@ RUN wget -O bitwarden.zip https://github.com/bitwarden/clients/releases/download
 	rm bitwarden.zip && \
 	chmod +x bw && \
 	mv bw /usr/bin/
+
+# # Install diff-so-fancy (this should go in my base image)
+RUN apt update && \
+	apt install -y software-properties-common && \
+	add-apt-repository ppa:aos1/diff-so-fancy && \
+	apt update && \
+	apt install -y diff-so-fancy
