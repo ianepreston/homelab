@@ -92,7 +92,7 @@ source "xenserver-iso" "ubuntu-2004" {
   # clone_template = "Other install media"
   vm_name        = "packer-ubuntu-${data.null.ubuntu_version.output}-${local.timestamp}"
   vm_description = "Build started: ${local.timestamp}"
-  vm_memory      = 4096
+  vm_memory      = 8192
   disk_size      = 10720
 
   floppy_files = [
@@ -113,10 +113,7 @@ build {
   sources = ["xenserver-iso.ubuntu-2004"]
   provisioner "shell" {
     inline = [
-      "echo provisioning all the things",
-      "echo $(whoami)",
-      "echo that was the user running these",
-      # "sudo echo 'datasource_list: [ NoCloud, ConfigDrive, OpenNebula, Azure, AltCloud, OVF, MAAS, GCE, OpenStack, CloudSigma, Ec2, CloudStack, None ]' >> /etc/cloud/cloud.cfg",
+      "sudo -S -E bash cloud-init clean",
     ]
   }
 }

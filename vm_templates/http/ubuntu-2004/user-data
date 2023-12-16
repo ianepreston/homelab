@@ -10,17 +10,19 @@ runcmd:
 
 autoinstall:
   version: 1
-  identity:
-    hostname: ubuntu-server
-    # This is the crypted pass of 'ubuntu'
-    password: "$6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0"
-    username: testuser
   packages:
     - xe-guest-utilities
+    - cloud-initramfs-growroot
   refresh_installer:
     update: yes
   ssh:
     install-server: yes
     allow-pw: yes
-  late-commands:
-    - "echo 'datasource_list: [ NoCloud, ConfigDrive, OpenNebula, Azure, AltCloud, OVF, MAAS, GCE, OpenStack, CloudSigma, Ec2, CloudStack, None ]' >> /etc/cloud/cloud.cfg"
+
+  user-data:
+    hostname: ubuntu-server
+    package_upgrade: true
+    users:
+      - name: testuser
+        passwd: "$6$exDY1mhS4KUYCE/2$zmn9ToZwTKLhCw.b4/b.ZRTIZM30JZ4QrOQ2aOXJ8yk96xpcCof0kxKwuX1kqLG/ygbJ1f8wxED22bTL4F46P0"
+        sudo: ALL=(ALL:ALL) NOPASSWD:ALL
