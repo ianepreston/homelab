@@ -1,0 +1,8 @@
+---
+# Playbook for my dev mars box
+
+- name: Example from an Ansible Playbook
+  hosts: dmars
+  tasks:
+    - name: Just ping it
+      ansible.builtin.ping:
