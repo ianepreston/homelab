@@ -1,0 +1,4 @@
+{
+	"name": "homelab-devcontainer",
+	"image": "ianepreston/iac-devcontainer"
+}
