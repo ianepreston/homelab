@@ -1,0 +1,4 @@
+#cloud-config
+hostname: ${hostname}
+runcmd:
+ - "sudo /bin/bash /etc/ssh/sign_host.sh"
