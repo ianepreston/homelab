@@ -33,5 +33,6 @@ resource "xenorchestra_vm" "d-mars" {
   tags = [
     "dev",
     "arch",
+    "d-mars",
   ]
 }
