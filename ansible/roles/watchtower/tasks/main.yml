@@ -1,0 +1,17 @@
+---
+
+- name: Start watchtower
+  community.docker.docker_container:
+    name: watchtower
+    hostname: watchtower
+    image: containrrr/watchtower:latest
+    command: --cleanup --label-enable --schedule="0 2 * * *"
+    state: started
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+    restart_policy: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
