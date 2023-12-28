@@ -3,6 +3,11 @@
 
 - name: Example from an Ansible Playbook
   hosts: dmars
-  tasks:
-    - name: Just ping it
-      ansible.builtin.ping:
+  vars_files:
+    - variables/secrets.yml
+  roles:
+    - docker
+    - watchtower
+    - traefik
+    - mealie
+    - organizr
