@@ -1,0 +1,74 @@
+---
+
+- name: Create mealie app volume
+  community.docker.docker_volume:
+    name: mealie_vol
+
+- name: Create mealie postgres volume
+  community.docker.docker_volume:
+    name: mealie_pg_vol
+
+- name: Create mealie network
+  community.docker.docker_network:
+    name: mealie_net
+
+- name: Create postgres container for mealie
+  community.docker.docker_container:
+    name: mealie-postgres
+    hostname: mealie-postgres
+    networks:
+      - name: mealie_net
+    image: postgres:15
+    state: started
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+      POSTGRES_USER: "mealie"
+      POSTGRES_PASSWORD: "{{ mealie_postgres_pass }}"
+    restart_policy: unless-stopped
+    volumes:
+      - "mealie_pg_vol:/var/lib/postgresql/data"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+
+- name: Create mealie container
+  community.docker.docker_container:
+    name: mealie
+    hostname: mealie
+    networks:
+      - name: mealie_net
+      - name: traefik_net
+    image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1
+    state: started
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    exposed_ports:
+      - "9000"
+    volumes:
+      - "mealie_vol:/app/data/"
+    env:
+      ALLOW_SIGNUP: "true"
+      TZ: "America/Edmonton"
+      MAX_WORKERS: "1"
+      WEB_CONCURRENCY: "1"
+      BASE_URL: "mealie.{{ subdomain }}.ipreston.net"
+      SMTP_HOST: "smtp.gmx.com"
+      SMTP_PORT: "587"
+      SMTP_FROM_NAME: "Mealie"
+      SMTP_FROM_EMAIL: "{{ gmx_user }}"
+      SMTP_USER: "{{ gmx_user }}"
+      SMTP_PASSWORD: "{{ gmx_pass }}"
+      DB_ENGINE: "postgres"
+      POSTGRES_USER: "mealie"
+      POSTGRES_PASSWORD: "{{ mealie_postgres_pass }}"
+      POSTGRES_SERVER: "mealie-postgres"
+      POSTGRES_PORT: "5432"
+      POSTGRES_DB: "mealie"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      traefik.enable: "true"
+      traefik.http.routers.mealie.rule: Host(`mealie.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.mealie.service: mealie
+      traefik.http.services.mealie.loadbalancer.server.port: "9000"
+      traefik.http.routers.mealie.entrypoints: web
+
