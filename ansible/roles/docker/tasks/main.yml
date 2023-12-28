@@ -1,0 +1,24 @@
+---
+- block:
+  - name: Install docker
+    community.general.pacman:
+      name: docker
+      state: present
+
+  - name: Enable docker service
+    ansible.builtin.systemd:
+      name: docker
+      enabled: true
+      state: started
+
+  - name: Ensure group "docker" exists
+    ansible.builtin.group:
+      name: docker
+      state: present
+
+  - name: Add my user to the docker group
+    ansible.builtin.user:
+      name: "ipreston"
+      groups: "docker"
+      append: true
+  become: true
