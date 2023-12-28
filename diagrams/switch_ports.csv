@@ -21,9 +21,9 @@ port, device, ip, default_vlan, allowed_vlans
 20, blank, NA, 30, 30
 21, pve1, 192.168.10.11, 10, all
 22, blank, NA, 30, 30
-23, nas4, 192.168.30.3, 30, 30
+23, nas4, 192.168.15.3, 15, 15
 24, blank, NA, 30, 30
-25, nas3, 192.168.30.3, 30, 30
+25, nas3, 192.168.15.3, 15, 15
 26, blank, NA, 30, 30
 27, nas2, 192.168.10.3, 10, 10
 28, blank, NA, 30, 30
