@@ -37,7 +37,7 @@ port, device, ip, default_vlan, allowed_vlans
 36, blank, NA, 30, 30
 37, office spare, NA, 10, 10
 38, blank, NA, 30, 30
-39, shield, 192.168.30.29, 30, 30
+39, shield, 192.168.15.12, 15, 15
 40, blank, NA, 30, 30
 41, guest, NA, 30, 30
 42, blank, NA, 30, 30
