@@ -39,13 +39,13 @@ port, device, ip, default_vlan, allowed_vlans
 38, blank, NA, 30, 30
 39, shield, 192.168.15.12, 15, 15
 40, blank, NA, 30, 30
-41, guest, NA, 30, 30
+41, guest, NA, 15, 15
 42, blank, NA, 30, 30
-43, guest, NA, 30, 30
+43, guest, NA, 15, 15
 44, blank, NA, 30, 30
-45, guest, NA, 30, 30
+45, guest, NA, 15, 15
 46, blank, NA, 30, 30
-47, guest, NA, 30, 30
+47, guest, NA, 15, 15
 48, mars, 192.168.10.5, 10, 10
 
 
