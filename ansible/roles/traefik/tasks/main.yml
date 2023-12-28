@@ -1,0 +1,35 @@
+---
+- name: Create traefik network
+  community.docker.docker_network:
+    name: traefik_net
+
+- name: Start traefik
+  community.docker.docker_container:
+    name: traefik
+    hostname: traefik
+    image: traefik:latest
+    networks:
+      - name: "traefik_net"
+    state: started
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.web.address=:80"
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+    restart_policy: unless-stopped
+    published_ports:
+      - "80:80"
+      - "8081:8080"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      traefik.enable: "true"
+      traefik.http.routers.traefik.rule: Host(`traefik.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.traefik.service: traefik
+      traefik.http.services.traefik.loadbalancer.server.port: "8080"
+      traefik.http.routers.traefik.entrypoints: web
+    networks_cli_compatible: "no"
