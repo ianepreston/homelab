@@ -33,7 +33,7 @@ port, device, ip, default_vlan, allowed_vlans
 32, blank, NA, 30, 30
 33, work, 192.168.30.6, 30, 30
 34, blank, NA, 30, 30
-35, terra, 192.168.10.6, 10, 10
+35, terra, 192.168.13.13, 15, 15
 36, blank, NA, 30, 30
 37, office spare, NA, 10, 10
 38, blank, NA, 30, 30
