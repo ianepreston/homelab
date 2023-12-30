@@ -21,7 +21,7 @@ resource "xenorchestra_vm" "d-mars" {
   # Prefer to run the VM on the primary pool instance
   affinity_host = data.xenorchestra_pool.dhpp3.master
   network {
-    network_id = data.xenorchestra_network.dhpp3.id
+    network_id = xenorchestra_network.dhpp3vlan40.id
   }
 
   disk {
