@@ -3,6 +3,8 @@
 
 - name: Example from an Ansible Playbook
   hosts: dmars
+  vars:
+    organizr_container_state: "absent"
   vars_files:
     - variables/secrets.yml
   roles:

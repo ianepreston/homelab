@@ -11,7 +11,7 @@
     networks:
       - name: traefik_net
     image: organizr/organizr:latest
-    state: started
+    state: "{{ organizr_container_state }}"
     container_default_behavior: compatibility
     restart_policy: unless-stopped
     exposed_ports:

@@ -19,7 +19,7 @@
     networks:
       - name: mealie_net
     image: postgres:15
-    state: started
+    state: "{{ mealie_pg_container_state }}"
     container_default_behavior: compatibility
     env:
       TZ: "America/Edmonton"
@@ -39,7 +39,7 @@
       - name: mealie_net
       - name: traefik_net
     image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1
-    state: started
+    state: "{{ mealie_container_state }}"
     container_default_behavior: compatibility
     restart_policy: unless-stopped
     exposed_ports:
