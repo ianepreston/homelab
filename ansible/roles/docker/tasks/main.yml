@@ -4,6 +4,11 @@
     community.general.pacman:
       name: docker
       state: present
+  
+  - name: Install docker-compose
+    community.general.pacman:
+      name: docker-compose
+      state: present
 
   - name: Enable docker service
     ansible.builtin.systemd:
