@@ -7,7 +7,7 @@
   community.docker.docker_container:
     name: traefik
     hostname: traefik
-    image: traefik:latest
+    image: "traefik:v2.10.7"
     networks:
       - name: "traefik_net"
     state: started
