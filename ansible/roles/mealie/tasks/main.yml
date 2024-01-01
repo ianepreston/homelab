@@ -6,7 +6,7 @@
 
 - name: Create mealie postgres volume
   community.docker.docker_volume:
-    name: mealie_pg_vol
+    name: mealie_pg16_vol
 
 - name: Create mealie network
   community.docker.docker_network:
@@ -18,8 +18,9 @@
     hostname: mealie-postgres
     networks:
       - name: mealie_net
-    image: postgres:16
-    state: "{{ mealie_pg_container_state }}"
+
+    image: postgres:16.1
+    state: "started"
     container_default_behavior: compatibility
     env:
       TZ: "America/Edmonton"
@@ -27,9 +28,7 @@
       POSTGRES_PASSWORD: "{{ mealie_postgres_pass }}"
     restart_policy: unless-stopped
     volumes:
-      - "mealie_pg_vol:/var/lib/postgresql/data"
-    labels:
-      com.centurylinklabs.watchtower.enable: "true"
+      - "mealie_pg16_vol:/var/lib/postgresql/data"
 
 - name: Create mealie container
   community.docker.docker_container:
@@ -39,7 +38,7 @@
       - name: mealie_net
       - name: traefik_net
     image: ghcr.io/mealie-recipes/mealie:v1.0.0-RC1.1
-    state: "{{ mealie_container_state }}"
+    state: "started"
     container_default_behavior: compatibility
     restart_policy: unless-stopped
     exposed_ports:
@@ -65,7 +64,6 @@
       POSTGRES_PORT: "5432"
       POSTGRES_DB: "mealie"
     labels:
-      com.centurylinklabs.watchtower.enable: "true"
       traefik.enable: "true"
       traefik.http.routers.mealie.rule: Host(`mealie.{{ subdomain }}.ipreston.net`)
       traefik.http.routers.mealie.service: mealie

@@ -1,0 +1,56 @@
+---
+
+- name: Create miniflux postgres volume
+  community.docker.docker_volume:
+    name: miniflux_pg16_vol
+
+- name: Create miniflux network
+  community.docker.docker_network:
+    name: miniflux_net
+
+- name: Create postgres container for miniflux
+  community.docker.docker_container:
+    name: miniflux-postgres
+    hostname: miniflux-postgres
+    networks:
+      - name: miniflux_net
+    image: postgres:16.1
+    state: "started"
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+      POSTGRES_USER: "miniflux"
+      POSTGRES_PASSWORD: "{{ miniflux_postgres_pass }}"
+      POSTGRES_DB: "miniflux"
+    restart_policy: unless-stopped
+    volumes:
+      - "miniflux_pg16_vol:/var/lib/postgresql/data"
+
+- name: Create miniflux container
+  community.docker.docker_container:
+    name: miniflux
+    hostname: miniflux
+    networks:
+      - name: miniflux_net
+      - name: traefik_net
+    image: "miniflux/miniflux:2.0.51"
+    state: "started"
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    exposed_ports:
+      - "8080"
+    env:
+      TZ: "America/Edmonton"
+      DATABASE_URL: "postgres://miniflux:{{ miniflux_postgres_pass }}@miniflux-postgres/miniflux?sslmode=disable"
+      BASE_URL: "http://miniflux.{{ subdomain }}.ipreston.net"
+      RUN_MIGRATIONS: "1"
+      CREATE_ADMIN: "1"
+      ADMIN_USERNAME: "admin"
+      ADMIN_PASSWORD: "{{ miniflux_admin_pass }}"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.miniflux.rule: Host(`miniflux.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.miniflux.service: miniflux
+      traefik.http.services.miniflux.loadbalancer.server.port: "8080"
+      traefik.http.routers.miniflux.entrypoints: web
+
