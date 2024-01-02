@@ -1,4 +1,27 @@
 ---
+
+
+# - block:
+#   - name: Create traefik config folder
+#     ansible.builtin.file:
+#       path: /home/ipreston/traefik_conf
+#       state: directory
+#       owner: root
+#       group: root
+#       mode: '0700'
+#   - name: create httppasswd folder
+#     ansible.builtin.file:
+#       path: /home/ipreston/traefik_conf/httppasswd
+#       state: directory
+#       owner: root
+#       group: root
+#       mode: '0700'
+#   - name: move httppasswd file in
+#     ansible.builtin.template:
+#       src: .httppasswd.j2
+#       dest: /home/ipreston/traefik_conf/httppasswd/.httppasswd
+#   become: true
+
 - name: Create traefik network
   community.docker.docker_network:
     name: traefik_net
@@ -24,14 +47,14 @@
     published_ports:
       - "80:80"
       - "443:443"
-      - "8081:8080"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
     labels:
-      com.centurylinklabs.watchtower.enable: "true"
       traefik.enable: "true"
+      traefik.http.middlewares.test-auth.basicauth.users: "{{ traefik_httppasswd }}"
       traefik.http.routers.traefik.rule: Host(`traefik.{{ subdomain }}.ipreston.net`)
       traefik.http.routers.traefik.service: traefik
       traefik.http.services.traefik.loadbalancer.server.port: "8080"
       traefik.http.routers.traefik.entrypoints: web
+      # traefik.http.routers.traefik.middlewares: test-auth
     networks_cli_compatible: "no"
