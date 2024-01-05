@@ -1,0 +1,7 @@
+http:
+  middlewares:
+    middlewares-basic-auth:
+      basicAuth:
+        users:
+          - "{{ traefik_httppasswd}}"
+        realm: "Traefik 2 Basic Auth"

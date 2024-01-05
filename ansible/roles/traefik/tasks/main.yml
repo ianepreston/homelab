@@ -1,26 +1,61 @@
 ---
 
 
-# - block:
-#   - name: Create traefik config folder
-#     ansible.builtin.file:
-#       path: /home/ipreston/traefik_conf
-#       state: directory
-#       owner: root
-#       group: root
-#       mode: '0700'
-#   - name: create httppasswd folder
-#     ansible.builtin.file:
-#       path: /home/ipreston/traefik_conf/httppasswd
-#       state: directory
-#       owner: root
-#       group: root
-#       mode: '0700'
-#   - name: move httppasswd file in
-#     ansible.builtin.template:
-#       src: .httppasswd.j2
-#       dest: /home/ipreston/traefik_conf/httppasswd/.httppasswd
-#   become: true
+- block:
+  - name: Create traefik config folder
+    ansible.builtin.file:
+      path: /home/ipreston/traefik_conf
+      state: directory
+      owner: root
+      group: docker
+      mode: '0700'
+  - name: Copy over traefik main config
+    ansible.builtin.template:
+      src: traefik.yml.j2
+      dest: /home/ipreston/traefik_conf/traefik.yml
+      owner: root
+      group: docker
+      mode: '0600'
+    notify: restart traefik
+  - name: create acme folder
+    ansible.builtin.file:
+      path: /home/ipreston/traefik_conf/acme
+      state: directory
+      owner: root
+      group: docker
+      mode: '0700'
+  - name: Ensure acme.json file exists
+    ansible.builtin.file:
+      path: /home/ipreston/traefik_conf/acme/acme.json
+      access_time: preserve
+      modification_time: preserve
+      state: touch
+      owner: root
+      group: docker
+      mode: '0600'
+  - name: create rules folder
+    ansible.builtin.file:
+      path: /home/ipreston/traefik_conf/rules
+      state: directory
+      owner: root
+      group: docker
+      mode: '0700'
+  - name: Put middlewares in rules
+    ansible.builtin.template:
+      src: middlewares.yml.j2
+      dest: /home/ipreston/traefik_conf/rules/middlewares.yml
+      owner: root
+      group: docker
+      mode: '0600'
+  - name: Put tls options in rules
+    ansible.builtin.copy:
+      src: tls-opts.yml
+      dest: /home/ipreston/traefik_conf/rules/tls-opts.yml
+      owner: root
+      group: docker
+      mode: '0600'
+
+  become: true
 
 - name: Create traefik network
   community.docker.docker_network:
@@ -34,27 +69,37 @@
     networks:
       - name: "traefik_net"
     state: started
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--providers.docker.network=traefik_net"
-      - "--entrypoints.web.address=:80"
     container_default_behavior: compatibility
+    comparisons:
+      labels: strict
     env:
       TZ: "America/Edmonton"
+      CF_API_EMAIL: "{{ cloudflare_email }}"
+      CF_API_KEY: "{{ cloudflare_global_api }}"
     restart_policy: unless-stopped
     published_ports:
       - "80:80"
       - "443:443"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/ipreston/traefik_conf/traefik.yml:/etc/traefik/traefik.yml
+      - /home/ipreston/traefik_conf/rules:/rules
+      - /home/ipreston/traefik_conf/acme/acme.json:/acme.json
+    networks_cli_compatible: "no"
     labels:
       traefik.enable: "true"
-      traefik.http.middlewares.test-auth.basicauth.users: "{{ traefik_httppasswd }}"
-      traefik.http.routers.traefik.rule: Host(`traefik.{{ subdomain }}.ipreston.net`)
-      traefik.http.routers.traefik.service: traefik
-      traefik.http.services.traefik.loadbalancer.server.port: "8080"
-      traefik.http.routers.traefik.entrypoints: web
-      # traefik.http.routers.traefik.middlewares: test-auth
-    networks_cli_compatible: "no"
+      # HTTP-to-HTTPS Redirect
+      traefik.http.routers.http-catchall.entrypoints: "http"
+      traefik.http.routers.http-catchall.rule: "HostRegexp(`{host:.+}`)"
+      traefik.http.routers.http-catchall.middlewares: "redirect-to-https"
+      traefik.http.middlewares.redirect-to-https.redirectscheme.scheme: "https"
+      traefik.http.routers.traefik-rtr.entrypoints: "https"
+      traefik.http.routers.traefik-rtr.rule: "Host(`traefik.{{ subdomain }}.ipreston.net`)"
+      traefik.http.routers.traefik-rtr.tls: "true" # Some people had 404s without this
+      traefik.http.routers.traefik-rtr.tls.certresolver: "dns-cloudflare" # Comment out this line after first run of traefik to force the use of wildcard certs
+      traefik.http.routers.traefik-rtr.tls.domains[0].main: "{{ subdomain }}.ipreston.net"
+      traefik.http.routers.traefik-rtr.tls.domains[0].sans: "*.{{ subdomain }}.ipreston.net"
+      # Services - API
+      traefik.http.routers.traefik-rtr.service: "api@internal"
+      traefik.http.routers.traefik-rtr.middlewares: "middlewares-basic-auth@file"
+      # traefik.http.middlewares.test-auth.basicauth.users: "{{ traefik_httppasswd }}"
