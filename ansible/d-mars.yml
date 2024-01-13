@@ -6,7 +6,7 @@
   vars_files:
     - variables/secrets.yml
   roles:
-    - docker
-    - traefik
-    - miniflux
-    - mealie
+    - dockerserver/docker
+    - dockerserver/traefik
+    - dockerserver/miniflux
+    - dockerserver/mealie
