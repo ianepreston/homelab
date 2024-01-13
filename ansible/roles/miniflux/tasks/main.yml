@@ -36,6 +36,8 @@
     image: "miniflux/miniflux:2.0.51"
     state: "started"
     container_default_behavior: compatibility
+    comparisons:
+      labels: strict
     restart_policy: unless-stopped
     exposed_ports:
       - "8080"
@@ -49,8 +51,10 @@
       ADMIN_PASSWORD: "{{ miniflux_admin_pass }}"
     labels:
       traefik.enable: "true"
+      traefik.http.routers.miniflux.entrypoints: https
       traefik.http.routers.miniflux.rule: Host(`miniflux.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.miniflux.tls: "true"
+      traefik.http.routers.miniflux.middlewares: "chain-no-auth@file"
       traefik.http.routers.miniflux.service: miniflux
       traefik.http.services.miniflux.loadbalancer.server.port: "8080"
-      traefik.http.routers.miniflux.entrypoints: web
 
