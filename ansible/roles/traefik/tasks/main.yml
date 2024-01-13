@@ -47,6 +47,13 @@
       owner: root
       group: docker
       mode: '0600'
+  - name: Put middlewares chains in rules
+    ansible.builtin.template:
+      src: middlewares-chains.yml.j2
+      dest: /home/ipreston/traefik_conf/rules/middlewares-chains.yml
+      owner: root
+      group: docker
+      mode: '0600'
   - name: Put tls options in rules
     ansible.builtin.copy:
       src: tls-opts.yml
@@ -101,5 +108,4 @@
       traefik.http.routers.traefik-rtr.tls.domains[0].sans: "*.{{ subdomain }}.ipreston.net"
       # Services - API
       traefik.http.routers.traefik-rtr.service: "api@internal"
-      traefik.http.routers.traefik-rtr.middlewares: "middlewares-basic-auth@file"
-      # traefik.http.middlewares.test-auth.basicauth.users: "{{ traefik_httppasswd }}"
+      traefik.http.routers.traefik-rtr.middlewares: "chain-basic-auth@file"

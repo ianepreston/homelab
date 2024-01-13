@@ -5,3 +5,13 @@ http:
         users:
           - "{{ traefik_httppasswd}}"
         realm: "Traefik 2 Basic Auth"
+    middlewares-https-redirectscheme:
+      redirectScheme:
+        scheme: https
+        permanent: true
+    middlewares-rate-limit:
+      rateLimit:
+        average: 100
+        burst: 50
+    middlewares-compress:
+      compress: {}
