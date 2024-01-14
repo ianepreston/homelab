@@ -25,7 +25,7 @@ Using Miniflux as an example
 
 - ssh into the host with the container
 - stop the app container, keep the db container running `docker stop miniflux`
-- dump the database to the host: `docker exec -t miniflux-postgres pg_dumpall -c -U miniflux > minflux_dump.sql`
+- dump the database to the host: `docker exec -t miniflux-postgres pg_dumpall -c -U miniflux > miniflux_dump.sql`
 - copy the data to a new host if we're doing a host as well as or instead of a version migration
 - Make sure the app container isn't running and doesn't start until the end. Comment out that part of the playbook.
   If you don't do this part you might get some database init scripts running that you'll have to clean out first. Annoying.
