@@ -1,0 +1,10 @@
+---
+- name: Set up prod docker host
+  hosts: ares
+  vars_files:
+    - variables/secrets.yml
+  roles:
+    - dockerserver/docker
+    - dockerserver/traefik
+    - dockerserver/mealie
+    - dockerserver/miniflux
