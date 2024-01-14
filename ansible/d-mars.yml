@@ -1,7 +1,5 @@
 ---
-# Playbook for my dev mars box
-
-- name: Example from an Ansible Playbook
+- name: Set up dev mars for testing
   hosts: dmars
   vars_files:
     - variables/secrets.yml
