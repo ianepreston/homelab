@@ -25,6 +25,11 @@ resource "xenorchestra_vm" "ares1" {
     mac_address = "7a:fe:62:0a:44:08"
   }
 
+  network {
+    network_id  = data.xenorchestra_network.dopti1.id
+    mac_address = "9a:a6:a0:90:79:90"
+  }
+
   disk {
     sr_id      = data.xenorchestra_sr.dopti1.id
     name_label = "ares1"
@@ -32,8 +37,8 @@ resource "xenorchestra_vm" "ares1" {
   }
 
   tags = [
-    "prod",
-    "arch",
     "ares",
+    "arch",
+    "prod",
   ]
 }
