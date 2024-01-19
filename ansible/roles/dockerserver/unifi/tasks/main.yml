@@ -55,7 +55,7 @@
     hostname: unifi-mongo
     networks:
       - name: unifi_net
-    image: docker.io/mongo:4.4.27
+    image: docker.io/mongo:4.4.28
     state: "started"
     container_default_behavior: compatibility
     restart_policy: unless-stopped
