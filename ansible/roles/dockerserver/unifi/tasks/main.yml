@@ -1,0 +1,99 @@
+---
+- block:
+  - name: Create unifi config folder
+    ansible.builtin.file:
+      path: /home/ipreston/unifi_conf
+      state: directory
+      owner: root
+      group: docker
+      mode: '0700'
+  - name: Copy over mongo init script
+    ansible.builtin.template:
+      src: init-mongo.js.j2
+      dest: /home/ipreston/unifi_conf/init-mongo.js
+      owner: root
+      group: docker
+      mode: '0750'
+  become: true
+
+- name: Create unifi app volume
+  community.docker.docker_volume:
+    name: unifi_vol
+  
+- name: Create unifi mongodb volume
+  community.docker.docker_volume:
+    name: unifi_mongo_vol
+
+- name: Create unifi mongodb config volume
+  community.docker.docker_volume:
+    name: unifi_mongo_config_vol
+  
+- name: Create unifi network
+  community.docker.docker_network:
+    name: unifi_net
+
+- name: Create infra vlan network
+  community.docker.docker_network:
+    name: infra_vlan
+    driver: ipvlan
+    driver_options:
+      parent: enX1
+    ipam_config:
+      - subnet: 192.168.10.0/24
+        gateway: 192.168.10.1
+        iprange: 192.168.10.0/24
+
+# This image is outdated and has vulnerabilities, but it's the
+# latest supported. Keep an eye on issue tracking.
+# Could not get the init script running. After you build the container,
+# before starting the unifi one
+# connect into the container from bash and run
+# mongo unifi /docker-entrypoint-initdb.d/init-mongo.js
+- name: Create mongo container for unifi
+  community.docker.docker_container:
+    name: unifi-mongo
+    hostname: unifi-mongo
+    networks:
+      - name: unifi_net
+    image: docker.io/mongo:4.4.27
+    state: "started"
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    volumes:
+      - unifi_mongo_vol:/data/db
+      - unifi_mongo_config_vol:/data/configdb
+      - /home/ipreston/unifi_conf/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
+
+- name: Create unifi network controller container
+  community.docker.docker_container:
+    name: unifi
+    hostname: unifi
+    networks:
+      - name: unifi_net
+      - name: infra_vlan
+        ipv4_address: 192.168.10.41
+    image: lscr.io/linuxserver/unifi-network-application:8.0.26-ls24
+    state: "started"
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    env:
+      TZ: "America/Edmonton"
+      MONGO_USER: unifi
+      MONGO_PASS: "{{ unifi_mongo_pass }}"
+      MONGO_HOST: "unifi-mongo"
+      MONGO_PORT: "27017"
+      MONGO_DBNAME: "unifi"
+    volumes:
+      - "unifi_vol:/config"
+    published_ports:
+      - 8443:8443
+      - 3478:3478/udp
+      - 10001:10001/udp
+      - 8080:8080
+      - 1900:1900/udp #optional
+      - 8843:8843 #optional
+      - 8880:8880 #optional
+      - 6789:6789 #optional
+      - 5514:5514/udp #optional
+
+    

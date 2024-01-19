@@ -8,3 +8,4 @@
     - dockerserver/traefik
     - dockerserver/mealie
     - dockerserver/miniflux
+    - dockerserver/unifi
