@@ -1,0 +1,162 @@
+ian_personal_watch:
+  preset: "yt_dynamic_playlist"
+  download:
+    url: "https://www.youtube.com/playlist?list=PL5EXFh7FucVgckFPFCRvBT7Lx39Hr1-q6"
+  overrides:
+    tv_show_name: "Ian's Playlists"
+    season: "personal to watch"
+
+ian_work_watch:
+  preset: "yt_dynamic_playlist"
+  download:
+    url: "https://www.youtube.com/playlist?list=PL5EXFh7FucVge16fZgYWPLkwqaPuDeDpT"
+  overrides:
+    tv_show_name: "Ian's Playlists"
+    season: "watch for work"
+
+ian_gym_watch:
+  preset: "yt_dynamic_playlist"
+  download:
+    url: "https://www.youtube.com/playlist?list=PL5EXFh7FucVjdEKkmzoBn4g0pjW4Xk2Xe"
+  overrides:
+    tv_show_name: "Ian's Playlists"
+    season: "Gym Follow Along"
+
+# One time playlists that I might redownload later but should generally leave commented
+# out
+
+# missing_mit:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLyzOVJj3bHQuloKGG59rS43e29ro7I57J"
+#   overrides:
+#     tv_show_name: "Lecture Series"
+#     season: "Missing CS Semester"
+
+# statistical_rethinking_2023:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLDcUM9US4XdPz-KxHM4XHt7uUVGWWVSus"
+#   overrides:
+#     tv_show_name: "Lecture Series"
+#     season: "Statistical Rethinking 2023"
+
+# tom_merrick_big5:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLXi7slewxuMILgg_zSuZxZ_3sBHDhIsj7"
+#   overrides:
+#     tv_show_name: "Tom Merrick Fitness"
+#     season: "Big 5 Flexibility Routines"
+
+# tom_merrick_5minmobility:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLXi7slewxuMILJOu0uE4EGLuSA28LXsKi"
+#   overrides:
+#     tv_show_name: "Tom Merrick Fitness"
+#     season: "5 Minute Mobility"
+
+# tom_merrick_jointstrength:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLXi7slewxuMKsWJvXeDw5_atgASDa2-J0"
+#   overrides:
+#     tv_show_name: "Tom Merrick Fitness"
+#     season: "Joint Strengthening"
+
+# tom_merrick_athomeprogram:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLXi7slewxuML6_QJIZVF7NWQQHKgrd5PC"
+#   overrides:
+#     tv_show_name: "Tom Merrick Fitness"
+#     season: "At Home Program"
+
+# tom_merrick_stretchingright:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLXi7slewxuMJOJjT7wFJ8fLC9HIH-qlXi"
+#   overrides:
+#     tv_show_name: "Tom Merrick Fitness"
+#     season: "Stretching - Do it right"
+
+# tom_merrick_followalong:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLXi7slewxuMJ5X0qMqgipbWjBGWqJnUV8"
+#   overrides:
+#     tv_show_name: "Tom Merrick Fitness"
+#     season: "Follow along routines"
+
+# foundation_training:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PL5EXFh7FucVinzllZ_56wVlJ2o-c16j4N"
+#   overrides:
+#     tv_show_name: "Foundation Training"
+#     season: "saved routines"
+
+# gmb_handstand:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PL5EXFh7FucVg6McdPN3dKTlLNANFTTB60"
+#   overrides:
+#     tv_show_name: "GMB Fitness"
+#     season: "Handstand Tutorials"
+
+# yoga_adriene_under10:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLui6Eyny-UzwiUzvhM2BjxThodiRWZ2JR"
+#   overrides:
+#     tv_show_name: "Yoga with Adriene"
+#     season: "Under 10 minute routines"
+
+# yoga_adriene_10to20:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLui6Eyny-UzxL6NjFMYD5-vESNii8_aLi"
+#   overrides:
+#     tv_show_name: "Yoga with Adriene"
+#     season: "10-20 min routines"
+
+# yoga_adriene_20to30:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLui6Eyny-UzwmsJ9vILet4TJwqcINCz4j"
+#   overrides:
+#     tv_show_name: "Yoga with Adriene"
+#     season: "20-30 min routines"
+
+# yoga_adriene_30to45:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLui6Eyny-UzwheLDyEScgdgbh7z3FgNCX"
+#   overrides:
+#     tv_show_name: "Yoga with Adriene"
+#     season: "30-45 min routines"
+
+# yoga_adriene_45-60:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLui6Eyny-Uzwzd-9fi_cmhz3UW9gS1raf"
+#   overrides:
+#     tv_show_name: "Yoga with Adriene"
+#     season: "45-60 min routines"
+
+# yoga_kassandra_5-15:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLW0v0k7UCVrn7Zt56SjQYZNUKUmS07LDa"
+#   overrides:
+#     tv_show_name: "Yoga with Kassandra"
+#     season: "5-15 minute routines"
+
+# yoga_kassandra_beginner:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLW0v0k7UCVrkkg0YPkBqxYHA2eT_IYlAC"
+#   overrides:
+#     tv_show_name: "Yoga with Kassandra"
+#     season: "Beginner Yoga"

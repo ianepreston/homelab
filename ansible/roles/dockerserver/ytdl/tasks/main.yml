@@ -1,0 +1,47 @@
+- name: create config folder
+  ansible.builtin.file:
+    path: /home/ipreston/ytdl_config
+    state: directory
+    mode: '0777'
+
+- name: Copy over configs
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/home/ipreston/ytdl_config/{{ item }}"
+  notify: restart ytdl
+  with_items:
+    - config.yaml
+    - subscriptions.yaml
+    - run_cron.sh
+
+- name: YTdlp container
+  community.docker.docker_container:
+    name: ytdl
+    hostname: ytdl
+    state: started
+    image: ghcr.io/jmbannon/ytdl-sub:ubuntu-2024.01.20
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"
+    restart_policy: "unless-stopped"
+    devices:
+      - "/dev/dri:/dev/dri"
+    volumes:
+      [
+        "misc_vids_vol:/data",
+        "/home/ipreston/ytdl_config:/config"
+      ]
+
+- name: Install cronie
+  become: true
+  community.general.pacman:
+    name: cronie
+    state: present
+
+- name: Set cron jobs to download videos
+  ansible.builtin.cron:
+    name: "docker ytdl"
+    hour: "*/2"
+    job: docker exec ytdl bash /config/run_cron.sh
