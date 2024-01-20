@@ -1,0 +1,40 @@
+- name: create config folder
+  ansible.builtin.file:
+    path: /home/ipreston/homepage_config
+    state: directory
+    mode: '0777'
+
+- name: Copy over configs
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/home/ipreston/homepage_config/{{ item }}"
+  with_items:
+    - docker.yaml
+
+- name: Create homepage container
+  community.docker.docker_container:
+    name: homepage
+    hostname: homepage
+    networks:
+      - name: traefik_net
+    image: "ghcr.io/gethomepage/homepage:v0.8.4"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    env:
+      TZ: "America/Edmonton"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /home/ipreston/homepage_config:/app/config
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.homepage.entrypoints: https
+      traefik.http.routers.homepage.rule: Host(`homepage.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.homepage.tls: "true"
+      traefik.http.routers.homepage.middlewares: "chain-no-auth@file"
+      traefik.http.routers.homepage.service: homepage
+      traefik.http.services.homepage.loadbalancer.server.port: "3000"
+
+
