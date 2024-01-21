@@ -4,8 +4,12 @@
   vars_files:
     - variables/secrets.yml
   roles:
-    - dockerserver/docker
-    - dockerserver/traefik
-    - dockerserver/mealie
-    - dockerserver/miniflux
-    - dockerserver/unifi
+    # - dockerserver/docker
+    # - dockerserver/watchtower
+    # - dockerserver/unifi
+    # - dockerserver/mediavols
+    # - dockerserver/traefik
+    - dockerserver/homepage
+    # - dockerserver/mealie
+    # - dockerserver/miniflux
+    # - dockerserver/ytdl

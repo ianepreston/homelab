@@ -1,0 +1,67 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/services
+
+- Consumption:
+  - mealie:
+      href: "https://mealie.{{ subdomain }}.ipreston.net"
+      icon: mealie
+      description: Recipe Manager
+      server: my-docker
+      container: mealie
+  - miniflux:
+      href: "https://miniflux.{{ subdomain }}.ipreston.net"
+      icon: miniflux
+      description: RSS reader
+      server: my-docker
+      container: miniflux
+      widget:
+        type: miniflux
+        url: "https://miniflux.{{ subdomain }}.ipreston.net"
+        key: "{{ miniflux_api_key }}"
+        fields: ["unread"]
+  - photos:
+      href: "http://laconia.ipreston.net:5000/?launchApp=SYNO.Foto.AppInstance#/personal_space/timeline"
+      icon: nextcloud-photos
+      description: Synology photo manager
+
+- Infrastructure:
+  - pfsense:
+      href: "https://behemoth.ipreston.net:10443"
+      icon: pfsense
+      description: router
+      # Not working right now, maybe self signed cert issue?
+      # widget:
+      #   type: pfsense
+      #   url: "https://behemoth.ipreston.net:10443"
+      #   username: admin
+      #   password: "{{ pfsense_pass }}"
+      #   wan: "igc0"
+      #   fields: ["load", "memory", "temp"]
+  - laconia:
+      href: "http://laconia.ipreston.net:5000"
+      icon: synology
+      description: NAS
+      widget:
+        type: diskstation
+        url: "http://laconia.ipreston.net:5000"
+        username: "ipreston"
+        password: "{{ laconia_pass }}"
+        fields: ["volumeAvailable", "resources.cpu", "resources.mem"]
+  - traefik:
+      href: "https://traefik.{{ subdomain }}.ipreston.net"
+      icon: traefik
+      description: reverse proxy
+      server: my-docker
+      container: traefik
+  - unifi:
+      href: "https://192.168.10.41:8443"
+      icon: unifi
+      description: WiFi controller
+      server: my-docker
+      container: unifi
+  - xo:
+      href: "http://xo.ipreston.net"
+      icon: "https://xcp-ng.org/assets/img/mainlogo.png"
+      description: hypervisor
+
