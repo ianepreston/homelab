@@ -1,0 +1,31 @@
+---
+
+- name: create jellyseerr volume
+  community.docker.docker_volume:
+    name: jellyseerr_vol
+
+- name: jellyseerr server
+  community.docker.docker_container:
+    name: jellyseerr
+    hostname: jellyseerr
+    state: started
+    image: fallenbagel/jellyseerr:1.7.0
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+    restart_policy: unless-stopped
+    volumes:
+        - "jellyseerr_vol:/app/config"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.jellyseerr.entrypoints: https
+      traefik.http.routers.jellyseerr.rule: Host(`jellyseerr.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.jellyseerr.tls: "true"
+      traefik.http.routers.jellyseerr.middlewares: "chain-no-auth@file"
+      traefik.http.routers.jellyseerr.service: jellyseerr
+      traefik.http.services.jellyseerr.loadbalancer.server.port: "5055"

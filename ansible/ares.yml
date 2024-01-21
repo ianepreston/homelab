@@ -12,7 +12,8 @@
     - dockerserver/homepage
     # - dockerserver/arr
     # - dockerserver/calibre
-    - dockerserver/jellyfin
+    # - dockerserver/jellyfin
+    - dockerserver/jellyseerr
     # - dockerserver/komga
     # - dockerserver/mealie
     # - dockerserver/miniflux

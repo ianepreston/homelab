@@ -77,6 +77,16 @@
         enableBlocks: true
         fields: ["movies", "series", "episodes"]
         enableNowPlaying: true
+  - jellyseerr:
+      href: "https://jellyseerr.{{ subdomain }}.ipreston.net"
+      icon: jellyseerr
+      description: media
+      server: my-docker
+      container: jellyseerr
+      widget:
+        type: jellyseerr
+        url: "https://jellyseerr.{{ subdomain }}.ipreston.net"
+        key: "{{ jellyseerr_key }}"
   - komga:
       href: "https://komga.{{ subdomain }}.ipreston.net"
       icon: komga
