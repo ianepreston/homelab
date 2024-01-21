@@ -5,11 +5,14 @@
     mode: '0777'
 
 - name: Copy over configs
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/home/ipreston/homepage_config/{{ item }}"
+  ansible.builtin.template:
+    src: "{{ item }}.yaml.j2"
+    dest: "/home/ipreston/homepage_config/{{ item }}.yaml"
   with_items:
-    - docker.yaml
+    - settings
+    - services
+    - widgets
+    - docker
 
 - name: Create homepage container
   community.docker.docker_container:
