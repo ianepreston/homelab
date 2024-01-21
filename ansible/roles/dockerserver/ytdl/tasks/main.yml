@@ -40,6 +40,13 @@
     name: cronie
     state: present
 
+- name: Enable cronie service
+  become: true
+  systemd:
+    name: cronie.service
+    enabled: yes
+    state: started
+
 - name: Set cron jobs to download videos
   ansible.builtin.cron:
     name: "docker ytdl"
