@@ -8,10 +8,19 @@
     disk: /
 
 - search:
-    provider: google # <--- updated with google
+    provider: duckduckgo
+    focus: true
     target: _blank
 
 - datetime:
     text_size: xl
     format:
       timeStyle: short
+
+- openmeteo:
+    # Calgary
+    latitude: 50.97
+    longitude: -114.01
+    timezone: "America/Edmonton"
+    units: metric 
+    cache: 5 # Time in minutes to cache API responses, to stay within limits

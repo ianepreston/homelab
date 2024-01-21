@@ -1,18 +1,26 @@
-- name: create config folder
-  ansible.builtin.file:
-    path: /home/ipreston/homepage_config
-    state: directory
-    mode: '0777'
+- block:
+  - name: create config folder
+    ansible.builtin.file:
+      path: /home/ipreston/homepage_config
+      state: directory
+      mode: '0700'
+      owner: root
+      group: docker
 
-- name: Copy over configs
-  ansible.builtin.template:
-    src: "{{ item }}.yaml.j2"
-    dest: "/home/ipreston/homepage_config/{{ item }}.yaml"
-  with_items:
-    - settings
-    - services
-    - widgets
-    - docker
+  - name: Copy over configs
+    ansible.builtin.template:
+      src: "{{ item }}.yaml.j2"
+      dest: "/home/ipreston/homepage_config/{{ item }}.yaml"
+      owner: root
+      group: docker
+      mode: '0600'
+    with_items:
+      - settings
+      - services
+      - widgets
+      - bookmarks
+      - docker
+  become: true
 
 - name: Create homepage container
   community.docker.docker_container:
@@ -20,7 +28,7 @@
     hostname: homepage
     networks:
       - name: traefik_net
-    image: "ghcr.io/gethomepage/homepage:v0.8.5"
+    image: "ghcr.io/gethomepage/homepage:v0.8.6"
     state: "started"
     container_default_behavior: compatibility
     comparisons:
