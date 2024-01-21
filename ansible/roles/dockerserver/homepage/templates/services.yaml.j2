@@ -29,6 +29,15 @@
         type: radarr
         url: "https://radarr.{{subdomain }}.ipreston.net"
         key: "{{ radarr_key }}"
+  - mylar:
+      href: "https://mylar.{{ subdomain }}.ipreston.net"
+      icon: mylar
+      server: my-docker
+      container: mylar
+      widget:
+        type: mylar
+        url: "https://mylar.{{ subdomain }}.ipreston.net"
+        key: "{{ mylar_key }}"
   - prowlarr:
       href: "https://prowlarr.{{subdomain }}.ipreston.net"
       icon: prowlarr

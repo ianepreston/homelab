@@ -172,3 +172,38 @@
       TZ: "America/Edmonton"
       PUID: "1026"
       PGID: "100"
+
+- name: Create mylar vol
+  community.docker.docker_volume:
+    name: mylar_vol
+
+- name: Create mylar container
+  community.docker.docker_container:
+    name: mylar
+    hostname: mylar
+    image: linuxserver/mylar3:0.7.8
+    volumes:
+      - mylar_vol:/config/mylar
+      - complete_downloads_vol:/downloads
+      - comics_vol:/comics
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.mylar.entrypoints: https
+      traefik.http.routers.mylar.rule: Host(`mylar.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.mylar.tls: "true"
+      traefik.http.routers.mylar.middlewares: "chain-no-auth@file"
+      traefik.http.routers.mylar.service: mylar
+      traefik.http.services.mylar.loadbalancer.server.port: "8090"
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+      - name: "comics_network"
+    state: started
+    container_default_behavior: "compatibility"
+    restart_policy: "unless-stopped"
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"
