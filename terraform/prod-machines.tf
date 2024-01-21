@@ -7,7 +7,7 @@ resource "xenorchestra_cloud_config" "ares1" {
 }
 
 resource "xenorchestra_vm" "ares1" {
-  memory_max       = 8589934592
+  memory_max       = 17179869184
   cpus             = 4
   cloud_config     = xenorchestra_cloud_config.ares1.template
   name_label       = "ares1"
@@ -33,7 +33,7 @@ resource "xenorchestra_vm" "ares1" {
   disk {
     sr_id      = data.xenorchestra_sr.dopti1.id
     name_label = "ares1"
-    size       = 21474836480
+    size       = 64424509440
   }
 
   tags = [
