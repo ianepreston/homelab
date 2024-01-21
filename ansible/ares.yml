@@ -10,7 +10,8 @@
     # - dockerserver/mediavols
     # - dockerserver/traefik
     - dockerserver/homepage
-    - dockerserver/calibre
+    # - dockerserver/arr
+    # - dockerserver/calibre
     # - dockerserver/komga
     # - dockerserver/mealie
     # - dockerserver/miniflux

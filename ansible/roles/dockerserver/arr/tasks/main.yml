@@ -1,0 +1,174 @@
+---
+
+- name: Create downloads network
+  community.docker.docker_network:
+    name: download_network
+
+- name: Create sabnzbd vol
+  community.docker.docker_volume:
+    name: sabnzbd_vol
+
+- name: Create sabnzbd container
+  community.docker.docker_container:
+    name: sabnzbd
+    hostname: sabnzbd
+    image: linuxserver/sabnzbd:4.2.1
+    volumes:
+      - sabnzbd_vol:/config
+      - complete_downloads_vol:/downloads
+      - incomplete_downloads_vol:/incomplete-downloads
+      - watch_downloads_vol:/watch
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.sabnzbd.entrypoints: https
+      traefik.http.routers.sabnzbd.rule: Host(`sabnzbd.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.sabnzbd.tls: "true"
+      traefik.http.routers.sabnzbd.middlewares: "chain-no-auth@file"
+      traefik.http.routers.sabnzbd.service: sabnzbd
+      traefik.http.services.sabnzbd.loadbalancer.server.port: "8080"
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+    state: started
+    container_default_behavior: "compatibility"
+    restart_policy: "unless-stopped"
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"
+
+- name: Create prowlarr vol
+  community.docker.docker_volume:
+    name: prowlarr_vol
+
+- name: Create prowlarr container
+  community.docker.docker_container:
+    name: prowlarr
+    hostname: prowlarr
+    image: linuxserver/prowlarr:1.12.2
+    volumes:
+      - prowlarr_vol:/config
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.prowlarr.entrypoints: https
+      traefik.http.routers.prowlarr.rule: Host(`prowlarr.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.prowlarr.tls: "true"
+      traefik.http.routers.prowlarr.middlewares: "chain-no-auth@file"
+      traefik.http.routers.prowlarr.service: prowlarr
+      traefik.http.services.prowlarr.loadbalancer.server.port: "9696"
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+    state: started
+    container_default_behavior: "compatibility"
+    restart_policy: "unless-stopped"
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"
+
+- name: Create sonarr vol
+  community.docker.docker_volume:
+    name: sonarr_vol
+
+- name: Create sonarr container
+  community.docker.docker_container:
+    name: sonarr
+    hostname: sonarr
+    image: linuxserver/sonarr:4.0.1
+    volumes:
+      - sonarr_vol:/config
+      - complete_downloads_vol:/downloads
+      - tv_vol:/tv
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.sonarr.entrypoints: https
+      traefik.http.routers.sonarr.rule: Host(`sonarr.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.sonarr.tls: "true"
+      traefik.http.routers.sonarr.middlewares: "chain-no-auth@file"
+      traefik.http.routers.sonarr.service: sonarr
+      traefik.http.services.sonarr.loadbalancer.server.port: "8989"
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+    state: started
+    container_default_behavior: "compatibility"
+    restart_policy: "unless-stopped"
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"
+
+- name: Create radarr vol
+  community.docker.docker_volume:
+    name: radarr_vol
+
+- name: Create radarr container
+  community.docker.docker_container:
+    name: radarr
+    hostname: radarr
+    image: linuxserver/radarr:5.2.6
+    volumes:
+      - radarr_vol:/config
+      - complete_downloads_vol:/downloads
+      - movies_vol:/movies
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.radarr.entrypoints: https
+      traefik.http.routers.radarr.rule: Host(`radarr.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.radarr.tls: "true"
+      traefik.http.routers.radarr.middlewares: "chain-no-auth@file"
+      traefik.http.routers.radarr.service: radarr
+      traefik.http.services.radarr.loadbalancer.server.port: "7878"
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+    state: started
+    container_default_behavior: "compatibility"
+    restart_policy: "unless-stopped"
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"
+
+- name: Create bazarr vol
+  community.docker.docker_volume:
+    name: bazarr_vol
+
+- name: Create bazarr container
+  community.docker.docker_container:
+    name: bazarr
+    hostname: bazarr
+    image: linuxserver/bazarr:1.4.0
+    volumes:
+      - bazarr_vol:/config
+      - tv_vol:/tv
+      - movies_vol:/movies
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.bazarr.entrypoints: https
+      traefik.http.routers.bazarr.rule: Host(`bazarr.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.bazarr.tls: "true"
+      traefik.http.routers.bazarr.middlewares: "chain-no-auth@file"
+      traefik.http.routers.bazarr.service: bazarr
+      traefik.http.services.bazarr.loadbalancer.server.port: "6767"
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+    state: started
+    container_default_behavior: "compatibility"
+    restart_policy: "unless-stopped"
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"

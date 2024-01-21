@@ -1,6 +1,52 @@
 ---
 # For configuration options and examples, please see:
 # https://gethomepage.dev/latest/configs/services
+- Acquisition:
+  - sabnzbd:
+      href: "https://sabnzbd.{{subdomain }}.ipreston.net"
+      icon: sabnzbd
+      server: my-docker
+      container: sabnzbd
+      widget:
+        type: sabnzbd
+        url: "https://sabnzbd.{{subdomain }}.ipreston.net"
+        key: "{{ sabnzbd_key }}"
+  - sonarr:
+      href: "https://sonarr.{{subdomain }}.ipreston.net"
+      icon: sonarr
+      server: my-docker
+      container: sonarr
+      widget:
+        type: sonarr
+        url: "https://sonarr.{{subdomain }}.ipreston.net"
+        key: "{{ sonarr_key }}"
+  - radarr:
+      href: "https://radarr.{{subdomain }}.ipreston.net"
+      icon: radarr
+      server: my-docker
+      container: radarr
+      widget:
+        type: radarr
+        url: "https://radarr.{{subdomain }}.ipreston.net"
+        key: "{{ radarr_key }}"
+  - prowlarr:
+      href: "https://prowlarr.{{subdomain }}.ipreston.net"
+      icon: prowlarr
+      server: my-docker
+      container: prowlarr
+      widget:
+        type: prowlarr
+        url: "https://prowlarr.{{subdomain }}.ipreston.net"
+        key: "{{ prowlarr_key }}"
+  - bazarr:
+      href: "https://bazarr.{{subdomain }}.ipreston.net"
+      icon: bazarr
+      server: my-docker
+      container: bazarr
+      widget:
+        type: bazarr
+        url: "https://bazarr.{{subdomain }}.ipreston.net"
+        key: "{{ bazarr_key }}"
 
 - Consumption:
   - calibre:
