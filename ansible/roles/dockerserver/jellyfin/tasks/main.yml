@@ -1,0 +1,41 @@
+---
+
+- name: create jellyfin volume
+  community.docker.docker_volume:
+    name: jellyfin_vol
+
+- name: Jellyfin media server
+  community.docker.docker_container:
+    name: jellyfin
+    hostname: jellyfin
+    state: started
+    image: linuxserver/jellyfin:10.8.13
+    networks:
+      - name: "download_network"
+      - name: "traefik_net"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+      PUID: "1026"
+      PGID: "100"
+      JELLYFIN_PublishedServerUrl: "{{ ansible_default_ipv4.address }}"
+      DOCKER_MODS: "linuxserver/mods:jellyfin-opencl-intel"
+      LIBVA_DRIVER_NAME: "i965"
+    restart_policy: unless-stopped
+    volumes:
+        - "jellyfin_vol:/config"
+        - "movies_vol:/data/movies"
+        - "tv_vol:/data/tv"
+        - "misc_vids_vol:/data/misc_vids"
+    devices:
+      - "/dev/dri:/dev/dri"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.jellyfin.entrypoints: https
+      traefik.http.routers.jellyfin.rule: Host(`jellyfin.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.jellyfin.tls: "true"
+      traefik.http.routers.jellyfin.middlewares: "chain-no-auth@file"
+      traefik.http.routers.jellyfin.service: jellyfin
+      traefik.http.services.jellyfin.loadbalancer.server.port: "8096"

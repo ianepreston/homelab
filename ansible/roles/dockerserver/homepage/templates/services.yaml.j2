@@ -64,6 +64,19 @@
       description: books
       server: my-docker
       container: calibre
+  - jellyfin:
+      href: "https://jellyfin.{{ subdomain }}.ipreston.net"
+      icon: jellyfin
+      description: media
+      server: my-docker
+      container: jellyfin
+      widget:
+        type: jellyfin
+        url: "https://jellyfin.{{ subdomain }}.ipreston.net"
+        key: "{{ jellyfin_key }}"
+        enableBlocks: true
+        fields: ["movies", "series", "episodes"]
+        enableNowPlaying: true
   - komga:
       href: "https://komga.{{ subdomain }}.ipreston.net"
       icon: komga
