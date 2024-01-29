@@ -119,7 +119,7 @@ ian_gym_watch:
 #     url: "https://www.youtube.com/playlist?list=PLui6Eyny-UzxL6NjFMYD5-vESNii8_aLi"
 #   overrides:
 #     tv_show_name: "Yoga with Adriene"
-#     season: "10-20 min routines"
+#     season: "routines 10-20 min routines"
 
 # yoga_adriene_20to30:
 #   preset: "yt_playlist"
@@ -127,7 +127,7 @@ ian_gym_watch:
 #     url: "https://www.youtube.com/playlist?list=PLui6Eyny-UzwmsJ9vILet4TJwqcINCz4j"
 #   overrides:
 #     tv_show_name: "Yoga with Adriene"
-#     season: "20-30 min routines"
+#     season: "routines 20-30 min routines"
 
 # yoga_adriene_30to45:
 #   preset: "yt_playlist"
@@ -135,7 +135,7 @@ ian_gym_watch:
 #     url: "https://www.youtube.com/playlist?list=PLui6Eyny-UzwheLDyEScgdgbh7z3FgNCX"
 #   overrides:
 #     tv_show_name: "Yoga with Adriene"
-#     season: "30-45 min routines"
+#     season: "routines 30-45 min routines"
 
 # yoga_adriene_45-60:
 #   preset: "yt_playlist"
@@ -143,7 +143,7 @@ ian_gym_watch:
 #     url: "https://www.youtube.com/playlist?list=PLui6Eyny-Uzwzd-9fi_cmhz3UW9gS1raf"
 #   overrides:
 #     tv_show_name: "Yoga with Adriene"
-#     season: "45-60 min routines"
+#     season: "routines 45-60 min"
 
 # yoga_kassandra_5-15:
 #   preset: "yt_playlist"
@@ -151,7 +151,7 @@ ian_gym_watch:
 #     url: "https://www.youtube.com/playlist?list=PLW0v0k7UCVrn7Zt56SjQYZNUKUmS07LDa"
 #   overrides:
 #     tv_show_name: "Yoga with Kassandra"
-#     season: "5-15 minute routines"
+#     season: "routines 5-15 minute"
 
 # yoga_kassandra_beginner:
 #   preset: "yt_playlist"
@@ -160,3 +160,51 @@ ian_gym_watch:
 #   overrides:
 #     tv_show_name: "Yoga with Kassandra"
 #     season: "Beginner Yoga"
+
+# fitness_marshall_sweat_set:
+#   preset: "yt_playlist"
+#   download:
+#     url: "PLAPUEAObdbMYrZvv6g1IGp9x2UjrdpmEn"
+#   overrides:
+#     tv_show_name: "The Fitness Marshall"
+#     season: "Sweat Set"
+
+# fitness_marshall_speed_set:
+#   preset: "yt_playlist"
+#   download:
+#     url: "PLAPUEAObdbMZ2ZgS_xfEg_pDUQ7nO4jf6"
+#   overrides:
+#     tv_show_name: "The Fitness Marshall"
+#     season: "Speed Set"
+
+# fitness_marshall_warm_up:
+#   preset: "yt_playlist"
+#   download:
+#     url: "PLAPUEAObdbMZDn2KdhOAdv7go2q7UYL7M"
+#   overrides:
+#     tv_show_name: "The Fitness Marshall"
+#     season: "Warm Up"
+
+# fitness_marshall_moderate_sweat:
+#   preset: "yt_playlist"
+#   download:
+#     url: "PLAPUEAObdbMbSRc-qtcbP2Jnc9OauEOkJ"
+#   overrides:
+#     tv_show_name: "The Fitness Marshall"
+#     season: "Moderate Sweat"
+
+# fitness_marshall_heavy_sweat:
+#   preset: "yt_playlist"
+#   download:
+#     url: "PLAPUEAObdbMZCz53BTJwI8f28Wn2vsXnj"
+#   overrides:
+#     tv_show_name: "The Fitness Marshall"
+#     season: "Heavy Sweat"
+
+# fitness_marshall_low_impact:
+#   preset: "yt_playlist"
+#   download:
+#     url: "PLAPUEAObdbMYPn_PkT_91SqLuPRHn8rkB"
+#   overrides:
+#     tv_show_name: "The Fitness Marshall"
+#     season: "Low Impact"
