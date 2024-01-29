@@ -7,10 +7,15 @@ configuration:
 
 presets:
   yt_video:
+    format: "bv*[height<=1080]+ba/b[height<=1080]"
     output_options:
       output_directory: "/data/YouTube/{tv_show_name_sanitized}"
       file_name: "{episode_path}.{ext}"
       thumbnail_name: "{episode_path}-thumb.{thumbnail_ext}"
+      maintain_download_archive: True
+    ytdl_options:
+      break_on_existing: True
+      merge_output_format: "webm/mp4"
 
     overrides:
       tv_show_name: "OVERRIDE IN SUBSCRIPTION"
@@ -19,6 +24,9 @@ presets:
       episode_padded: "{playlist_index_padded}"
       episode_file_name: "e{episode_padded}-{title_sanitized}"
       episode_path: "{season}/{episode_file_name}"
+      tv_show_poster_file_name: "poster.jpg"
+      tv_show_fanart_file_name: "fanart.jpg"
+      season_poster_file_name: "season{season}-poster.jpg"
 
     nfo_tags:
       nfo_name: "{episode_path}.nfo"
@@ -38,15 +46,9 @@ presets:
 
   yt_playlist:
     preset: "yt_video"
-    output_options:
-      maintain_download_archive: True
-    ytdl_options:
-      break_on_existing: True
 
   yt_dynamic_playlist:
     preset: "yt_playlist"
-    ytdl_options:
-      break_on_existing: False
     overrides:
       episode: "{upload_year}{upload_month}{upload_day_padded}"
       episode_padded: "{upload_year}{upload_month_padded}{upload_day_padded}"
