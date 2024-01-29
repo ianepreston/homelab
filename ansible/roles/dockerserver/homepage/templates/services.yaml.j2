@@ -129,12 +129,12 @@
       #   wan: "igc0"
       #   fields: ["load", "memory", "temp"]
   - laconia:
-      href: "http://laconia.ipreston.net:5000"
+      href: "http://laconiatrust.ipreston.net:5000"
       icon: synology
       description: NAS
       widget:
         type: diskstation
-        url: "http://laconia.ipreston.net:5000"
+        url: "http://laconiatrust.ipreston.net:5000"
         username: "ipreston"
         password: "{{ laconia_pass }}"
         fields: ["volumeAvailable", "resources.cpu", "resources.mem"]
