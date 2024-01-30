@@ -1,5 +1,9 @@
 ---
 
+- name: Create downloads network
+  community.docker.docker_network:
+    name: download_network
+
 - name: create jellyfin volume
   community.docker.docker_volume:
     name: jellyfin_vol
