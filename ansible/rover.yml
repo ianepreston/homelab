@@ -1,0 +1,9 @@
+---
+- name: Set up rover dev machine
+  hosts: rover
+  vars_files:
+    - variables/secrets.yml
+  # roles:
+  tasks:
+    - name: ping
+      ansible.builtin.ping:
