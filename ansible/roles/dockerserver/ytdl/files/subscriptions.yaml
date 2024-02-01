@@ -6,6 +6,14 @@ ian_personal_watch:
     tv_show_name: "Ian's Playlists"
     season: "personal to watch"
 
+ian_reference:
+  preset: "yt_dynamic_playlist"
+  download:
+    url: "https://www.youtube.com/playlist?list=PL5EXFh7FucVhp3GqU54nB7KuHy4ILX3Hp"
+  overrides:
+    tv_show_name: "Ian's Playlists"
+    season: "reference"
+
 ian_work_watch:
   preset: "yt_dynamic_playlist"
   download:

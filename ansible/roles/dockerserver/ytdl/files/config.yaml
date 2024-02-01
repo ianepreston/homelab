@@ -14,7 +14,6 @@ presets:
       thumbnail_name: "{episode_path}-thumb.{thumbnail_ext}"
       maintain_download_archive: True
     ytdl_options:
-      break_on_existing: True
       merge_output_format: "webm/mp4"
 
     overrides:
