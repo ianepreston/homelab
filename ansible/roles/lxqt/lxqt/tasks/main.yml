@@ -1,0 +1,26 @@
+---
+
+- name: Install lxqt and icons
+  become: true
+  community.general.pacman:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - lxqt
+    - breeze-icons
+
+- name: Create xinitrc if it doesn't exist
+  ansible.builtin.file:
+    path: /home/ipreston/.xinitrc
+    state: touch
+    access_time: preserve
+    modification_time: preserve
+    mode: '0640'
+
+- name: Have lxqt start
+  ansible.builtin.lineinfile:
+    path: /home/ipreston/.xinitrc
+    line: exec startlxqt
+
+
+

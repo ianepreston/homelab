@@ -3,7 +3,8 @@
   hosts: rover
   vars_files:
     - variables/secrets.yml
-  # roles:
-  tasks:
-    - name: ping
-      ansible.builtin.ping:
+  roles:
+    - lxqt/xorg
+    - lxqt/lightdm
+    - lxqt/lxqt
+    - lxqt/firefox

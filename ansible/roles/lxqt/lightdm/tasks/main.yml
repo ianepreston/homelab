@@ -1,0 +1,18 @@
+---
+- block: 
+  - name: Install lightdm
+    community.general.pacman:
+      name: "{{ item }}"
+      state: present
+    with_items:
+      - lightdm
+      - lightdm-gtk-greeter
+  - name: Enable lightdm service
+    ansible.builtin.systemd:
+      name: lightdm.service
+      enabled: true
+      state: started
+
+  become: true
+
+

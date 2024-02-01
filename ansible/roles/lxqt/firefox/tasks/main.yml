@@ -1,0 +1,11 @@
+---
+
+- name: Install firefox and dependencies
+  become: true
+  community.general.pacman:
+    name: "{{ item }}"
+    state: present
+  with_items:
+    - noto-fonts
+    - pipewire-jack
+    - firefox
