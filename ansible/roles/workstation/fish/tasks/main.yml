@@ -1,0 +1,23 @@
+---
+
+- name: Install fish shell
+  become: true
+  ansible.builtin.package:
+    name: fish
+    state: present
+
+- name: Set fish as default interactive shell
+  ansible.builtin.blockinfile:
+    path: /home/ipreston/.bashrc
+    block: |
+
+      if [[ $(ps --no-header --pid=$PPID --format=comm) != "fish" && -z ${BASH_EXECUTION_STRING} ]]
+      then
+        shopt -q login_shell && LOGIN_OPTION='--login' || LOGIN_OPTION=''
+        exec fish $LOGIN_OPTION
+      fi
+
+- name: Disable the fish greeting (runs every time but doesn't seem to hurt)
+  ansible.builtin.shell:
+    cmd: set -U fish_greeting
+    executable: /usr/bin/fish
