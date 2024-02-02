@@ -1,0 +1,7 @@
+---
+
+- name: Install mandb for man page access
+  become: true
+  ansible.builtin.package:
+    name: man-db
+    state: present
