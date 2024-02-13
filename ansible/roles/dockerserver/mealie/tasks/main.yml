@@ -19,7 +19,7 @@
     networks:
       - name: mealie_net
 
-    image: postgres:16.1
+    image: postgres:16.2
     state: "started"
     container_default_behavior: compatibility
     env:
