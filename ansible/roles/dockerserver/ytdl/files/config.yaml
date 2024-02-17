@@ -57,9 +57,10 @@ presets:
       allow_chapters_from_comments: False
 
       # Sponsorblock Fields
-      sponsorblock_categories:
-        - "selfpromo"
-        - "preview"
-        - "sponsor"
-      remove_sponsorblock_categories: "all"
+      # Makes things skip while I can't do hardware re-encoding. Just deal with it for now.
+      # sponsorblock_categories:
+      #   - "selfpromo"
+      #   - "preview"
+      #   - "sponsor"
+      # remove_sponsorblock_categories: "all"
       force_key_frames: False
