@@ -1,4 +1,4 @@
 {
-	"name": "homelab-devcontainer",
-	"image": "ianepreston/iac-devcontainer"
+  "name": "homelab-devcontainer",
+  "image": "docker.io/ianepreston/iac-devcontainer"
 }
