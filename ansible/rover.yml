@@ -4,7 +4,12 @@
   vars_files:
     - variables/secrets.yml
   roles:
-    - lxqt/xorg
-    - lxqt/lightdm
-    - lxqt/lxqt
-    - lxqt/firefox
+    # - lxqt/xorg
+    # - lxqt/lightdm
+    # - lxqt/lxqt
+    # - lxqt/firefox
+    # - workstation/mandb
+    # - workstation/fish
+    # - workstation/starship
+    # - workstation/podman
+    - workstation/neovim
