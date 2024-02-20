@@ -1,0 +1,7 @@
+---
+- name: Set up local dev machine (WSL or whatever)
+  hosts: localhost
+  vars_files:
+    - variables/secrets.yml
+  roles:
+     - workstation/terminalapps
