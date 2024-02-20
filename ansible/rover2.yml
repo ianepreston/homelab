@@ -8,8 +8,5 @@
     # - lxqt/lightdm
     # - lxqt/lxqt
     # - lxqt/firefox
-    # - workstation/mandb
-    # - workstation/fish
-    # - workstation/starship
+    # - workstation/terminalapps
     # - workstation/podman
-    - workstation/neovim

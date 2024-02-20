@@ -1,0 +1,14 @@
+---
+
+- name: Install common terminal apps I might want
+  become: true
+  ansible.builtin.package:
+    name: "{{ item }}"
+    state: "present"
+  with_items:
+    - fish
+    - man-db
+    - starship
+    - neovim
+    - ripgrep
+    - fd
