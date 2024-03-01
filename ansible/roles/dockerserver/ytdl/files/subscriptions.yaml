@@ -32,6 +32,29 @@ ian_gym_watch:
 
 # One time playlists that I might redownload later but should generally leave commented
 # out
+# database_design_chats:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PL5Vy7oRJ6L06Olkvsbz6H_51VMpzb5vZO"
+#   overrides:
+#     tv_show_name: "Lecture Series"
+#     season: "Database Design Chats"
+#
+# sql_mdm:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLPI9hmrj2Vd_ntg2HACiHYeYl7iRvrgPb"
+#   overrides:
+#     tv_show_name: "Lecture Series"
+#     season: "SQL Master Data Management"
+#
+# soldering:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PL926EC0F1F93C1837"
+#   overrides:
+#     tv_show_name: "Lecture Series"
+#     season: "Soldering"
 
 # missing_mit:
 #   preset: "yt_playlist"
