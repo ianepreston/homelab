@@ -1,0 +1,103 @@
+---
+
+- name: Create firefly networks
+  community.docker.docker_network:
+    name: firefly_net
+  
+- name: Create firefy upload volumes
+  community.docker.docker_volume:
+    name: firefly_upload_vol
+
+- name: Create firefly db volumes
+  community.docker.docker_volume:
+    name: firefly_db_vol
+
+- name: Create firefly db
+  community.docker.docker_container:
+    name: firefly-mariadb
+    hostname: firefly-mariadb
+    networks:
+      - name: firefly_net
+    image: "mariadb:10.11.7"
+    state: started
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    env:
+      TZ: "America/Edmonton"
+      MARIADB_DATABASE: firefly
+      MARIADB_USER: firefly
+      MARIADB_PASSWORD: "{{ firefly_db_pass }}"
+      MARIADB_ROOT_PASSWORD: "{{ firefly_db_pass }}"
+    volumes:
+      firefly_db_vol:/var/lib/mysql
+
+- name: Create firefly container
+  community.docker.docker_container:
+    name: firefly
+    hostname: firefly
+    networks:
+      - name: traefik_net
+      - name: firefly_net
+    image: "fireflyiii/core:version-6.1.10"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    env:
+      TZ: "America/Edmonton"
+      APP_ENV: "production"
+      APP_DEBUG: "false"
+      APP_KEY: "{{ firefly_key }}"
+      DEFAULT_LANGUAGE: en_CA
+      DB_CONNECTION: mysql
+      DB_HOST: firefly-mariadb
+      DB_PORT: "3306"
+      DB_DATABASE: firefly
+      DB_USERNAME: firefly
+      DB_PASSWORD: "{{ firefly_db_pass }}"
+      TRUSTED_PROXIES: "**"
+      MAP_DEFAULT_LAT: "50.973653"
+      MAP_DEFAULT_LONG: "-114.00920023863122"
+      MAP_DEFAULT_ZOOM: "6"
+      AUTHENTICATION_GUARD: "web"
+      APP_URL: "https://firefly.{{ subdomain }}.ipreston.net"
+    volumes:
+      - firefly_upload_vol:/var/www/html/storage/upload
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.firefly.entrypoints: https
+      traefik.http.routers.firefly.rule: Host(`firefly.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.firefly.tls: "true"
+      traefik.http.routers.firefly.middlewares: "chain-no-auth@file"
+      traefik.http.routers.firefly.service: firefly
+      traefik.http.services.firefly.loadbalancer.server.port: "8080"
+
+- name: Create firely importer container
+  community.docker.docker_container:
+    name: fireflyimporter
+    hostname: fireflyimporter
+    networks:
+      - name: traefik_net
+      - name: firefly_net
+    image: "fireflyiii/data-importer:version-1.4.4"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    env:
+      TZ: "America/Edmonton"
+      FIREFLY_III_URL: "http://firefly"
+      VANITY_URL: "https://firefly.{{ subdomain }}.ipreston.net"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.fireflyimporter.entrypoints: https
+      traefik.http.routers.fireflyimporter.rule: Host(`fireflyimporter.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.fireflyimporter.tls: "true"
+      traefik.http.routers.fireflyimporter.middlewares: "chain-no-auth@file"
+      traefik.http.routers.fireflyimporter.service: fireflyimporter
+      traefik.http.services.fireflymporter.loadbalancer.server.port: "8080"
+
