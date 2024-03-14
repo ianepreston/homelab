@@ -181,7 +181,7 @@
   community.docker.docker_container:
     name: mylar
     hostname: mylar
-    image: linuxserver/mylar3:0.7.8
+    image: linuxserver/mylar3:0.8.0
     volumes:
       - mylar_vol:/config/mylar
       - complete_downloads_vol:/downloads
