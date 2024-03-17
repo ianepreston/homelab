@@ -30,6 +30,14 @@ ian_gym_watch:
     tv_show_name: "Ian's Playlists"
     season: "Gym Follow Along"
 
+reeves_videos:
+  preset: "yt_dynamic_playlist"
+  download:
+    url: "https://www.youtube.com/playlist?list=PL5EXFh7FucVjzSmBnZgO-9iHSIDFADvKW"
+  overrides:
+    tv_show_name: "Reeves"
+    season: "Season 01"
+
 # One time playlists that I might redownload later but should generally leave commented
 # out
 # database_design_chats:
