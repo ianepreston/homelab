@@ -1,0 +1,4 @@
+---
+- name: restart docker
+  command: systemctl restart docker
+  become: true

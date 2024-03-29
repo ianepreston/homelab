@@ -1,0 +1,140 @@
+---
+
+- name: Create monitoring network
+  community.docker.docker_network:
+    name: monitoring_net
+
+- block:
+  - name: Create syslog-ng config folder
+    ansible.builtin.file:
+      path: /home/ipreston/syslog_config
+      state: directory
+      mode: '0700'
+      owner: root
+      group: docker
+  - name: Copy over syslog config
+    ansible.builtin.copy:
+      src: "syslog-ng.conf"
+      dest: "/home/ipreston/syslog_config/syslog-ng.conf"
+  - name: Create loki config folder
+    ansible.builtin.file:
+      path: /home/ipreston/loki_config
+      state: directory
+      mode: '0700'
+      owner: root
+      group: docker
+  - name: Copy over loki config
+    ansible.builtin.copy:
+      src: "loki-config.yml"
+      dest: "/home/ipreston/loki_config/loki-config.yml"
+  - name: Create promtail config folder
+    ansible.builtin.file:
+      path: /home/ipreston/promtail_config
+      state: directory
+      mode: '0700'
+      owner: root
+      group: docker
+  - name: Copy over promtail config
+    ansible.builtin.copy:
+      src: "promtail-config.yml"
+      dest: "/home/ipreston/promtail_config/promtail-config.yml"
+  become: true
+
+- name: Create syslog-ng volume
+  community.docker.docker_volume:
+    name: syslogng_vol
+- name: Create syslog-ng container
+  community.docker.docker_container:
+    name: syslog-ng
+    hostname: syslog-ng
+    networks:
+      - name: monitoring_net
+    image: linuxserver/syslog-ng:4.5.0
+    state: "started"
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    env:
+      TZ: "America/Edmonton"
+    volumes:
+      - /home/ipreston/syslog_config:/config
+    published_ports:
+      - 514:5514/udp
+      - 601:6601/tcp
+      - 6514:6514/tcp
+
+- name: Create promtail container
+  community.docker.docker_container:
+    name: promtail
+    hostname: promtail
+    networks:
+      - name: monitoring_net
+    image: grafana/promtail:2.8.11
+    state: started
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    volumes:
+      - /home/ipreston/promtail_config:/etc/promtail
+      - /var/log:/var/log
+    command: "-config.file=/etc/promtail/promtail-config.yml"
+
+- name: Create loki container
+  community.docker.docker_container:
+    name: loki
+    hostname: loki
+    networks:
+      - name: monitoring_net
+    image: grafana/loki:2.8.11-amd64
+    state: started
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    volumes:
+      - /home/ipreston/loki_config/loki-config.yml:/etc/loki/loki-config.yml
+    command: "-config.file=/etc/loki/loki-config.yml"
+
+- name: Create grafana volume
+  community.docker.docker_volume:
+    name: grafana_vol
+
+- name: Create grafana container
+  community.docker.docker_container:
+    name: grafana
+    hostname: grafana
+    networks:
+      - name: monitoring_net
+      - name: traefik_net
+    image: grafana/grafana:10.3.5
+    state: started
+    container_default_behavior: compatibility
+    restart_policy: unless-stopped
+    volumes:
+      - grafana_vol:/var/lib/grafana
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.grafana.entrypoints: https
+      traefik.http.routers.grafana.rule: Host(`grafana.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.grafana.tls: "true"
+      traefik.http.routers.grafana.middlewares: "chain-no-auth@file"
+      traefik.http.routers.grafana.service: grafana
+      traefik.http.services.grafana.loadbalancer.server.port: "3000"
+
+- name: Install the loki driver plugin
+  community.docker.docker_plugin:
+    plugin_name: grafana/loki-docker-driver:latest
+    alias: loki
+    state: enable
+  notify: restart docker
+
+- block:
+  - name: Create docker config folder
+    ansible.builtin.file:
+      path: /etc/docker
+      state: directory
+      mode: '0700'
+      owner: root
+      group: docker
+  - name: Configure loki driver plugin
+    ansible.builtin.copy:
+      src: daemon.json
+      dest: /etc/docker/daemon.json
+    notify: restart docker
+  become: true
