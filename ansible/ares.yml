@@ -10,6 +10,7 @@
     - dockerserver/mediavols
     - dockerserver/traefik
     - dockerserver/homepage
+    - dockerserver/actualbudget
     - dockerserver/arr
     - dockerserver/calibre
     - dockerserver/jellyfin

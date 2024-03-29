@@ -1,0 +1,30 @@
+---
+
+- name: create actualbudget volume
+  community.docker.docker_volume:
+    name: actualbudget_vol
+
+- name: actualbudget server
+  community.docker.docker_container:
+    name: actualbudget
+    hostname: actualbudget
+    state: started
+    image: actualbudget/actual-server:24.3.0
+    networks:
+      - name: "traefik_net"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+    restart_policy: unless-stopped
+    volumes:
+        - "actualbudget_vol:/data"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.actualbudget.entrypoints: https
+      traefik.http.routers.actualbudget.rule: Host(`actualbudget.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.actualbudget.tls: "true"
+      traefik.http.routers.actualbudget.middlewares: "chain-no-auth@file"
+      traefik.http.routers.actualbudget.service: actualbudget
+      traefik.http.services.actualbudget.loadbalancer.server.port: "5006"
