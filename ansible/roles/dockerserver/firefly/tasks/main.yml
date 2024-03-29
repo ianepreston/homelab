@@ -90,7 +90,7 @@
     restart_policy: unless-stopped
     env:
       TZ: "America/Edmonton"
-      FIREFLY_III_URL: "http://firefly"
+      FIREFLY_III_URL: "http://firefly:8080"
       VANITY_URL: "https://firefly.{{ subdomain }}.ipreston.net"
     labels:
       traefik.enable: "true"
@@ -99,5 +99,5 @@
       traefik.http.routers.fireflyimporter.tls: "true"
       traefik.http.routers.fireflyimporter.middlewares: "chain-no-auth@file"
       traefik.http.routers.fireflyimporter.service: fireflyimporter
-      traefik.http.services.fireflymporter.loadbalancer.server.port: "8080"
+      traefik.http.services.fireflyimporter.loadbalancer.server.port: "8080"
 
