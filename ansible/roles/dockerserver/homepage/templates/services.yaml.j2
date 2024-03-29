@@ -68,6 +68,13 @@
         key: "{{ bazarr_key }}"
 
 - Consumption:
+  - actualbudget:
+      href: "https://actualbudget.{{ subdomain }}.ipreston.net"
+      icon: actual
+      description: finances
+      server: my-docker
+      container: actualbudget
+
   - calibre:
       href: "https://calibre.{{ subdomain }}.ipreston.net"
       icon: calibre
