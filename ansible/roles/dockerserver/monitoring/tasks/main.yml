@@ -16,17 +16,6 @@
     ansible.builtin.copy:
       src: "syslog-ng.conf"
       dest: "/home/ipreston/syslog_config/syslog-ng.conf"
-  - name: Create loki config folder
-    ansible.builtin.file:
-      path: /home/ipreston/loki_config
-      state: directory
-      mode: '0700'
-      owner: root
-      group: docker
-  - name: Copy over loki config
-    ansible.builtin.template:
-      src: "loki-config.yml"
-      dest: "/home/ipreston/loki_config/loki-config.yml"
   - name: Create promtail config folder
     ansible.builtin.file:
       path: /home/ipreston/promtail_config
@@ -39,32 +28,6 @@
       src: "promtail-config.yml.j2"
       dest: "/home/ipreston/promtail_config/promtail-config.yml"
   become: true
-
-- name: Create minio volume
-  community.docker.docker_volume:
-    name: minio_monitoring_vol
-
-- name: Create minio container
-  community.docker.docker_container:
-    name: minio-monitoring
-    hostname: minio-monitoring
-    networks:
-      - name: monitoring_net
-    image: minio/minio:RELEASE.2024-03-30T09-41-56Z
-    entrypoint:
-      - sh
-      - "-euc"
-      - |
-        mkdir -p /data/loki-data && \
-        mkdir -p /data/loki-ruler && \
-        minio server /data
-    env:
-      MINIO_ROOT_USER: loki
-      MINIO_ROOT_PASSWORD: "{{ minio_pass }}"
-      MINIO_PROMETHEUS_AUTH_TYPE: public
-      MINIO_UPDATE: "off"
-    volumes:
-      - minio_monitoring_vol:/data
 
 - name: Create syslog-ng volume
   community.docker.docker_volume:
@@ -103,45 +66,6 @@
       - /var/log:/var/log
     command: "-config.file=/etc/promtail/promtail-config.yml"
 
-- name: Create loki container
-  community.docker.docker_container:
-    name: loki
-    hostname: loki
-    networks:
-      - name: monitoring_net
-    image: grafana/loki:2.8.11-amd64
-    state: started
-    container_default_behavior: compatibility
-    restart_policy: unless-stopped
-    volumes:
-      - /home/ipreston/loki_config/loki-config.yml:/etc/loki/loki-config.yml
-    command: "-config.file=/etc/loki/loki-config.yml"
-
-- name: Create grafana volume
-  community.docker.docker_volume:
-    name: grafana_vol
-
-- name: Create grafana container
-  community.docker.docker_container:
-    name: grafana
-    hostname: grafana
-    networks:
-      - name: monitoring_net
-      - name: traefik_net
-    image: grafana/grafana:10.3.5
-    state: started
-    container_default_behavior: compatibility
-    restart_policy: unless-stopped
-    volumes:
-      - grafana_vol:/var/lib/grafana
-    labels:
-      traefik.enable: "true"
-      traefik.http.routers.grafana.entrypoints: https
-      traefik.http.routers.grafana.rule: Host(`grafana.{{ subdomain }}.ipreston.net`)
-      traefik.http.routers.grafana.tls: "true"
-      traefik.http.routers.grafana.middlewares: "chain-no-auth@file"
-      traefik.http.routers.grafana.service: grafana
-      traefik.http.services.grafana.loadbalancer.server.port: "3000"
 
 - name: Install the loki driver plugin
   community.docker.docker_plugin:
@@ -159,7 +83,7 @@
       owner: root
       group: docker
   - name: Configure loki driver plugin
-    ansible.builtin.copy:
+    ansible.builtin.template:
       src: daemon.json
       dest: /etc/docker/daemon.json
     notify: restart docker
