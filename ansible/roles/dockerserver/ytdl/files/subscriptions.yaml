@@ -38,6 +38,14 @@ reeves_videos:
     tv_show_name: "Reeves"
     season: "Season 01"
 
+# nixos_guide:
+#   preset: "yt_playlist"
+#   download:
+#     url: "https://www.youtube.com/playlist?list=PLko9chwSoP-15ZtZxu64k_CuTzXrFpxPE"
+#   overrides:
+#     tv_show_name: "Lecture Series"
+#     season: "Nix tutorials"
+#
 # One time playlists that I might redownload later but should generally leave commented
 # out
 # database_design_chats:
