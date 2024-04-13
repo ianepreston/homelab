@@ -79,7 +79,7 @@
   community.docker.docker_container:
     name: sonarr
     hostname: sonarr
-    image: linuxserver/sonarr:4.0.3
+    image: linuxserver/sonarr:4.0.4
     volumes:
       - sonarr_vol:/config
       - complete_downloads_vol:/downloads
