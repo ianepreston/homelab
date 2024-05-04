@@ -12,7 +12,7 @@
   community.docker.docker_container:
     name: sabnzbd
     hostname: sabnzbd
-    image: linuxserver/sabnzbd:4.2.3
+    image: linuxserver/sabnzbd:4.3.1
     volumes:
       - sabnzbd_vol:/config
       - complete_downloads_vol:/downloads
