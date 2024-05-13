@@ -47,7 +47,7 @@
   community.docker.docker_container:
     name: prowlarr
     hostname: prowlarr
-    image: linuxserver/prowlarr:1.16.2
+    image: linuxserver/prowlarr:1.17.2
     volumes:
       - prowlarr_vol:/config
     labels:
@@ -113,7 +113,7 @@
   community.docker.docker_container:
     name: radarr
     hostname: radarr
-    image: linuxserver/radarr:5.4.6
+    image: linuxserver/radarr:5.5.3
     volumes:
       - radarr_vol:/config
       - complete_downloads_vol:/downloads
