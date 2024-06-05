@@ -13,7 +13,7 @@
     name: jellyfin
     hostname: jellyfin
     state: started
-    image: linuxserver/jellyfin:10.9.2
+    image: linuxserver/jellyfin:10.9.4
     networks:
       - name: "download_network"
       - name: "traefik_net"
