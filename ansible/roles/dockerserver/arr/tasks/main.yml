@@ -113,7 +113,7 @@
   community.docker.docker_container:
     name: radarr
     hostname: radarr
-    image: linuxserver/radarr:5.6.0
+    image: linuxserver/radarr:5.7.0
     volumes:
       - radarr_vol:/config
       - complete_downloads_vol:/downloads
