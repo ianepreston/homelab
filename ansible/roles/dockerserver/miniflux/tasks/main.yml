@@ -33,7 +33,7 @@
     networks:
       - name: miniflux_net
       - name: traefik_net
-    image: "miniflux/miniflux:2.1.3"
+    image: "miniflux/miniflux:2.1.4"
     state: "started"
     container_default_behavior: compatibility
     comparisons:
