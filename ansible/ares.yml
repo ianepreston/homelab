@@ -5,7 +5,7 @@
     - variables/secrets.yml
   roles:
     - dockerserver/docker
-    - dockerserver/watchtower
+   # - dockerserver/watchtower
     - dockerserver/unifi
     - dockerserver/mediavols
     - dockerserver/traefik
