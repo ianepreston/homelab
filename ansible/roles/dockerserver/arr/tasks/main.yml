@@ -47,7 +47,7 @@
   community.docker.docker_container:
     name: prowlarr
     hostname: prowlarr
-    image: linuxserver/prowlarr:1.19.0
+    image: linuxserver/prowlarr:1.20.1
     volumes:
       - prowlarr_vol:/config
     labels:
@@ -79,7 +79,7 @@
   community.docker.docker_container:
     name: sonarr
     hostname: sonarr
-    image: linuxserver/sonarr:4.0.5
+    image: linuxserver/sonarr:4.0.7
     volumes:
       - sonarr_vol:/config
       - complete_downloads_vol:/downloads
