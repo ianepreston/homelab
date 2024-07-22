@@ -79,7 +79,7 @@
   community.docker.docker_container:
     name: sonarr
     hostname: sonarr
-    image: linuxserver/sonarr:4.0.7
+    image: linuxserver/sonarr:4.0.8
     volumes:
       - sonarr_vol:/config
       - complete_downloads_vol:/downloads
@@ -113,7 +113,7 @@
   community.docker.docker_container:
     name: radarr
     hostname: radarr
-    image: linuxserver/radarr:5.7.0
+    image: linuxserver/radarr:5.8.3
     volumes:
       - radarr_vol:/config
       - complete_downloads_vol:/downloads
