@@ -47,7 +47,7 @@
   community.docker.docker_container:
     name: prowlarr
     hostname: prowlarr
-    image: linuxserver/prowlarr:1.20.1
+    image: linuxserver/prowlarr:1.21.2
     volumes:
       - prowlarr_vol:/config
     labels:
