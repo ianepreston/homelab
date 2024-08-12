@@ -4,16 +4,16 @@
   vars_files:
     - variables/secrets.yml
   roles:
-    # - dockerserver/docker
+    - dockerserver/docker
     # - dockerserver/watchtower
     # - dockerserver/unifi
-    # - dockerserver/mediavols
-    # - dockerserver/traefik
-    # - dockerserver/homepage
+    - dockerserver/mediavols
+    - dockerserver/traefik
+    - dockerserver/homepage
     # - dockerserver/arr
     # - dockerserver/calibre-desktop
     # - dockerserver/calibre
-    # - dockerserver/jellyfin
+    - dockerserver/jellyfin
     # - dockerserver/jellyseerr
     # - dockerserver/komga
     # - dockerserver/mealie
