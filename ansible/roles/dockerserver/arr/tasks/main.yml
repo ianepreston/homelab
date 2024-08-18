@@ -152,6 +152,8 @@
       - bazarr_vol:/config
       - tv_vol:/tv
       - movies_vol:/movies
+    devices:
+      - "/dev/dri:/dev/dri"
     labels:
       traefik.enable: "true"
       traefik.http.routers.bazarr.entrypoints: https
