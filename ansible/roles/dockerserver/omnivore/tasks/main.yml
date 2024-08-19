@@ -1,0 +1,94 @@
+---
+
+- name: Create omnivore postgres volume
+  community.docker.docker_volume:
+    name: omnivore_pg16_vol
+
+- name: Create omnivore network
+  community.docker.docker_network:
+    name: omnivore_net
+
+- name: Create postgres container for omnivore
+  community.docker.docker_container:
+    name: omnivore-postgres
+    hostname: omnivore-postgres
+    networks:
+      - name: omnivore_net
+    healthcheck:
+      test: "exit 0"
+      interval: "2s"
+      timeout: "12s"
+      retries: 3
+    image: ankane/pgvector:v0.5.1
+    state: "started"
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "{{ omnivore_postgres_pass }}"
+      POSTGRES_DB: "omnivore"
+      POSTGRES_HOST_AUTH_METHOD: "scram-sha-256\nhost replication all 0.0.0.0/0 md5"
+      POSTGRES_INITDB_ARGS: --auth-host=scram-sha-256
+    restart_policy: unless-stopped
+    volumes:
+      - "omnivore_pg16_vol:/var/lib/postgresql/data"
+
+- name: Get the omnivore repo
+  ansible.builtin.git:
+    repo: "https://github.com/omnivore-app/omnivore.git"
+    dest: /home/ipreston/omnivore_repo
+
+- name: Create database migration image
+  community.docker.docker_image:
+    name: omnivore-db-migration
+    build:
+      dockerfile: "packages/db/Dockerfile"
+      path: /home/ipreston/omnivore_repo
+    source: build
+  become: true
+
+- name: Run database migration image
+  community.docker.docker_container:
+    name: omnivore-db-migration
+    image: "omnivore-db-migration"
+    networks:
+      - name: omnivore_net
+    command: "/bin/sh ./packages/db/setup.sh"
+    env:
+      PGPASSWORD: "{{ omnivore_postgres_pass }}"
+      PG_HOST: omnivore-postgres
+      PG_DB: omnivore
+      PG_PASSWORD: "{{ omnivore_app_pass }}"
+
+# - name: Create omnivore container
+#   community.docker.docker_container:
+#     name: omnivore
+#     hostname: omnivore
+#     networks:
+#       - name: omnivore_net
+#       - name: traefik_net
+#     image: "omnivore/omnivore:2.1.4"
+#     state: "started"
+#     container_default_behavior: compatibility
+#     comparisons:
+#       labels: strict
+#     restart_policy: unless-stopped
+#     exposed_ports:
+#       - "8080"
+#     env:
+#       TZ: "America/Edmonton"
+#       DATABASE_URL: "postgres://omnivore:{{ omnivore_postgres_pass }}@omnivore-postgres/omnivore?sslmode=disable"
+#       BASE_URL: "http://omnivore.{{ subdomain }}.ipreston.net"
+#       RUN_MIGRATIONS: "1"
+#       CREATE_ADMIN: "1"
+#       ADMIN_USERNAME: "admin"
+#       ADMIN_PASSWORD: "{{ omnivore_admin_pass }}"
+#     labels:
+#       traefik.enable: "true"
+#       traefik.http.routers.omnivore.entrypoints: https
+#       traefik.http.routers.omnivore.rule: Host(`omnivore.{{ subdomain }}.ipreston.net`)
+#       traefik.http.routers.omnivore.tls: "true"
+#       traefik.http.routers.omnivore.middlewares: "chain-no-auth@file"
+#       traefik.http.routers.omnivore.service: omnivore
+#       traefik.http.services.omnivore.loadbalancer.server.port: "8080"
+#
