@@ -179,7 +179,7 @@ machine:
 
     # Used to provide instructions for installations.
     install:
-        disk: /dev/sda # The disk used for installations.
+        disk: /dev/nvme0n1 # The disk used for installations.
         image: ghcr.io/siderolabs/installer:v1.7.6 # Allows for supplying the image used to perform the installation.
         wipe: false # Indicates if the installation disk should be wiped at installation time.
         

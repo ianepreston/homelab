@@ -13,7 +13,7 @@
     in {
       devShells = forEachSupportedSystem ({ pkgs }: {
         default = pkgs.mkShell {
-          packages = with pkgs; [ talosctl kubectl bitwarden-cli ];
+          packages = with pkgs; [ talosctl kubectl clusterctl bitwarden-cli ];
         };
       });
     };
