@@ -1,0 +1,75 @@
+---
+
+- name: Create wallabag postgres volume
+  community.docker.docker_volume:
+    name: wallabag_pg16_vol
+
+- name: Create wallabag cache volume
+  community.docker.docker_volume:
+    name: wallabag_vol
+
+- name: Create wallabag network
+  community.docker.docker_network:
+    name: wallabag_net
+
+- name: Create postgres container for wallabag
+  community.docker.docker_container:
+    name: wallabag-postgres
+    hostname: wallabag-postgres
+    networks:
+      - name: wallabag_net
+    image: postgres:16.4
+    state: "started"
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+      POSTGRES_USER: "wallabag"
+      POSTGRES_PASSWORD: "{{ wallabag_postgres_pass }}"
+      POSTGRES_DB: "wallabag"
+    restart_policy: unless-stopped
+    volumes:
+      - "wallabag_pg16_vol:/var/lib/postgresql/data"
+
+- name: Create wallabag container
+  community.docker.docker_container:
+    name: wallabag
+    hostname: wallabag
+    networks:
+      - name: wallabag_net
+      - name: traefik_net
+    image: "wallabag/wallabag:2.6.9"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    exposed_ports:
+      - "80"
+    env:
+      TZ: "America/Edmonton"
+      POPULATE_DATABASE: "false"
+      POSTGRES_USER: "wallabag"
+      POSTGRES_PASSWORD: "{{ wallabag_postgres_pass }}"
+      TRUSTED_PROXIES: "127.0.0.1,REMOTE_ADDR"
+      SYMFONY__ENV__DATABASE_DRIVER: "pdo_pgsql"
+      SYMFONY__ENV__DATABASE_HOST: wallabag-postgres
+      SYMFONY__ENV__DATABASE_PORT: "5432"
+      SYMFONY__ENV__DATABASE_NAME: wallabag
+      SYMFONY__ENV__DATABASE_USER: wallabag
+      SYMFONY__ENV__DATABASE_PASSWORD: "{{ wallabag_postgres_pass }}"
+      SYMFONY__ENV__DOMAIN_NAME: "https:/wallabag.{{ subdomain }}.ipreston.net"
+      SYMFONY__ENV__SERVER_NAME: "Ian's wallabag"
+      # SYMFONY__ENV__TRUSTED_PROXIES: "127.0.0.1,REMOTE_ADDR"
+      # SYMFONY__ENV__TRUSTED_HEADERS: "X_FORWARDED_FOR,X_FORWARDED_HOST,X_FORWARDED_PORT,X_FORWARDED_PROTO"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.wallabag.entrypoints: https
+      traefik.http.routers.wallabag.rule: Host(`wallabag.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.wallabag.tls: "true"
+      traefik.http.routers.wallabag.middlewares: "chain-no-auth@file"
+      traefik.http.routers.wallabag.service: wallabag
+      traefik.http.services.wallabag.loadbalancer.server.port: "80"
+      # traefik.frontend.redirect.regex: "^http://wallabag.{{ subdomain }}.ipreston.net/(.*)"
+      # traefik.frontend.redirect.replacement: "https://wallabag.{{ subdomain }}.ipreston.net/$$1"
+      traefik.frontend.redirect.permanent: "true"
+
