@@ -1,0 +1,30 @@
+---
+
+- name: create memos volume
+  community.docker.docker_volume:
+    name: memos_vol
+
+- name: memos server
+  community.docker.docker_container:
+    name: memos
+    hostname: memos
+    state: started
+    image: neosmemo/memos:0.22
+    networks:
+      - name: "traefik_net"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+    restart_policy: unless-stopped
+    volumes:
+        - "memos_vol:/var/opt/memos"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.memos.entrypoints: https
+      traefik.http.routers.memos.rule: Host(`memos.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.memos.tls: "true"
+      traefik.http.routers.memos.middlewares: "chain-no-auth@file"
+      traefik.http.routers.memos.service: memos
+      traefik.http.services.memos.loadbalancer.server.port: "5230"
