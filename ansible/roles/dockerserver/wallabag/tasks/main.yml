@@ -57,7 +57,7 @@
       SYMFONY__ENV__DATABASE_NAME: wallabag
       SYMFONY__ENV__DATABASE_USER: wallabag
       SYMFONY__ENV__DATABASE_PASSWORD: "{{ wallabag_postgres_pass }}"
-      SYMFONY__ENV__DOMAIN_NAME: "https:/wallabag.{{ subdomain }}.ipreston.net"
+      SYMFONY__ENV__DOMAIN_NAME: "https://wallabag.{{ subdomain }}.ipreston.net"
       SYMFONY__ENV__SERVER_NAME: "Ian's wallabag"
       # SYMFONY__ENV__TRUSTED_PROXIES: "127.0.0.1,REMOTE_ADDR"
       # SYMFONY__ENV__TRUSTED_HEADERS: "X_FORWARDED_FOR,X_FORWARDED_HOST,X_FORWARDED_PORT,X_FORWARDED_PROTO"
