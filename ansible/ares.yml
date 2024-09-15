@@ -5,7 +5,6 @@
     - variables/secrets.yml
   roles:
     - dockerserver/docker
-   # - dockerserver/watchtower
     - dockerserver/unifi
     - dockerserver/mediavols
     - dockerserver/traefik
@@ -19,3 +18,6 @@
     - dockerserver/mealie
     - dockerserver/miniflux
     - dockerserver/ytdl
+    - dockerserver/memos
+    - dockerserver/wallabag
+    - dockerserver/hoarder
