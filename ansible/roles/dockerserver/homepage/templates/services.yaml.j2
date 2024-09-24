@@ -94,6 +94,12 @@
         enableBlocks: true
         fields: ["movies", "series", "episodes"]
         enableNowPlaying: true
+  - hoarder:
+      href: "https://hoarder.{{ subdomain }}.ipreston.net"
+      icon: hoarder
+      description: bookmark manager
+      server: my-docker
+      container: hoarder
   - komga:
       href: "https://komga.{{ subdomain }}.ipreston.net"
       icon: komga
@@ -106,6 +112,12 @@
       description: Recipe Manager
       server: my-docker
       container: mealie
+  - memos:
+      href: "https://memos.{{ subdomain }}.ipreston.net"
+      icon: memos
+      description: Notes mostly highlight exports
+      server: my-docker
+      container: memos
   - miniflux:
       href: "https://miniflux.{{ subdomain }}.ipreston.net"
       icon: miniflux
@@ -121,24 +133,12 @@
       href: "http://laconiatrust.ipreston.net:5000/?launchApp=SYNO.Foto.AppInstance#/personal_space/timeline"
       icon: nextcloud-photos
       description: Synology photo manager
-  - memos:
-      href: "https://memos.{{ subdomain }}.ipreston.net"
-      icon: memos
-      description: Notes mostly highlight exports
-      server: my-docker
-      container: memos
   - wallabag:
       href: "https://wallabag.{{ subdomain }}.ipreston.net"
       icon: wallabag
       description: Read it later
       server: my-docker
       container: wallabag
-  - hoarder:
-      href: "https://hoarder.{{ subdomain }}.ipreston.net"
-      icon: hoarder
-      description: bookmark manager
-      server: my-docker
-      container: hoarder
 
 - Infrastructure:
   - pfsense:
