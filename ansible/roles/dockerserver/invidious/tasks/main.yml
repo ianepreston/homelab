@@ -1,0 +1,118 @@
+---
+
+- name: Clone invidious repo (for configs)
+  ansible.builtin.git:
+    repo: 'https://github.com/iv-org/invidious.git'
+    dest: /home/ipreston/invidious-repo
+
+- name: Create invidious postgres volume
+  community.docker.docker_volume:
+    name: invidious_pg16_vol
+
+- name: Create invidious network
+  community.docker.docker_network:
+    name: invidious_net
+
+- name: Create postgres container for invidious
+  community.docker.docker_container:
+    name: invidious-postgres
+    hostname: invidious-postgres
+    networks:
+      - name: invidious_net
+    image: postgres:16.4
+    state: "started"
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+      POSTGRES_USER: "invidious"
+      POSTGRES_PASSWORD: "{{ invidious_postgres_pass }}"
+      POSTGRES_DB: "invidious"
+    restart_policy: unless-stopped
+    volumes:
+      - "invidious_pg16_vol:/var/lib/postgresql/data"
+      - "/home/ipreston/invidious-repo/config/sql:/config/sql"
+      - "/home/ipreston/invidious-repo/docker/init-invidious-db.sh:/docker-entrypoint-initdb.d/init-invidious-db.sh"
+
+- name: Create invidious sig helper container
+  community.docker.docker_container:
+    name: invidious-sig-helper
+    hostname: invidious-sig-helper
+    networks:
+      - name: invidious_net
+    image: "quay.io/invidious/inv-sig-helper:master-a877ff2"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    command:
+      - "--tcp"
+      - "0.0.0.0:12999"
+    env:
+      RUST_LOG: "info"
+    cap_drop:
+      - all
+    security_opts:
+      - "no-new-privileges:true"
+
+
+- name: Create invidious container
+  community.docker.docker_container:
+    name: invidious
+    hostname: invidious
+    networks:
+      - name: invidious_net
+      - name: traefik_net
+    image: "quay.io/invidious/invidious:2024.09.20-a021b93"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    exposed_ports:
+      - "3000"
+    env:
+      TZ: "America/Edmonton"
+      INVIDIOUS_CONFIG: |
+        db:
+          dbname: invidious
+          user: invidious
+          password: "{{invidious_postgres_pass}}"
+          host: invidious-postgres
+          port: 5432
+        check_tables: true
+        signature_server: invidious-sig-helper:12999
+        visitor_data: {{ invidious_visitor_data }}
+        po_token: {{ invidious_po_token }}
+        domain: invidious.{{ subdomain }}.ipreston.net
+        https_only: true
+        external_port: 443
+        hmac_key: {{ invidious_hmac_key }}
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.invidious.entrypoints: https
+      traefik.http.routers.invidious.rule: Host(`invidious.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.invidious.tls: "true"
+      traefik.http.routers.invidious.middlewares: "chain-no-auth@file"
+      traefik.http.routers.invidious.service: invidious
+      traefik.http.services.invidious.loadbalancer.server.port: "3000"
+
+- name: Install cronie
+  become: true
+  community.general.pacman:
+    name: cronie
+    state: present
+
+- name: Enable cronie service
+  become: true
+  systemd:
+    name: cronie.service
+    enabled: yes
+    state: started
+
+- name: Set cron jobs to restart invidious (supposed to be done hourly but let's try daily)
+  ansible.builtin.cron:
+    name: "docker ytdl"
+    hour: "2"
+    job: docker restart invidious
+

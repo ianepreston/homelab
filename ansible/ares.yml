@@ -21,3 +21,4 @@
     - dockerserver/memos
     - dockerserver/wallabag
     - dockerserver/hoarder
+    - dockerserver/invidious
