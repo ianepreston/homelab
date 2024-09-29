@@ -1,0 +1,191 @@
+---
+
+- block:
+  - name: Create piped config folder
+    ansible.builtin.file:
+      path: /home/ipreston/piped_conf
+      state: directory
+      owner: root
+      group: docker
+      mode: '0700'
+  - name: Copy over config.properties
+    ansible.builtin.template:
+      src: config.properties
+      dest: /home/ipreston/piped_conf/config.properties
+      owner: root
+      group: docker
+      mode: '0600'
+  - name: Copy over nginx.conf
+    ansible.builtin.template:
+      src: nginx.conf
+      dest: /home/ipreston/piped_conf/nginx.conf
+      owner: root
+      group: docker
+      mode: '0600'
+  - name: Copy over pipedapi.conf
+    ansible.builtin.template:
+      src: pipedapi.conf
+      dest: /home/ipreston/piped_conf/pipedapi.conf
+      owner: root
+      group: docker
+      mode: '0600'
+  - name: Copy over pipedproxy.conf
+    ansible.builtin.template:
+      src: pipedproxy.conf
+      dest: /home/ipreston/piped_conf/pipedproxy.conf
+      owner: root
+      group: docker
+      mode: '0600'
+  - name: Copy over pipedfrontend.conf
+    ansible.builtin.template:
+      src: pipedfrontend.conf
+      dest: /home/ipreston/piped_conf/pipedfrontend.conf
+      owner: root
+      group: docker
+      mode: '0600'
+  - name: Copy over ytproxy.conf
+    ansible.builtin.template:
+      src: ytproxy.conf
+      dest: /home/ipreston/piped_conf/ytproxy.conf
+      owner: root
+      group: docker
+      mode: '0600'
+  become: true
+
+- name: Create piped postgres volume
+  community.docker.docker_volume:
+    name: piped_pg16_vol
+
+- name: Create piped proxy volume
+  community.docker.docker_volume:
+    name: piped_proxy_vol
+
+- name: Create piped network
+  community.docker.docker_network:
+    name: piped_net
+
+- name: Create postgres container for piped
+  community.docker.docker_container:
+    name: piped-postgres
+    hostname: piped-postgres
+    networks:
+      - name: piped_net
+    image: postgres:16.4
+    state: "started"
+    container_default_behavior: compatibility
+    env:
+      TZ: "America/Edmonton"
+      POSTGRES_USER: "piped"
+      POSTGRES_PASSWORD: "{{ piped_postgres_pass }}"
+      POSTGRES_DB: "piped"
+    restart_policy: unless-stopped
+    volumes:
+      - "piped_pg16_vol:/var/lib/postgresql/data"
+
+- name: Create piped container
+  community.docker.docker_container:
+    name: piped
+    hostname: piped
+    networks:
+      - name: piped_net
+      # - name: traefik_net
+    image: "1337kavin/piped:latest"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    volumes:
+      - /home/ipreston/piped_conf/config.properties:/app/config.properties:ro
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      # traefik.enable: "true"
+      # traefik.http.routers.piped.entrypoints: https
+      # traefik.http.routers.piped.rule: Host(`pipedapi.{{ subdomain }}.ipreston.net`)
+      # traefik.http.routers.piped.tls: "true"
+      # traefik.http.routers.piped.middlewares: "chain-no-auth@file"
+      # traefik.http.routers.piped.service: piped
+      # traefik.http.services.piped.loadbalancer.server.port: "8080"
+
+- name: Create piped frontend container
+  community.docker.docker_container:
+    name: piped-frontend
+    hostname: piped-frontend
+    networks:
+      - name: piped_net
+      # - name: traefik_net
+    image: "1337kavin/piped-frontend:latest"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    env:
+      BACKEND_HOSTNAME: pipedapi.{{ subdomain }}.ipreston.net
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      # traefik.enable: "true"
+      # traefik.http.routers.piped-frontend.entrypoints: https
+      # traefik.http.routers.piped-frontend.rule: Host(`piped.{{ subdomain }}.ipreston.net`)
+      # traefik.http.routers.piped-frontend.tls: "true"
+      # traefik.http.routers.piped-frontend.middlewares: "chain-no-auth@file"
+      # traefik.http.routers.piped-frontend.service: piped-frontend
+      # traefik.http.services.piped-frontend.loadbalancer.server.port: "80"
+
+- name: Create piped proxy container
+  community.docker.docker_container:
+    name: piped-proxy
+    hostname: piped-proxy
+    networks:
+      - name: piped_net
+      # - name: traefik_net
+    image: "1337kavin/piped-proxy:latest"
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    volumes:
+      - piped_proxy_vol:/app/socket
+    env:
+      UDS: "1"
+    labels:
+      com.centurylinklabs.watchtower.enable: "true"
+      # traefik.enable: "true"
+      # traefik.http.routers.piped-proxy.entrypoints: https
+      # traefik.http.routers.piped-proxy.rule: Host(`pipedproxy.{{ subdomain }}.ipreston.net`)
+      # traefik.http.routers.piped-proxy.tls: "true"
+      # traefik.http.routers.piped-proxy.middlewares: "chain-no-auth@file"
+      # traefik.http.routers.piped-proxy.service: piped-proxy
+      # traefik.http.services.piped-proxy.loadbalancer.server.port: "8080"
+
+- name: Create piped nginx container
+  community.docker.docker_container:
+    name: piped-nginx
+    hostname: piped-nginx
+    image: nginx:1.27
+    networks:
+      - name: piped_net
+      - name: traefik_net
+    state: "started"
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    restart_policy: unless-stopped
+    # ports:
+    #   - "8080:80"
+    volumes:
+      - /home/ipreston/piped_conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /home/ipreston/piped_conf/pipedapi.conf:/etc/nginx/conf.d/pipedapi.conf:ro
+      - /home/ipreston/piped_conf/pipedproxy.conf:/etc/nginx/conf.d/pipedproxy.conf:ro
+      - /home/ipreston/piped_conf/pipedfrontend.conf:/etc/nginx/conf.d/pipedfrontend.conf:ro
+      - /home/ipreston/piped_conf/ytproxy.conf:/etc/nginx/snippets/ytproxy.conf:ro
+      - piped_proxy_vol:/var/run/ytproxy
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.piped-nginx.entrypoints: https
+      traefik.http.routers.piped-nginx.rule: Host(`piped.{{ subdomain }}.ipreston.net`, `pipedapi.{{ subdomain }}.ipreston.net`, `pipedproxy.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.piped-nginx.tls: "true"
+      traefik.http.routers.piped-nginx.middlewares: "chain-no-auth@file"
+      traefik.http.routers.piped-nginx.service: piped-nginx
+      traefik.http.services.piped-nginx.loadbalancer.server.port: "80"
