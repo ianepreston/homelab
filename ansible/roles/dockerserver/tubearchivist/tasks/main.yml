@@ -1,0 +1,120 @@
+---
+
+- name: Create tubearchivist network
+  community.docker.docker_network:
+    name: tubearchivist_network
+
+- name: Create tubearchivist cache volume
+  community.docker.docker_volume:
+    name: tubearchivist_cache_vol
+
+- name: Create tubearchivist elasticsearch volume
+  community.docker.docker_volume:
+    name: tubearchivist_elasticsearch_vol
+
+- name: Create tubearchivist redis volume
+  community.docker.docker_volume:
+    name: tubearchivist_redis_vol
+
+- name: Create tubearchivist elasticsearch
+  community.docker.docker_container:
+    name: tubearchivist-elasticsearch
+    hostname: tubearchivist-elasticsearch
+    state: started
+    image: elasticsearch:8.15.2
+    networks:
+      - name: tubearchivist_network
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    volumes:
+      - tubearchivist_elasticsearch_vol:/usr/share/elasticsearch/data
+    env:
+      ELASTIC_PASSWORD: "{{ tubearchivist_elastic_pass }}"
+      ES_JAVA_OPTS: "-Xms1g -Xmx1g"
+      xpack.security.enabled: "true"
+      discovery.type: "single-node"
+      path.repo: "/usr/share/elasticsearch/data/snapshot"
+      
+- name: Create tubearchivist redis
+  community.docker.docker_container:
+    name: tubearchivist-redis
+    hostname: tubearchivist-redis
+    state: started
+    image: redis/redis-stack-server:7.4.0-v0
+    networks:
+      - name: tubearchivist_network
+    container_default_behavior: compatibility
+    comparisons:
+      labels: strict
+    volumes:
+      - tubearchivist_redis_vol:/data
+
+- name: Create tubearchivist container
+  community.docker.docker_container:
+    name: tubearchivist
+    hostname: tubearchivist
+    state: started
+    image: bbilly1/tubearchivist:v0.4.10
+    networks:
+      - name: tubearchivist_network
+      - name: traefik_net
+    volumes:
+      - tubearchivist_vol:/youtube
+      - tubearchivist_cache_vol:/cache
+    env:
+      ES_URL: http://tubearchivist-elasticsearch:9200
+      REDIS_HOST: tubearchivist-redis
+      TA_HOST: tubearchivist.{{ subdomain }}.ipreston.net
+      TA_USERNAME: ipreston
+      TA_PASSWORD: "{{ tubearchivist_pass }}"
+      ELASTIC_PASSWORD: "{{ tubearchivist_elastic_pass }}"
+      TZ: "America/Edmonton"
+      # HOST_UID: "1026"
+      # HOST_GID: "100"
+    devices:
+      - "/dev/dri:/dev/dri"
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.tubearchivist.entrypoints: https
+      traefik.http.routers.tubearchivist.rule: Host(`tubearchivist.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.tubearchivist.tls: "true"
+      traefik.http.routers.tubearchivist.middlewares: "chain-no-auth@file"
+      traefik.http.routers.tubearchivist.service: tubearchivist
+      traefik.http.services.tubearchivist.loadbalancer.server.port: "8000"
+#
+# - name: Jellyfin media server
+#   community.docker.docker_container:
+#     name: jellyfin
+#     hostname: jellyfin
+#     state: started
+#     image: linuxserver/jellyfin:10.9.11
+#     networks:
+#       - name: "download_network"
+#       - name: "traefik_net"
+#     container_default_behavior: compatibility
+#     comparisons:
+#       labels: strict
+#     env:
+#       TZ: "America/Edmonton"
+#       PUID: "1026"
+#       PGID: "100"
+#       JELLYFIN_PublishedServerUrl: "{{ ansible_default_ipv4.address }}"
+#       DOCKER_MODS: "linuxserver/mods:jellyfin-opencl-intel"
+#       LIBVA_DRIVER_NAME: "i965"
+#     restart_policy: unless-stopped
+#     volumes:
+#         - "jellyfin_vol:/config"
+#         - "movies_vol:/data/movies"
+#         - "tv_vol:/data/tv"
+#         - "misc_vids_vol:/data/misc_vids"
+#     devices:
+#       - "/dev/dri:/dev/dri"
+#     labels:
+#       traefik.enable: "true"
+#       traefik.http.routers.jellyfin.entrypoints: https
+#       traefik.http.routers.jellyfin.rule: Host(`jellyfin.{{ subdomain }}.ipreston.net`)
+#       traefik.http.routers.jellyfin.tls: "true"
+#       traefik.http.routers.jellyfin.middlewares: "chain-no-auth@file"
+#       traefik.http.routers.jellyfin.service: jellyfin
+#       traefik.http.services.jellyfin.loadbalancer.server.port: "8096"

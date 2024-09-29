@@ -15,6 +15,8 @@
     - {name: movies_vol, path: "Movies"}
     - {name: tv_vol, path: "TV"}
     - {name: misc_vids_vol, path: "Misc Videos"}
+    - {name: tubearchivist_vol, path: "tubearchivist"}
+    - {name: tubesync_vol, path: "tubesync"}
 
 - name: Create smb comics volume
   community.general.docker_volume:
