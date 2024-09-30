@@ -4,23 +4,22 @@
   vars_files:
     - variables/secrets.yml
   roles:
-    # - dockerserver/docker
+    - dockerserver/docker
     # - dockerserver/watchtower
-    # - dockerserver/unifi
+    - dockerserver/unifi
     - dockerserver/mediavols
-    # - dockerserver/traefik
-    # - dockerserver/homepage
-    # - dockerserver/actualbudget
-    # - dockerserver/arr
-    # - dockerserver/calibre
+    - dockerserver/traefik
+    - dockerserver/homepage
+    - dockerserver/actualbudget
+    - dockerserver/arr
+    - dockerserver/calibre
     - dockerserver/jellyfin
-    # - dockerserver/jellyseerr
+    - dockerserver/jellyseerr
     - dockerserver/tubesync
-    # - dockerserver/komga
-    # - dockerserver/mealie
-    # - dockerserver/miniflux
-    # - dockerserver/ytdl
-    # - dockerserver/memos
-    # - dockerserver/wallabag
-    # - dockerserver/hoarder
-    # - dockerserver/piped
+    - dockerserver/komga
+    - dockerserver/mealie
+    - dockerserver/miniflux
+    - dockerserver/memos
+    - dockerserver/wallabag
+    - dockerserver/hoarder
+    - dockerserver/piped

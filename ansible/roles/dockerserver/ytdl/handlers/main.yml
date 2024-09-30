@@ -1,3 +1,0 @@
----
-- name: restart ytdl
-  command: docker restart ytdl
