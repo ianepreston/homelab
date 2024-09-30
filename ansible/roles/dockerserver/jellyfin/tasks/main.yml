@@ -33,6 +33,7 @@
         - "movies_vol:/data/movies"
         - "tv_vol:/data/tv"
         - "misc_vids_vol:/data/misc_vids"
+        - "tubesync_vol:/data/tubesync"
     devices:
       - "/dev/dri:/dev/dri"
     labels:

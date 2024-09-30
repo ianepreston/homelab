@@ -15,8 +15,17 @@
     - {name: movies_vol, path: "Movies"}
     - {name: tv_vol, path: "TV"}
     - {name: misc_vids_vol, path: "Misc Videos"}
-    - {name: tubearchivist_vol, path: "tubearchivist"}
-    - {name: tubesync_vol, path: "tubesync"}
+    # - {name: tubearchivist_vol, path: "tubearchivist"}
+    # - {name: tubesync_vol, path: "tubesync"}
+
+- name: Create tubesync vol
+  community.general.docker_volume:
+    name: "tubesync_vol"
+    recreate: "options-changed"
+    driver_options:
+      type: "cifs"
+      device: "//192.168.15.3/content/tubesync"
+      o: "addr=192.168.15.3,username=ipreston,password={{ laconia_pass}},file_mode=0777,dir_mode=0777"
 
 - name: Create smb comics volume
   community.general.docker_volume:
