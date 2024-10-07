@@ -1,0 +1,3 @@
+---
+- name: restart homeassistant
+  command: docker restart homeassistant

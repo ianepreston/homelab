@@ -1,0 +1,64 @@
+---
+
+- block:
+  - name: Create homeassistant config folder
+    ansible.builtin.file:
+      path: /home/ipreston/homeassistant_conf
+      state: directory
+      owner: root
+      group: docker
+      mode: '0700'
+  - name: Copy over homeassistant main config
+    ansible.builtin.template:
+      src: configuration.yaml.j2
+      dest: /home/ipreston/homeassistant_conf/configuration.yaml
+      owner: root
+      group: docker
+      mode: '0600'
+    notify: restart homeassistant
+  become: true
+
+- name: Create homeassistant network
+  community.docker.docker_network:
+    name: homeassistant_net
+
+# - name: Create guest vlan network
+#   community.docker.docker_network:
+#     name: guest_vlan
+#     driver: ipvlan
+#     driver_options:
+#       parent: enX1
+#     ipam_config:
+#       - subnet: 192.168.30.0/24
+#         gateway: 192.168.30.1
+#         iprange: 192.168.30.0/24
+
+- name: Start homeassistant
+  community.docker.docker_container:
+    name: homeassistant
+    hostname: homeassistant
+    image: "ghcr.io/home-assistant/home-assistant:2024.10.0"
+    networks:
+      - name: "homeassistant_net"
+      - name: "traefik_net"
+      # - name: guest_vlan
+      #   ipv4_address: 192.168.30.32
+    state: started
+    container_default_behavior: compatibility
+    # Docs say it needs this for accessing hardware and maybe network discovery. Leave it off until it causes issues
+    # privileged: true
+    comparisons:
+      labels: strict
+    env:
+      TZ: "America/Edmonton"
+    restart_policy: unless-stopped
+    volumes:
+      - /home/ipreston/homeassistant_conf:/config
+    labels:
+      traefik.enable: "true"
+      traefik.http.routers.homeassistant.entrypoints: https
+      traefik.http.routers.homeassistant.rule: Host(`homeassistant.{{ subdomain }}.ipreston.net`)
+      traefik.http.routers.homeassistant.tls: "true"
+      traefik.http.routers.homeassistant.middlewares: "chain-no-auth@file"
+      traefik.http.routers.homeassistant.service: homeassistant
+      traefik.http.services.homeassistant.loadbalancer.server.port: "8123"
