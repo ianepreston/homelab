@@ -147,7 +147,7 @@
   community.docker.docker_container:
     name: bazarr
     hostname: bazarr
-    image: linuxserver/bazarr:1.4.4
+    image: linuxserver/bazarr:1.4.5
     volumes:
       - bazarr_vol:/config
       - tv_vol:/tv
