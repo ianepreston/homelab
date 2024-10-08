@@ -9,7 +9,7 @@
     name: actualbudget
     hostname: actualbudget
     state: started
-    image: actualbudget/actual-server:24.9.0
+    image: actualbudget/actual-server:24.10.1
     networks:
       - name: "traefik_net"
     container_default_behavior: compatibility
