@@ -1,1 +1,3 @@
 secrets.yaml
+# Contains secrets and can be rederived by running genconfig.sh
+rendered
