@@ -2,7 +2,7 @@
 machine:
   network:
     interfaces:
-      - interface: eth0
+      - interface: enp1s0
         vip:
           ip: 192.168.40.13
 
