@@ -9,7 +9,7 @@
     name: jellyseerr
     hostname: jellyseerr
     state: started
-    image: fallenbagel/jellyseerr:1.9.2
+    image: fallenbagel/jellyseerr:2.0.1
     networks:
       - name: "download_network"
       - name: "traefik_net"
