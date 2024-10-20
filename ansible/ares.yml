@@ -12,7 +12,7 @@
     - dockerserver/homepage
     - dockerserver/actualbudget
     - dockerserver/arr
-    - dockerserver/calibre
+    # - dockerserver/calibre
     - dockerserver/jellyfin
     - dockerserver/jellyseerr
     - dockerserver/tubesync
