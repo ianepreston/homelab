@@ -22,4 +22,3 @@
     - dockerserver/memos
     - dockerserver/wallabag
     - dockerserver/hoarder
-    - dockerserver/piped
