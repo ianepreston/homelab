@@ -1,0 +1,8 @@
+---
+machine:
+  network:
+    interfaces:
+      - interface: enp1s0
+        vip:
+          ip: 192.168.40.13
+
