@@ -14,6 +14,7 @@
     hostname: jellyfin
     state: started
     image: linuxserver/jellyfin:10.9.11
+    image_name_mismatch: recreate
     networks:
       - name: "download_network"
       - name: "traefik_net"

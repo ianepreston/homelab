@@ -56,6 +56,7 @@
     networks:
       - name: unifi_net
     image: docker.io/mongo:4.4.29
+    image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
     restart_policy: unless-stopped
@@ -73,6 +74,7 @@
       - name: infra_vlan
         ipv4_address: 192.168.10.41
     image: lscr.io/linuxserver/unifi-network-application:8.0.26-ls24
+    image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
     restart_policy: unless-stopped

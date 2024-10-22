@@ -19,6 +19,7 @@
     networks:
       - name: hoarder_net
     image: getmeili/meilisearch:v1.10.3
+    image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
     env:
@@ -38,6 +39,7 @@
     networks:
       - name: hoarder_net
     image: gcr.io/zenika-hub/alpine-chrome:124
+    image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
     env:
@@ -61,6 +63,7 @@
       - name: hoarder_net
       - name: traefik_net
     image: "ghcr.io/hoarder-app/hoarder:0.18.0"
+    image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
     comparisons:

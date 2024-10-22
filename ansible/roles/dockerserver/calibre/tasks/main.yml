@@ -11,6 +11,7 @@
     name: calibre
     hostname: calibre
     image: linuxserver/calibre-web:0.6.23
+    image_name_mismatch: recreate
     networks:
       - name: "books_network"
       - name: traefik_net

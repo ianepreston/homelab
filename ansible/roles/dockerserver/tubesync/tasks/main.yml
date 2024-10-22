@@ -14,6 +14,7 @@
     hostname: tubesync
     state: started
     image: ghcr.io/meeb/tubesync:v0.13.7
+    image_name_mismatch: recreate
     networks:
       - name: tubesync_network
       - name: traefik_net

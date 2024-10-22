@@ -73,6 +73,7 @@
     name: traefik
     hostname: traefik
     image: "traefik:v3.1.6"
+    image_name_mismatch: recreate
     networks:
       - name: "traefik_net"
     state: started

@@ -13,6 +13,7 @@
     name: sabnzbd
     hostname: sabnzbd
     image: linuxserver/sabnzbd:4.3.3
+    image_name_mismatch: recreate
     volumes:
       - sabnzbd_vol:/config
       - complete_downloads_vol:/downloads
@@ -48,6 +49,7 @@
     name: prowlarr
     hostname: prowlarr
     image: linuxserver/prowlarr:1.24.3
+    image_name_mismatch: recreate
     volumes:
       - prowlarr_vol:/config
     labels:
@@ -80,6 +82,7 @@
     name: sonarr
     hostname: sonarr
     image: linuxserver/sonarr:4.0.9
+    image_name_mismatch: recreate
     volumes:
       - sonarr_vol:/config
       - complete_downloads_vol:/downloads
@@ -114,6 +117,7 @@
     name: radarr
     hostname: radarr
     image: linuxserver/radarr:5.12.2
+    image_name_mismatch: recreate
     volumes:
       - radarr_vol:/config
       - complete_downloads_vol:/downloads
@@ -148,6 +152,7 @@
     name: bazarr
     hostname: bazarr
     image: linuxserver/bazarr:1.4.5
+    image_name_mismatch: recreate
     volumes:
       - bazarr_vol:/config
       - tv_vol:/tv

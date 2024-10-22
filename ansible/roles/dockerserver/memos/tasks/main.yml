@@ -10,6 +10,7 @@
     hostname: memos
     state: started
     image: neosmemo/memos:0.22
+    image_name_mismatch: recreate
     networks:
       - name: "traefik_net"
     container_default_behavior: compatibility

@@ -15,6 +15,7 @@
     networks:
       - name: miniflux_net
     image: postgres:16.4
+    image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
     env:
@@ -34,6 +35,7 @@
       - name: miniflux_net
       - name: traefik_net
     image: "miniflux/miniflux:2.2.1"
+    image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
     comparisons:
