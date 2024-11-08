@@ -38,7 +38,7 @@
     networks:
       - name: wallabag_net
       - name: traefik_net
-    image: "wallabag/wallabag:2.6.9"
+    image: "wallabag/wallabag:2.6.10"
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
