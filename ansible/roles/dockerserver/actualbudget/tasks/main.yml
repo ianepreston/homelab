@@ -9,7 +9,7 @@
     name: actualbudget
     hostname: actualbudget
     state: started
-    image: actualbudget/actual-server:24.10.1
+    image: actualbudget/actual-server:24.11.0
     image_name_mismatch: recreate
     networks:
       - name: "traefik_net"
