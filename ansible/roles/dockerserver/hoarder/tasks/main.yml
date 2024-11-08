@@ -18,7 +18,7 @@
     hostname: hoarder-meilisearch
     networks:
       - name: hoarder_net
-    image: getmeili/meilisearch:v1.10.3
+    image: getmeili/meilisearch:v1.11.0
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
