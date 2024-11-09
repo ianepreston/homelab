@@ -62,7 +62,7 @@
     networks:
       - name: hoarder_net
       - name: traefik_net
-    image: "ghcr.io/hoarder-app/hoarder:0.18.0"
+    image: "ghcr.io/hoarder-app/hoarder:0.19.0"
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
