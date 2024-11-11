@@ -23,6 +23,7 @@
             packages = with pkgs; [
               talosctl
               kubectl
+              kubernetes-helm
               clusterctl
               bitwarden-cli
             ];
