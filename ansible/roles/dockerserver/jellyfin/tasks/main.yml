@@ -13,7 +13,7 @@
     name: jellyfin
     hostname: jellyfin
     state: started
-    image: linuxserver/jellyfin:10.10.1
+    image: linuxserver/jellyfin:10.10.3
     image_name_mismatch: recreate
     networks:
       - name: "download_network"
