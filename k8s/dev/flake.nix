@@ -23,11 +23,13 @@
             packages = with pkgs; [
               talosctl
               kubectl
+              kubernetes-helm
               clusterctl
               bitwarden-cli
             ];
             shellHook = ''
               export TALOSCONFIG="$(pwd)/rendered/talosconfig"
+              talosctl config endpoints 192.168.40.7 192.168.40.9 192.168.40.11
             '';
           };
         }

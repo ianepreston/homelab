@@ -1,0 +1,35 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: be-default
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: be-default
+  template:
+    metadata:
+      labels:
+        app: be-default
+    spec:
+      containers:
+        - name: kuard
+          image: gcr.io/kuar-demo/kuard-amd64:blue
+          ports:
+            - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: be-default
+spec:
+  selector:
+    app: be-default
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+  type: ClusterIP
+
