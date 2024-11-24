@@ -1,4 +1,4 @@
-#/bin/env bash
+#!/bin/env bash
 talosctl gen config dk8s https://192.168.40.13:6443 \
     --with-secrets secrets.yaml \
     --config-patch @patches/allow-controlplane-workloads.yaml \
