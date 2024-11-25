@@ -1,5 +1,5 @@
 {
-  description = "Setup env for working in my kubernetes clusters";
+  description = "Configure Talos for my prod cluster";
 
   inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
 
@@ -20,13 +20,11 @@
         { pkgs }:
         {
           default = pkgs.mkShell {
-            packages = with pkgs; [
-              talosctl
-              kubectl
-              kubernetes-helm
-              clusterctl
-              bitwarden-cli
-            ];
+            shellHook = ''
+              export TALOSENV="prod"
+              # export TALOSCONFIG="$(pwd)/rendered/talosconfig"
+              # talosctl config endpoints 192.168.40.7 192.168.40.9 192.168.40.11
+            '';
           };
         }
       );
