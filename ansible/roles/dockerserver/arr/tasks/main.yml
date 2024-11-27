@@ -81,7 +81,7 @@
   community.docker.docker_container:
     name: sonarr
     hostname: sonarr
-    image: linuxserver/sonarr:4.0.10
+    image: linuxserver/sonarr:4.0.11
     image_name_mismatch: recreate
     volumes:
       - sonarr_vol:/config
