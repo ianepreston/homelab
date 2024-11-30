@@ -1,0 +1,13 @@
+# Default values for app-of-apps.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+targetBranch: main
+targetEnv: prod
+
+apps:
+  metallb:
+    type: helm
+    enabled: true
+    namespace: metallb-system
+    path: k8s/services/metallb
+    valuesFile: values-{{ .Values.targetEnv }}.yaml
