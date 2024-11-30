@@ -9,6 +9,7 @@ metadata:
   finalizers:
   - resources-finalizer.argocd.argoproj.io
 spec:
+  project: default
   source:
     repoURL: https://github.com/ianepreston/homelab.git
     targetRevision: {{ $.Values.targetBranch }}
