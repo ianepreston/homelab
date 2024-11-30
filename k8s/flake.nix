@@ -25,6 +25,7 @@
               kubectl
               kubernetes-helm
               clusterctl
+              argocd
               bitwarden-cli
             ];
           };
