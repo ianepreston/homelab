@@ -2,11 +2,11 @@
 apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
-  name: {{ Values.AddressPoolName }}
+  name: {{ .Values.addressPoolName }}
   namespace: metallb-system
 spec:
   addresses:
-    - {{ Values.AddressRange }}
+    - {{ .Values.addressRange }}
   avoidBuggyIPs: true
 
 ---
@@ -16,9 +16,9 @@ metadata:
   name: metallb-pfsense-bgppeer
   namespace: metallb-system
 spec:
-  myASN: {{ Values.myASN }}
+  myASN: {{ .Values.myASN }}
   peerASN: 64501
-  peerAddress: {{ Values.peerAddress }}
+  peerAddress: {{ .Values.peerAddress }}
 
 ---
 apiVersion: metallb.io/v1beta1
