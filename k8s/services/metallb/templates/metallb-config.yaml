@@ -1,0 +1,29 @@
+---
+apiVersion: metallb.io/v1beta1
+kind: IPAddressPool
+metadata:
+  name: {{ Values.AddressPoolName }}
+  namespace: metallb-system
+spec:
+  addresses:
+    - {{ Values.AddressRange }}
+  avoidBuggyIPs: true
+
+---
+apiVersion: metallb.io/v1beta2
+kind: BGPPeer
+metadata:
+  name: metallb-pfsense-bgppeer
+  namespace: metallb-system
+spec:
+  myASN: {{ Values.myASN }}
+  peerASN: 64501
+  peerAddress: {{ Values.peerAddress }}
+
+---
+apiVersion: metallb.io/v1beta1
+kind: BGPAdvertisement
+metadata:
+  name: metallb-bgpadvertisement
+  namespace: metallb-system
+

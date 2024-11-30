@@ -1,0 +1,3 @@
+addressRange: 192.168.40.20-192.168.40.40
+myASN: 64500
+peerAddress: 192.168.40.1
