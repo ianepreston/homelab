@@ -26,12 +26,12 @@ spec:
         - /spec/syncPolicy/automated
         - /metadata/annotations/argocd.argoproj.io~1refresh
         - /operation
-{{- if eq $app.type "helm" }}
+  {{- if eq $app.type "helm" }}
   helm:
     valueFiles:
       - values.yaml
       - {{ $app.valuesFile }}
-{{- end }}
+  {{- end }}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ $app.namespace }}
