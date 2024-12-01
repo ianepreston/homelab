@@ -29,8 +29,8 @@ spec:
   {{- if eq $app.type "helm" }}
   helm:
     valueFiles:
-      - values-{{ $.Values.targetEnv }}.yaml
       - values.yaml
+      - values-{{ $.Values.targetEnv }}.yaml
   {{- end }}
   destination:
     server: https://kubernetes.default.svc
