@@ -10,4 +10,3 @@ apps:
     enabled: true
     namespace: metallb-system
     path: k8s/services/metallb
-    valuesFile: values-{{ targetEnv }}.yaml

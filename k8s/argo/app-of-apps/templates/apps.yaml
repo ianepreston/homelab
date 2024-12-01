@@ -30,7 +30,7 @@ spec:
   helm:
     valueFiles:
       - values.yaml
-      - {{ $app.valuesFile }}
+      - values-{{ $.Values.targetEnv }}.yaml
   {{- end }}
   destination:
     server: https://kubernetes.default.svc
