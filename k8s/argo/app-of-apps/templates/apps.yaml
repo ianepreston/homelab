@@ -14,6 +14,12 @@ spec:
     repoURL: https://github.com/ianepreston/homelab.git
     targetRevision: {{ $.Values.targetBranch }}
     path: {{ $app.path }}
+    {{- if eq $app.type "helm" }}
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-{{ $.Values.targetEnv }}.yaml
+    {{- end }}
   # Should let apps change sync policy without app of apps resetting it
   syncPolicy:
     syncOptions:
@@ -26,12 +32,6 @@ spec:
         - /spec/syncPolicy/automated
         - /metadata/annotations/argocd.argoproj.io~1refresh
         - /operation
-  {{- if eq $app.type "helm" }}
-  helm:
-    valueFiles:
-      - values.yaml
-      - values-{{ $.Values.targetEnv }}.yaml
-  {{- end }}
   destination:
     server: https://kubernetes.default.svc
     namespace: {{ $app.namespace }}
