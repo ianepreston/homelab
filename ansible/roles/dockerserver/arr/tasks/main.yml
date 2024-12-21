@@ -12,7 +12,7 @@
   community.docker.docker_container:
     name: sabnzbd
     hostname: sabnzbd
-    image: linuxserver/sabnzbd:4.3.3
+    image: linuxserver/sabnzbd:4.4.1
     image_name_mismatch: recreate
     volumes:
       - sabnzbd_vol:/config
@@ -48,7 +48,7 @@
   community.docker.docker_container:
     name: prowlarr
     hostname: prowlarr
-    image: linuxserver/prowlarr:1.26.1
+    image: linuxserver/prowlarr:1.28.2
     image_name_mismatch: recreate
     volumes:
       - prowlarr_vol:/config
@@ -81,7 +81,7 @@
   community.docker.docker_container:
     name: sonarr
     hostname: sonarr
-    image: linuxserver/sonarr:4.0.10
+    image: linuxserver/sonarr:4.0.11
     image_name_mismatch: recreate
     volumes:
       - sonarr_vol:/config

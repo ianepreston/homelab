@@ -19,7 +19,7 @@
     networks:
       - name: mealie_net
 
-    image: postgres:16.4
+    image: postgres:16.6
     state: "started"
     container_default_behavior: compatibility
     env:
@@ -37,7 +37,7 @@
     networks:
       - name: mealie_net
       - name: traefik_net
-    image: ghcr.io/mealie-recipes/mealie:v2.2.0
+    image: ghcr.io/mealie-recipes/mealie:v2.4.1
     state: "started"
     container_default_behavior: compatibility
     comparisons:
