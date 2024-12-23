@@ -1,7 +1,7 @@
 {
   description = "Setup env for working in my kubernetes clusters";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
 
   outputs =
     { self, nixpkgs }:
@@ -13,7 +13,16 @@
         "aarch64-darwin"
       ];
       forEachSupportedSystem =
-        f: nixpkgs.lib.genAttrs supportedSystems (system: f { pkgs = import nixpkgs { inherit system; }; });
+        f:
+        nixpkgs.lib.genAttrs supportedSystems (
+          system:
+          f {
+            pkgs = import nixpkgs {
+              inherit system;
+              config.allowUnfree = true;
+            };
+          }
+        );
     in
     {
       devShells = forEachSupportedSystem (
@@ -26,6 +35,9 @@
               kubernetes-helm
               clusterctl
               argocd
+              cilium-cli
+              #bitwarden-secrets
+              bws
               bitwarden-cli
             ];
           };
