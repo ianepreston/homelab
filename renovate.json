@@ -1,0 +1,16 @@
+{
+  "packageRules": [
+    {
+      "matchPaths": ["k8s/dev/**"],
+      "groupName": "K8s Dev cluster",
+    },
+    {
+      "matchPaths": ["k8s/prod/**"],
+      "groupName": "K8s Prod cluster",
+    },
+    {
+      "matchPaths": ["ansible/**"],
+      "groupName": "Ansible (VM config)"
+    }
+  ]
+}
