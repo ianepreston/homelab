@@ -1,18 +1,17 @@
 {
-  "packageRules": [
+  "extends": ["config:recommended"],
+  "packageRules":
+  [
     {
-      "matchPaths": ["k8s/dev/**"],
-      "extends": ["config.recommended"],
+      "matchFileNames": ["k8s/dev/**"],
       "groupName": "K8s Dev cluster"
     },
     {
-      "matchPaths": ["k8s/prod/**"],
-      "extends": ["config.recommended"],
+      "matchFileNames": ["k8s/prod/**"],
       "groupName": "K8s Prod cluster"
     },
     {
-      "matchPaths": ["ansible/**"],
-      "extends": ["config.recommended"],
+      "matchFileNames": ["ansible/**"],
       "groupName": "Ansible (VM config)"
     }
   ]
