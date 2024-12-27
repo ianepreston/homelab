@@ -25,3 +25,9 @@ spec:
       containers:
       - name: kuard
         image: gcr.io/kuar-demo/kuard-amd64:blue
+        env:
+            - name: TEST_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: bitwarden-kuard-test
+                  key: test
