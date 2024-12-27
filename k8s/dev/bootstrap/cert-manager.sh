@@ -13,5 +13,3 @@ cat ../services/certmanager/chart/values.yaml | yq '.["cert-manager"]' | \
   --version $certManagerVersion \
   jetstack/cert-manager \
   --values -
-# Install the bitwarden self signed tls cert
-kubectl apply -f ../services/certmanager/chart/templates/bitwarden-self-signed-cert.yaml
