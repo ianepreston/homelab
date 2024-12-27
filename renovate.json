@@ -1,17 +1,21 @@
 {
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": ["config:recommended"],
   "packageRules":
   [
     {
       "matchFileNames": ["k8s/dev/**"],
+      "additionalBranchPrefix": "k8sdev-",
       "groupName": "K8s Dev cluster"
     },
     {
       "matchFileNames": ["k8s/prod/**"],
+      "additionalBranchPrefix": "k8sprod-",
       "groupName": "K8s Prod cluster"
     },
     {
       "matchFileNames": ["ansible/**"],
+      "additionalBranchPrefix": "ansible-",
       "groupName": "Ansible (VM config)"
     }
   ]
