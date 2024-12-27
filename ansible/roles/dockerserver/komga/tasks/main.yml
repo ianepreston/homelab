@@ -15,7 +15,7 @@
     networks:
       - name: comics_network
       - name: traefik_net
-    image: gotson/komga:1.14.1
+    image: gotson/komga:1.15.1
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
