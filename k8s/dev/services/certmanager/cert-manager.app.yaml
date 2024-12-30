@@ -11,7 +11,7 @@ spec:
     server: https://kubernetes.default.svc
   project: cluster
   source:
-    path: k8s/dev/services/cert-manager/chart
+    path: k8s/dev/services/certmanager/chart
     repoURL: https://github.com/ianepreston/homelab.git
     targetRevision: HEAD
   syncPolicy:
