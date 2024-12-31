@@ -27,7 +27,7 @@ spec:
         image: gcr.io/kuar-demo/kuard-amd64:blue
         env:
             - name: TEST_INLINE_SECRET
-              value: "<path:bitwarden-kuard-test#test>"
+              value: "<path:kuard:bitwarden-kuard-test#test>"
             - name: TEST_SECRET
               valueFrom:
                 secretKeyRef:
