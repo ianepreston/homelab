@@ -1,12 +1,19 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended",
+    "docker:enableMajor",
+    "docker:pinDigests",
+    "group:kubernetes",
+    ":dependencyDashboard"
+  ],
   "packageRules":
   [
     {
       "matchFileNames": ["k8s/dev/**"],
       "additionalBranchPrefix": "k8sdev-",
       "groupName": "K8s Dev cluster"
+      ""
     },
     {
       "matchFileNames": ["k8s/prod/**"],
