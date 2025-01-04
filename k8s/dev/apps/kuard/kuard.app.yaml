@@ -14,11 +14,6 @@ spec:
     path: k8s/dev/apps/kuard/manifests
     repoURL: https://github.com/ianepreston/homelab.git
     targetRevision: HEAD
-    plugin:
-      name: avp-directory-include
-      env:
-        - name: FILE_NAME
-          value: 'k8s/dev/apps/kuard/manifests'
   syncPolicy:
     automated:
       # set these to true once the app is working
