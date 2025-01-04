@@ -1,12 +1,12 @@
 argo-cd:
-  # redis-ha:
-  #   enabled: true
-  # controller:
-  #   replicas: 1
-  # server:
-  #   replicas: 2
-  # applicationSet:
-  #   replicas: 2
+  redis-ha:
+    enabled: true
+  controller:
+    replicas: 1
+  server:
+    replicas: 2
+  applicationSet:
+    replicas: 2
   configs:
     cmp:
       create: true
@@ -44,7 +44,7 @@ argo-cd:
       - apiGroups: [""]
         resources: ["secrets"]
         verbs: ["get", "watch", "list"]
-    # replicas: 2
+    replicas: 2
     volumes:
       - name: custom-tools
         emptyDir: {}
