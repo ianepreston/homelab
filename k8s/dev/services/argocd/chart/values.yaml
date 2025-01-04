@@ -24,7 +24,7 @@ argo-cd:
               - "-c"
               - |
                 helm template $ARGOCD_APP_NAME --include-crds -n $ARGOCD_APP_NAMESPACE . |
-                argocd-vault-plugin generate -
+                argocd-vault-plugin generate -s vault-configuration -
         # Remember to add a helm one of these as well later if this works
         avp:
           discover:
@@ -37,7 +37,7 @@ argo-cd:
             command:
               - argocd-vault-plugin
               - generate
-              - "."
+              - ". -s vault-configuration"
 
   repoServer:
     # replicas: 2
