@@ -11,6 +11,20 @@ argo-cd:
     cmp:
       create: true
       plugins:
+        avp-helm:
+          discover:
+            find:
+              command:
+                - sh
+                - "-c"
+                - "find . -name 'Chart.yaml' && find . -name 'values.yaml'"
+          generate:
+            command:
+              - sh
+              - "-c"
+              - |
+                helm template $ARGOCD_APP_NAME --include-crds -n $ARGOCD_APP_NAMESPACE . |
+                argocd-vault-plugin generate -
         # Remember to add a helm one of these as well later if this works
         avp:
           discover:
@@ -18,7 +32,7 @@ argo-cd:
               command: 
                 - sh
                 - "-c"
-                - "find . -name '*.yaml' | xargs -I {} grep \"<path\\|avp\\.kubernetes\\.io\" {} | grep ."
+                - "find . -name '*.yaml' ! -name 'Chart.yaml' ! -name 'values.yaml' | xargs -I {} grep \"<path\\|avp\\.kubernetes\\.io\" {} | grep ."
           generate:
             command:
               - argocd-vault-plugin
