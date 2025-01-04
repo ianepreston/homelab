@@ -11,13 +11,14 @@ argo-cd:
     cmp:
       create: true
       plugins:
+        # Remember to add a helm one of these as well later if this works
         avp:
           discover:
             find:
               command: 
                 - sh
                 - "-c"
-                - "find . -name '*.yaml'"
+                - "find . -name '*.yaml' ! -name 'Chart.yaml' ! -name 'values.yaml'"
           generate:
             command:
               - argocd-vault-plugin
