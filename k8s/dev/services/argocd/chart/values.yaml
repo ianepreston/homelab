@@ -25,7 +25,6 @@ argo-cd:
               - |
                 helm template $ARGOCD_APP_NAME --include-crds -n $ARGOCD_APP_NAMESPACE . |
                 argocd-vault-plugin generate -
-        # Remember to add a helm one of these as well later if this works
         avp:
           discover:
             find:
