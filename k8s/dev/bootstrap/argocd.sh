@@ -50,8 +50,6 @@ echo "$ARGO_VALS" |\
   --values - |\
   kubectl apply --namespace $ARGO_NAMESPACE --filename -
 
-# Apply vault config secret
-kubectl apply -f ../services/argocd/chart/templates/vault-config.yaml
 # Apply the app of apps
 kubectl apply -f ../services/argocd/chart/templates/projects.yaml
 kubectl apply -f ../services/argocd/chart/templates/apps.yaml

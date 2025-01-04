@@ -24,7 +24,7 @@ argo-cd:
               - "-c"
               - |
                 helm template $ARGOCD_APP_NAME --include-crds -n $ARGOCD_APP_NAMESPACE . |
-                argocd-vault-plugin generate -s vault-configuration -
+                argocd-vault-plugin generate -
         # Remember to add a helm one of these as well later if this works
         avp:
           discover:
@@ -37,7 +37,7 @@ argo-cd:
             command:
               - argocd-vault-plugin
               - generate
-              - ". -s vault-configuration"
+              - "."
 
   repoServer:
     # replicas: 2
@@ -55,6 +55,9 @@ argo-cd:
       - name: avp
         command: [/var/run/argocd/argocd-cmp-server]
         image: quay.io/argoproj/argocd:v2.13.3
+        env:
+          - name: AVP_TYPE
+            value: "kubernetessecret"
         securityContext:
           runAsNonRoot: true
           runAsUser: 999
