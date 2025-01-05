@@ -1,14 +1,14 @@
-helm install \
-    cilium \
+#!/bin/env bash
+echo "Installing cilium"
+CILIUM_CHART=$(cat ../../k8s/dev/services/cilium/chart/Chart.yaml)
+CILIUM_REPO=$(echo "$CILIUM_CHART" | yq eval '.dependencies[0].repository' -)
+CILIUM_VERSION=$(echo "$CILIUM_CHART" | yq eval '.dependencies[0].version')
+echo "cilium repo: $CILIUM_REPO"
+echo "cilium version: $CILIUM_VERSION"
+helm repo add cilium $CILIUM_REPO
+cat ../../k8s/dev/services/cilium/chart/values.yaml | yq '.["cilium"]' |\
+  helm install cilium \
     cilium/cilium \
-    --version 1.16.5 \
+    --version $CILIUM_VERSION \
     --namespace kube-system \
-    --set ipam.mode=kubernetes \
-    --set kubeProxyReplacement=true \
-    --set securityContext.capabilities.ciliumAgent="{CHOWN,KILL,NET_ADMIN,NET_RAW,IPC_LOCK,SYS_ADMIN,SYS_RESOURCE,DAC_OVERRIDE,FOWNER,SETGID,SETUID}" \
-    --set securityContext.capabilities.cleanCiliumState="{NET_ADMIN,SYS_ADMIN,SYS_RESOURCE}" \
-    --set cgroup.autoMount.enabled=false \
-    --set cgroup.hostRoot=/sys/fs/cgroup \
-    --set k8sServiceHost=localhost \
-    --set k8sServicePort=7445
-
+    --values -
