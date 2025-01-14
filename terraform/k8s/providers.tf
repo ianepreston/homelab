@@ -13,6 +13,10 @@ terraform {
       source  = "maxlaverse/bitwarden"
       version = ">=0.12.1"
     }
+    cloudflare = {
+      source  = "cloudflare/cloudflare"
+      version = ">= 4.0"
+    }
   }
 }
 
@@ -21,4 +25,8 @@ provider "bitwarden" {
   experimental {
     embedded_client = true
   }
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }
