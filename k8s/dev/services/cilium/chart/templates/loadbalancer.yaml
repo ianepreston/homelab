@@ -1,0 +1,40 @@
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPPeerConfig
+metadata:
+  name: pfsense-peer-config
+spec:
+  timers:
+    connectRetryTimeSeconds: 12
+    holdTimeSeconds: 9
+    keepAliveTimeSeconds: 3
+  families:
+    - afi: ipv4
+      safi: unicast
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumBGPClusterConfig
+metadata:
+  name: cilium-bgp
+spec:
+  nodeSelector:
+    matchLabels:
+      node-role.kubernetes.io/control-plane: ""
+  bgpInstances:
+    - name: "pfsense-instance"
+      localASN: 64513
+      peers:
+        - name: "pfsense-peer"
+          peerASN: 64512
+          peerAddress: 192.168.40.1
+          peerConfigRef:
+            name: "pfsense-peer-config"
+---
+apiVersion: cilium.io/v2alpha1
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: lab-pool
+spec:
+  blocks:
+    - start: "192.168.40.21"
+      stop: "192.168.40.30"
