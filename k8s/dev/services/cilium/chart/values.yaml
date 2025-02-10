@@ -1,4 +1,8 @@
 cilium:
+  hubble:
+    tls:
+      auto:
+        method: cronJob
   ipam:
     mode: kubernetes
   kubeProxyReplacement: true
