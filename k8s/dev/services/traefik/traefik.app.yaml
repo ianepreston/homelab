@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: traefik
+    server: https://kubernetes.default.svc
+  project: cluster
+  source:
+    path: k8s/dev/services/traefik/chart
+    repoURL: https://github.com/ianepreston/homelab.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      # Turn these to true once the app is working
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
