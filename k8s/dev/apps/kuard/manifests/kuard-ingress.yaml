@@ -20,7 +20,6 @@ metadata:
   namespace: kuard
 spec:
   entryPoints:
-    - web
     - websecure
   routes:
     - match: Host(`kuard.dk8s.ipreston.net`)  # <-- Replace with your FQDN
