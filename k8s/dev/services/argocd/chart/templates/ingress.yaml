@@ -23,11 +23,18 @@ spec:
     - web
     - websecure
   routes:
-    - match: Host(`argo.dk8s.ipreston.net`)  # <-- Replace with your FQDN
+    - match: Host(`argocd.dk8s.ipreston.net`)  # <-- Replace with your FQDN
+      priority: 10
       kind: Rule
       services:
         - name: argocd-server
-          port: 443
+          port: 80
+    - match: Host(`argocd.dk8s.ipreston.net`) && Header(`Content-Type`, `application/grpc`)
+      priority: 11
+      services:
+          - name: argocd-server
+            port: 80
+            scheme: h2c
 tls:
     secretName: argo-web-ui-tls
 
