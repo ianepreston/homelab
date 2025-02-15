@@ -20,7 +20,6 @@ metadata:
   namespace: argocd
 spec:
   entryPoints:
-    - web
     - websecure
   routes:
     - match: Host(`argocd.dk8s.ipreston.net`)  # <-- Replace with your FQDN
@@ -35,6 +34,6 @@ spec:
           - name: argocd-server
             port: 80
             scheme: h2c
-tls:
-  secretName: argo-web-ui-tls
+  tls:
+    secretName: argo-web-ui-tls
 
