@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: argo-web-ui-tls
   dnsNames:
-    - argo.dk8s.ipreston.net
+    - argocd.dk8s.ipreston.net
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
