@@ -36,5 +36,5 @@ spec:
             port: 80
             scheme: h2c
 tls:
-    secretName: argo-web-ui-tls
+  secretName: argo-web-ui-tls
 
