@@ -27,6 +27,6 @@ spec:
       services:
         - name: kuard
           port: 80
-tls:
-    secretName: kuard-web-ui-tls
+  tls:
+      secretName: kuard-web-ui-tls
 
