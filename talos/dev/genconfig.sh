@@ -8,4 +8,5 @@ talosctl gen config dk8s https://192.168.40.13:6443 \
     --config-patch @patches/interface-names.yaml \
     --config-patch @patches/kubelet-certificates.yaml \
     --config-patch @patches/vip.yaml \
+    --config-patch @patches/longhorn.yaml \
     --output rendered/
