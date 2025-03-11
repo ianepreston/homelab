@@ -3,5 +3,4 @@ customization:
     officialExtensions:
       - siderolabs/intel-ucode
       - siderolabs/iscsi-tools
-      - siderolabs/nut-client
       - siderolabs/util-linux-tools
