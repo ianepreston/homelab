@@ -1,10 +1,17 @@
 {
   description = "Setup env for working in my kubernetes clusters";
 
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs";
+    talhelper.url = "github:budimanjojo/talhelper";
+  };
 
   outputs =
-    { self, nixpkgs }:
+    {
+      self,
+      nixpkgs,
+      talhelper,
+    }:
     let
       supportedSystems = [
         "x86_64-linux"
@@ -21,16 +28,18 @@
               inherit system;
               config.allowUnfree = true;
             };
+            talhelperPkg = talhelper.packages.${system}.default;
           }
         );
     in
     {
       devShells = forEachSupportedSystem (
-        { pkgs }:
+        { pkgs, talhelperPkg }:
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
               talosctl
+              talhelperPkg
               kubectl
               kubernetes-helm
               clusterctl
