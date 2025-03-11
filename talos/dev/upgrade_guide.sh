@@ -9,7 +9,7 @@ FACTORY_URL="factory.talos.dev/installer/${SCHEMATIC}:${TALOS_VER}"
 TALOS_CP_1=192.168.40.7
 TALOS_CP_2=192.168.40.9
 TALOS_CP_3=192.168.40.11
-ISO="https://factory.talos.dev/image/${SCHEMATIC}/${VERSION}/metal-amd64.iso"
+ISO="https://factory.talos.dev/image/${SCHEMATIC}/${VERSION}metal-amd64.iso"
 echo "----------------------------------------------------------------------"
 echo "ISO URL:"
 echo "----------------------------------------------------------------------"
@@ -24,8 +24,4 @@ echo "----------------------------------------------------------------------"
 echo "Upgrade Kubernetes"
 echo "----------------------------------------------------------------------"
 echo "talosctl --nodes $TALOS_CP_1 upgrade-k8s --to $K8S_VER --dry-run"
-echo "talosctl --nodes $TALOS_CP_2 upgrade-k8s --to $K8S_VER --dry-run"
-echo "talosctl --nodes $TALOS_CP_3 upgrade-k8s --to $K8S_VER --dry-run"
 echo "talosctl --nodes $TALOS_CP_1 upgrade-k8s --to $K8S_VER"
-echo "talosctl --nodes $TALOS_CP_2 upgrade-k8s --to $K8S_VER"
-echo "talosctl --nodes $TALOS_CP_3 upgrade-k8s --to $K8S_VER"
