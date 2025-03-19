@@ -1,0 +1,98 @@
+clusterName: dk8s
+talosVersion: v1.9.5
+kubernetesVersion: v1.32.3
+endpoint: https://192.168.40.13:6443 # Talos endpoint, the VIP
+allowSchedulingOnControlPlanes: true
+cniConfig:
+  name: "none"
+patches:
+  - |-
+    cluster:
+      proxy:
+        disabled: true
+controlPlane:
+  patches:
+    - |-
+      - op: add
+        path: /machine/kubelet/extraMounts
+        value:
+          - destination: /var/lib/longhorn
+            type: bind
+            source: /var/lib/longhorn
+            options:
+              - bind
+              - rshared
+              - rw
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/iscsi-tools
+          - siderolabs/util-linux-tools
+worker:
+  patches:
+    - |-
+      - op: add
+        path: /machine/kubelet/extraMounts
+        value:
+          - destination: /var/lib/longhorn
+            type: bind
+            source: /var/lib/longhorn
+            options:
+              - bind
+              - rshared
+              - rw
+  schematic:
+    customization:
+      extraKernelArgs:
+        - net.ifnames=0
+      systemExtensions:
+        officialExtensions:
+          - siderolabs/iscsi-tools
+          - siderolabs/util-linux-tools
+nodes:
+  - hostname: "d-hpp-1-lab"
+    ipAddress: 192.168.40.11
+    networkInterfaces:
+      - deviceSelector:
+          physical: true
+        dhcp: true
+        vip: &vip
+          ip: 192.168.40.13
+    installDisk: /dev/nvme0n1
+    controlPlane: true
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+  - hostname: "d-hpp-2-lab"
+    ipAddress: 192.168.40.7
+    networkInterfaces:
+      - deviceSelector:
+          physical: true
+        dhcp: true
+        vip: *vip
+    installDisk: /dev/nvme0n1
+    controlPlane: true
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode
+  - hostname: "d-hpp-3-lab"
+    ipAddress: 192.168.40.9
+    networkInterfaces:
+      - deviceSelector:
+          physical: true
+        dhcp: true
+        vip: *vip
+    installDisk: /dev/nvme0n1
+    controlPlane: true
+    schematic:
+      customization:
+        systemExtensions:
+          officialExtensions:
+            - siderolabs/intel-ucode

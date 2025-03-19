@@ -10,10 +10,8 @@ Repeat on all nodes.
 ## Apply config
 
 ```bash
-talosctl apply -f rendered/controlplane.yaml -n 192.168.40.7 --insecure
+talhelper gencommand apply # add the --insecure flag
 ```
-
-Repeat for all nodes, replace with `worker.yaml` if you have both.
 
 ## Make sure everything is basically up
 
@@ -26,7 +24,7 @@ Wait until that shows all of them.
 ## Bootstrap the cluster and install cilium
 
 ```bash
-talosctl bootstrap -n 192.168.40.11
+talhelper gencommand bootstrap; # then run the output
 # Might have to wait a bit here or try again
 ./cilium.sh
 ```
