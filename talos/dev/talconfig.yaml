@@ -27,10 +27,6 @@ controlPlane:
     customization:
       extraKernelArgs:
         - net.ifnames=0
-      systemExtensions:
-        officialExtensions:
-          - siderolabs/iscsi-tools
-          - siderolabs/util-linux-tools
 worker:
   patches:
     - |-
@@ -48,10 +44,6 @@ worker:
     customization:
       extraKernelArgs:
         - net.ifnames=0
-      systemExtensions:
-        officialExtensions:
-          - siderolabs/iscsi-tools
-          - siderolabs/util-linux-tools
 nodes:
   - hostname: "d-hpp-1-lab"
     ipAddress: 192.168.40.11
@@ -68,6 +60,8 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
   - hostname: "d-hpp-2-lab"
     ipAddress: 192.168.40.7
     networkInterfaces:
@@ -82,6 +76,8 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
   - hostname: "d-hpp-3-lab"
     ipAddress: 192.168.40.9
     networkInterfaces:
@@ -96,3 +92,5 @@ nodes:
         systemExtensions:
           officialExtensions:
             - siderolabs/intel-ucode
+            - siderolabs/iscsi-tools
+            - siderolabs/util-linux-tools
