@@ -21,9 +21,7 @@
         {
           default = pkgs.mkShell {
             shellHook = ''
-              export TALOS_ENV="dk8s"
               export TALOSCONFIG="$(pwd)/clusterconfig/talosconfig"
-              talosctl config endpoints 192.168.40.7 192.168.40.9 192.168.40.11
             '';
           };
         }
