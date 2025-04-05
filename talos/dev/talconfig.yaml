@@ -23,6 +23,13 @@ controlPlane:
               - bind
               - rshared
               - rw
+          - destination: /var/mnt/sata
+            type: bind
+            source: /var/mnt/sata
+            options:
+              - bind
+              - rshared
+              - rw
   schematic:
     customization:
       extraKernelArgs:
@@ -36,6 +43,13 @@ worker:
           - destination: /var/lib/longhorn
             type: bind
             source: /var/lib/longhorn
+            options:
+              - bind
+              - rshared
+              - rw
+          - destination: /var/mnt/sata
+            type: bind
+            source: /var/mnt/sata
             options:
               - bind
               - rshared
@@ -55,6 +69,10 @@ nodes:
           ip: 192.168.40.13
     installDisk: /dev/nvme0n1
     controlPlane: true
+    machineDisks:
+      - device: /dev/sda
+        partitions:
+          - mountpoint: /var/mnt/sata
     schematic:
       customization:
         systemExtensions:
@@ -71,6 +89,10 @@ nodes:
         vip: *vip
     installDisk: /dev/nvme0n1
     controlPlane: true
+    machineDisks:
+      - device: /dev/sda
+        partitions:
+          - mountpoint: /var/mnt/sata
     schematic:
       customization:
         systemExtensions:
@@ -87,6 +109,10 @@ nodes:
         vip: *vip
     installDisk: /dev/nvme0n1
     controlPlane: true
+    machineDisks:
+      - device: /dev/sda
+        partitions:
+          - mountpoint: /var/mnt/sata
     schematic:
       customization:
         systemExtensions:
