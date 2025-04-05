@@ -1,0 +1,18 @@
+openebs:
+  mayastor:
+    etcd:
+      localpvScConfig:
+        basePath: "/var/local/openebs"
+    loki-stack:
+      localpvScConfig:
+        basePath: "/var/local/openebs"
+    csi:
+      node:
+        initContainers:
+          enabled: false
+  engines:
+    local:
+      lvm:
+        enabled: false
+      zfs:
+        enabled: false
