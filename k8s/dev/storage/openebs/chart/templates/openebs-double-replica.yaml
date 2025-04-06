@@ -1,0 +1,7 @@
+kind: StorageClass
+metadata:
+  name: openebs-triple-replica
+parameters:
+  protocol: nvmf
+  repl: "2"
+provisioner: io.openebs.csi-mayastor
