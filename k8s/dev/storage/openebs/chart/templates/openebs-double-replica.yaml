@@ -1,6 +1,6 @@
 kind: StorageClass
 metadata:
-  name: openebs-triple-replica
+  name: openebs-double-replica
 parameters:
   protocol: nvmf
   repl: "2"
