@@ -1,4 +1,7 @@
 openebs:
+  base:
+    metrics:
+      enabled: false
   localpv-provisioner:
     localpv:
       basePath: "/var/local/openebs/local"
