@@ -9,6 +9,8 @@ openebs:
     loki-stack:
       localpvScConfig:
         basePath: "/var/local/openebs"
+    io_engine:
+      envContext: "iova-mode=pa"
     csi:
       node:
         initContainers:
