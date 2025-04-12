@@ -13,7 +13,7 @@ openebs:
       localpvScConfig:
         basePath: "/var/local/openebs"
     io_engine:
-      envContext: "iova-mode=pa"
+      envcontext: "iova-mode=pa"
     csi:
       node:
         initContainers:
