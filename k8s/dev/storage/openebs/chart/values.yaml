@@ -1,4 +1,7 @@
 openebs:
+  localpv-provisioner:
+    localpv:
+      basePath: "/var/local/openebs/local"
   mayastor:
     etcd:
       localpvScConfig:
