@@ -4,14 +4,19 @@ openebs:
       enabled: false
   localpv-provisioner:
     localpv:
-      basePath: "/var/local/openebs/local"
+      basePath: "/var/openebs/local"
+    hostpathClass:
+      enabled: true
+      name: openebs-hostpath
+      isDefaultClass: false
+      basePath: "/var/openebs/local"
   mayastor:
     etcd:
       localpvScConfig:
-        basePath: "/var/local/openebs"
+        basePath: "/var/openebs/local"
     loki-stack:
       localpvScConfig:
-        basePath: "/var/local/openebs"
+        basePath: "/var/openebs/local"
     io_engine:
       envcontext: "iova-mode=pa"
     csi:
