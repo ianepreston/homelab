@@ -78,10 +78,6 @@ nodes:
           ip: 192.168.40.13
     installDisk: /dev/nvme0n1
     controlPlane: true
-    machineDisks:
-      - device: /dev/sda
-        partitions:
-          - mountpoint: /var/local/openebs
     schematic:
       customization:
         systemExtensions:
@@ -98,10 +94,6 @@ nodes:
         vip: *vip
     installDisk: /dev/nvme0n1
     controlPlane: true
-    machineDisks:
-      - device: /dev/sda
-        partitions:
-          - mountpoint: /var/local/openebs
     schematic:
       customization:
         systemExtensions:
@@ -118,10 +110,6 @@ nodes:
         vip: *vip
     installDisk: /dev/nvme0n1
     controlPlane: true
-    machineDisks:
-      - device: /dev/sda
-        partitions:
-          - mountpoint: /var/local/openebs
     schematic:
       customization:
         systemExtensions:
