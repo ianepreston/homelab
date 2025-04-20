@@ -17,6 +17,12 @@ spec:
       helm:
         valuesObject:
           mayastor:
+            etcd:
+              localpvScConfig:
+                basePath: "/var/local/openebs"
+            loki-stack:
+              localpvScConfig:
+                basePath: "/var/local/openebs"
             io_engine:
               envcontext: "iova-mode=pa"
             csi:
