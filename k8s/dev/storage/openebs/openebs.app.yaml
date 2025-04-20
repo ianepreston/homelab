@@ -16,6 +16,14 @@ spec:
       chart: openebs
       helm:
         valuesObject:
+          localpv-provisioner:
+            localpv:
+              basePath: "/var/local/openebs"
+            hostpathClass:
+              enabled: true
+              name: openebs-hostpath
+              isDefaultClass: false
+              basePath: "/var/local/openebs"
           mayastor:
             etcd:
               localpvScConfig:
