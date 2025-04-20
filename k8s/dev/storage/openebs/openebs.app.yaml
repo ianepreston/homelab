@@ -10,10 +10,28 @@ spec:
     namespace: openebs
     server: https://kubernetes.default.svc
   project: cluster
-  source:
-    path: k8s/dev/storage/openebs/chart
-    repoURL: https://github.com/ianepreston/homelab.git
-    targetRevision: HEAD
+  sources:
+    - repoURL: https://openebs.github.io/openebs
+      targetRevision: 4.2.0
+      chart: openebs
+      helm:
+        valuesObject:
+          mayastor:
+            io_engine:
+              envcontext: "iova-mode=pa"
+            csi:
+              node:
+                initContainers:
+                  enabled: false
+          engines:
+            local:
+              lvm:
+                enabled: false
+              zfs:
+                enabled: false
+    - repoURL: https://github.com/ianepreston/homelab.git
+      path: k8s/dev/storage/openebs/resources
+      targetRevision: HEAD
   syncPolicy:
     automated:
       # Turn these to true once the app is working
