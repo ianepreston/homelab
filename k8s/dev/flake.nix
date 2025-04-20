@@ -29,6 +29,10 @@
         { pkgs }:
         {
           default = pkgs.mkShell {
+            shellHook = ''
+              cd ../../
+              export TALOSCONFIG="$(pwd)/talos/dev/clusterconfig/talosconfig"
+            '';
             packages = with pkgs; [
               talosctl
               kubectl
