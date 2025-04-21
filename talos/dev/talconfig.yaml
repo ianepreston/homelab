@@ -7,17 +7,7 @@ cniConfig:
   name: "none"
 controlPlane:
   patches:
-    - "@./patches/mayastor-cp.yaml"
-    - "@./patches/mayastor.yaml"
-    - "@./patches/var-local.yaml"
-  schematic:
-    customization:
-      extraKernelArgs:
-        - net.ifnames=0
-worker:
-  patches:
-    - "@./patches/mayastor.yaml"
-    - "@./patches/var-local.yaml"
+    - "@./patches/longhorn.yaml"
   schematic:
     customization:
       extraKernelArgs:
@@ -27,6 +17,10 @@ nodes:
     ipAddress: 192.168.40.11
     controlPlane: true
     installDisk: /dev/nvme0n1
+    machineDisks:
+      - device: /dev/sda
+        partitions:
+          - mountpoint: /var/lib/longhorn
     networkInterfaces:
       - deviceSelector:
           physical: true
@@ -44,6 +38,10 @@ nodes:
     ipAddress: 192.168.40.7
     controlPlane: true
     installDisk: /dev/nvme0n1
+    machineDisks:
+      - device: /dev/sda
+        partitions:
+          - mountpoint: /var/lib/longhorn
     networkInterfaces:
       - deviceSelector:
           physical: true
@@ -60,6 +58,10 @@ nodes:
     ipAddress: 192.168.40.9
     controlPlane: true
     installDisk: /dev/nvme0n1
+    machineDisks:
+      - device: /dev/sda
+        partitions:
+          - mountpoint: /var/lib/longhorn
     networkInterfaces:
       - deviceSelector:
           physical: true

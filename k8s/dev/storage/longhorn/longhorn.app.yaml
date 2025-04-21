@@ -1,23 +1,30 @@
-# apiVersion: argoproj.io/v1alpha1
-# kind: Application
-# metadata:
-#   name: longhorn
-#   namespace: argocd
-#   finalizers:
-#     - resources-finalizer.argocd.argoproj.io
-# spec:
-#   destination:
-#     namespace: longhorn-system
-#     server: https://kubernetes.default.svc
-#   project: cluster
-#   source:
-#     path: k8s/dev/storage/longhorn/chart
-#     repoURL: https://github.com/ianepreston/homelab.git
-#     targetRevision: HEAD
-#   syncPolicy:
-#     automated:
-#       # Turn these to true once the app is working
-#       prune: true
-#       selfHeal: true
-#     syncOptions:
-#       - CreateNamespace=true
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: longhorn-system
+    server: https://kubernetes.default.svc
+  project: cluster
+  sources:
+    - repoURL: https://charts.longhorn.io
+      targetRevision: 1.8.1
+      chart: longhorn
+      helm:
+        valuesObject:
+          preUpgradeChecker:
+            jobEnabled: false
+    - repoURL: https://github.com/ianepreston/homelab.git
+      path: k8s/dev/storage/longhorn/resources
+      targetRevision: HEAD
+  syncPolicy:
+    automated:
+      # Turn these to true once the app is working
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
