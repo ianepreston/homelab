@@ -1,9 +1,7 @@
----
 apiVersion: v1
 kind: Namespace
 metadata:
   name: kuard
-
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -23,17 +21,8 @@ spec:
         run: kuard
     spec:
       containers:
-      - name: kuard
-        image: gcr.io/kuar-demo/kuard-amd64:blue
-        env:
-            - name: TEST_INLINE_SECRET
-              value: "<path:bitwarden-kuard-test#test>"
-            - name: TEST_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: bitwarden-kuard-test
-                  key: test
-
+        - name: kuard
+          image: gcr.io/kuar-demo/kuard-amd64:blue
 ---
 apiVersion: v1
 kind: Service
