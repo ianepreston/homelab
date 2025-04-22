@@ -1,0 +1,23 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: homepage
+  namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  destination:
+    namespace: homepage
+    server: https://kubernetes.default.svc
+  project: cluster
+  source:
+    path: k8s/dev/apps/homepage/manifests
+    repoURL: https://github.com/ianepreston/homelab.git
+    targetRevision: HEAD
+  syncPolicy:
+    automated:
+      # set these to true once the app is working
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true
