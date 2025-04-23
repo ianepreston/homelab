@@ -1,0 +1,4 @@
+ares:
+  hosts:
+    ares1.ipreston.net:
+      ansible_connection: ssh
