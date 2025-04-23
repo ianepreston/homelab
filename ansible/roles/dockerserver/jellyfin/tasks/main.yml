@@ -1,19 +1,15 @@
----
-
 - name: Create downloads network
   community.docker.docker_network:
     name: download_network
-
 - name: create jellyfin volume
   community.docker.docker_volume:
     name: jellyfin_vol
-
 - name: Jellyfin media server
   community.docker.docker_container:
     name: jellyfin
     hostname: jellyfin
     state: started
-    image: linuxserver/jellyfin:10.10.3
+    image: linuxserver/jellyfin:10.10.7
     image_name_mismatch: recreate
     networks:
       - name: "download_network"
@@ -30,11 +26,11 @@
       LIBVA_DRIVER_NAME: "i965"
     restart_policy: unless-stopped
     volumes:
-        - "jellyfin_vol:/config"
-        - "movies_vol:/data/movies"
-        - "tv_vol:/data/tv"
-        - "misc_vids_vol:/data/misc_vids"
-        - "tubesync_vol:/data/tubesync"
+      - "jellyfin_vol:/config"
+      - "movies_vol:/data/movies"
+      - "tv_vol:/data/tv"
+      - "misc_vids_vol:/data/misc_vids"
+      - "tubesync_vol:/data/tubesync"
     devices:
       - "/dev/dri:/dev/dri"
     labels:
