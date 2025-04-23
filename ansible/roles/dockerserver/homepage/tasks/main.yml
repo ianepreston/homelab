@@ -35,6 +35,7 @@
     restart_policy: unless-stopped
     env:
       TZ: "America/Edmonton"
+      HOMEPAGE_ALLOWED_HOSTS: "homepage.{{ subdomain }}.ipreston.net"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock:ro
       - /home/ipreston/homepage_config:/app/config
