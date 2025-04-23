@@ -1,13 +1,9 @@
----
-
 - name: Create komga app volume
   community.docker.docker_volume:
     name: mealie_vol
-
 - name: Create comics network
   community.docker.docker_network:
     name: comics_network
-
 - name: Create komga container
   community.docker.docker_container:
     name: komga
@@ -15,7 +11,7 @@
     networks:
       - name: comics_network
       - name: traefik_net
-    image: gotson/komga:1.14.1
+    image: gotson/komga:1.21.2
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
@@ -28,7 +24,7 @@
       - "komga_vol:/config"
       - "comics_smb_vol:/data"
     env:
-     TZ: "America/Edmonton"
+      TZ: "America/Edmonton"
     labels:
       traefik.enable: "true"
       traefik.http.routers.komga.entrypoints: https
@@ -37,5 +33,3 @@
       traefik.http.routers.komga.middlewares: "chain-no-auth@file"
       traefik.http.routers.komga.service: komga
       traefik.http.services.komga.loadbalancer.server.port: "25600"
-
-

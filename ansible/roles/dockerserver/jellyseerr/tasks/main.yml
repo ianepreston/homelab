@@ -1,15 +1,12 @@
----
-
 - name: create jellyseerr volume
   community.docker.docker_volume:
     name: jellyseerr_vol
-
 - name: jellyseerr server
   community.docker.docker_container:
     name: jellyseerr
     hostname: jellyseerr
     state: started
-    image: fallenbagel/jellyseerr:2.1.0
+    image: fallenbagel/jellyseerr:2.5.2
     image_name_mismatch: recreate
     networks:
       - name: "download_network"
@@ -21,7 +18,7 @@
       TZ: "America/Edmonton"
     restart_policy: unless-stopped
     volumes:
-        - "jellyseerr_vol:/app/config"
+      - "jellyseerr_vol:/app/config"
     labels:
       traefik.enable: "true"
       traefik.http.routers.jellyseerr.entrypoints: https

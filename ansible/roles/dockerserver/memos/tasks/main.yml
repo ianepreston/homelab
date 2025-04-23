@@ -1,15 +1,12 @@
----
-
 - name: create memos volume
   community.docker.docker_volume:
     name: memos_vol
-
 - name: memos server
   community.docker.docker_container:
     name: memos
     hostname: memos
     state: started
-    image: neosmemo/memos:0.22
+    image: neosmemo/memos:0.24
     image_name_mismatch: recreate
     networks:
       - name: "traefik_net"
@@ -20,7 +17,7 @@
       TZ: "America/Edmonton"
     restart_policy: unless-stopped
     volumes:
-        - "memos_vol:/var/opt/memos"
+      - "memos_vol:/var/opt/memos"
     labels:
       traefik.enable: "true"
       traefik.http.routers.memos.entrypoints: https

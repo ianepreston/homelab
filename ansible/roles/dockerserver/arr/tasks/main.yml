@@ -1,13 +1,9 @@
----
-
 - name: Create downloads network
   community.docker.docker_network:
     name: download_network
-
 - name: Create sabnzbd vol
   community.docker.docker_volume:
     name: sabnzbd_vol
-
 - name: Create sabnzbd container
   community.docker.docker_container:
     name: sabnzbd
@@ -39,11 +35,9 @@
       TZ: "America/Edmonton"
       PUID: "1026"
       PGID: "100"
-
 - name: Create prowlarr vol
   community.docker.docker_volume:
     name: prowlarr_vol
-
 - name: Create prowlarr container
   community.docker.docker_container:
     name: prowlarr
@@ -72,11 +66,9 @@
       TZ: "America/Edmonton"
       PUID: "1026"
       PGID: "100"
-
 - name: Create sonarr vol
   community.docker.docker_volume:
     name: sonarr_vol
-
 - name: Create sonarr container
   community.docker.docker_container:
     name: sonarr
@@ -107,16 +99,14 @@
       TZ: "America/Edmonton"
       PUID: "1026"
       PGID: "100"
-
 - name: Create radarr vol
   community.docker.docker_volume:
     name: radarr_vol
-
 - name: Create radarr container
   community.docker.docker_container:
     name: radarr
     hostname: radarr
-    image: linuxserver/radarr:5.15.1
+    image: linuxserver/radarr:5.21.1
     image_name_mismatch: recreate
     volumes:
       - radarr_vol:/config
@@ -142,16 +132,14 @@
       TZ: "America/Edmonton"
       PUID: "1026"
       PGID: "100"
-
 - name: Create bazarr vol
   community.docker.docker_volume:
     name: bazarr_vol
-
 - name: Create bazarr container
   community.docker.docker_container:
     name: bazarr
     hostname: bazarr
-    image: linuxserver/bazarr:1.4.5
+    image: linuxserver/bazarr:1.5.1
     image_name_mismatch: recreate
     volumes:
       - bazarr_vol:/config
@@ -179,11 +167,9 @@
       TZ: "America/Edmonton"
       PUID: "1026"
       PGID: "100"
-
 - name: Create mylar vol
   community.docker.docker_volume:
     name: mylar_vol
-
 - name: Create mylar container
   community.docker.docker_container:
     name: mylar

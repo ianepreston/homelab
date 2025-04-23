@@ -1,17 +1,12 @@
----
-
 - name: Create hoarder meili volume
   community.docker.docker_volume:
     name: hoarder_meili_vol
-
 - name: Create hoarder volume
   community.docker.docker_volume:
     name: hoarder_vol
-
 - name: Create hoarder network
   community.docker.docker_network:
     name: hoarder_net
-
 - name: Create meilisearch container for hoarder
   community.docker.docker_container:
     name: hoarder-meilisearch
@@ -31,7 +26,6 @@
     restart_policy: unless-stopped
     volumes:
       - "hoarder_meili_vol:/meili_data"
-
 - name: Create chrome container for hoarder
   community.docker.docker_container:
     name: hoarder-chrome
@@ -54,7 +48,6 @@
       - --remote-debugging-port=9222
       - --hide-scrollbars
     restart_policy: unless-stopped
-
 - name: Create hoarder container
   community.docker.docker_container:
     name: hoarder
@@ -62,7 +55,7 @@
     networks:
       - name: hoarder_net
       - name: traefik_net
-    image: "ghcr.io/hoarder-app/hoarder:0.19.0"
+    image: "ghcr.io/hoarder-app/hoarder:0.23.2"
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
@@ -91,4 +84,3 @@
       traefik.http.routers.hoarder.service: hoarder
       traefik.http.services.hoarder.loadbalancer.server.port: "3000"
       traefik.frontend.redirect.permanent: "true"
-
