@@ -32,7 +32,7 @@ argo-cd:
         avp:
           discover:
             find:
-              command: 
+              command:
                 - sh
                 - "-c"
                 - "find . -name '*.yaml' ! -name 'Chart.yaml' ! -name 'values.yaml' | xargs -I {} grep \"<path\\|avp\\.kubernetes\\.io\" {} | grep ."
@@ -41,7 +41,6 @@ argo-cd:
               - argocd-vault-plugin
               - generate
               - "."
-
   repoServer:
     rbac:
       - apiGroups: [""]
@@ -83,17 +82,14 @@ argo-cd:
             mountPath: /usr/local/bin/argocd-vault-plugin
     initContainers:
       - name: download-tools
-        image: alpine:3.8
+        image: alpine:3.21
         command: [sh, -c]
         env:
           - name: AVP_VERSION
             value: "1.18.1"
         args:
           - >-
-            wget -O argocd-vault-plugin
-            https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 &&
-            chmod +x argocd-vault-plugin &&
-            mv argocd-vault-plugin /custom-tools/
+            wget -O argocd-vault-plugin https://github.com/argoproj-labs/argocd-vault-plugin/releases/download/v${AVP_VERSION}/argocd-vault-plugin_${AVP_VERSION}_linux_amd64 && chmod +x argocd-vault-plugin && mv argocd-vault-plugin /custom-tools/
         volumeMounts:
           - mountPath: /custom-tools
             name: custom-tools
