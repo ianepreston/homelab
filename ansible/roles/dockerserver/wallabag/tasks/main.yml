@@ -1,17 +1,12 @@
----
-
 - name: Create wallabag postgres volume
   community.docker.docker_volume:
     name: wallabag_pg16_vol
-
 - name: Create wallabag cache volume
   community.docker.docker_volume:
     name: wallabag_vol
-
 - name: Create wallabag network
   community.docker.docker_network:
     name: wallabag_net
-
 - name: Create postgres container for wallabag
   community.docker.docker_container:
     name: wallabag-postgres
@@ -30,7 +25,6 @@
     restart_policy: unless-stopped
     volumes:
       - "wallabag_pg16_vol:/var/lib/postgresql/data"
-
 - name: Create wallabag container
   community.docker.docker_container:
     name: wallabag
@@ -38,7 +32,7 @@
     networks:
       - name: wallabag_net
       - name: traefik_net
-    image: "wallabag/wallabag:2.6.10"
+    image: "wallabag/wallabag:2.6.12"
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
@@ -70,4 +64,3 @@
       traefik.http.routers.wallabag.service: wallabag
       traefik.http.services.wallabag.loadbalancer.server.port: "80"
       traefik.frontend.redirect.permanent: "true"
-

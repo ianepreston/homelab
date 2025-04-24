@@ -1,24 +1,18 @@
----
-
 - name: Create mealie app volume
   community.docker.docker_volume:
     name: mealie_vol
-
 - name: Create mealie postgres volume
   community.docker.docker_volume:
     name: mealie_pg16_vol
-
 - name: Create mealie network
   community.docker.docker_network:
     name: mealie_net
-
 - name: Create postgres container for mealie
   community.docker.docker_container:
     name: mealie-postgres
     hostname: mealie-postgres
     networks:
       - name: mealie_net
-
     image: postgres:16.6
     state: "started"
     container_default_behavior: compatibility
@@ -29,7 +23,6 @@
     restart_policy: unless-stopped
     volumes:
       - "mealie_pg16_vol:/var/lib/postgresql/data"
-
 - name: Create mealie container
   community.docker.docker_container:
     name: mealie
@@ -37,7 +30,7 @@
     networks:
       - name: mealie_net
       - name: traefik_net
-    image: ghcr.io/mealie-recipes/mealie:v2.4.1
+    image: ghcr.io/mealie-recipes/mealie:v2.8.0
     state: "started"
     container_default_behavior: compatibility
     comparisons:
@@ -73,4 +66,3 @@
       traefik.http.routers.mealie.middlewares: "chain-no-auth@file"
       traefik.http.routers.mealie.service: mealie
       traefik.http.services.mealie.loadbalancer.server.port: "9000"
-
