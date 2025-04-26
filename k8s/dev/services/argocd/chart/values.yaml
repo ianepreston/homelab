@@ -1,14 +1,14 @@
 argo-cd:
   global:
     domain: argocd.dk8s.ipreston.net
-  redis-ha:
-    enabled: true
-  controller:
-    replicas: 1
-  server:
-    replicas: 2
-  applicationSet:
-    replicas: 2
+  # redis-ha:
+  #   enabled: true
+  # controller:
+  #   replicas: 1
+  # server:
+  #   replicas: 2
+  # applicationSet:
+  #   replicas: 2
   configs:
     params:
       server.insecure: true # TLS handled by traefik
