@@ -13,7 +13,7 @@
     hostname: wallabag-postgres
     networks:
       - name: wallabag_net
-    image: postgres:16.6
+    image: postgres:16.8
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
