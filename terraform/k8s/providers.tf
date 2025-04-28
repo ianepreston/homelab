@@ -9,6 +9,10 @@ terraform {
     }
   }
   required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = "3.7.2"
+    }
     bitwarden = {
       source  = "maxlaverse/bitwarden"
       version = ">= 0.12.1"
