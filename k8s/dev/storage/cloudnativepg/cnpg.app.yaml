@@ -19,5 +19,7 @@ spec:
       # Turn these to true once the app is working
       prune: true
       selfHeal: true
+    # CRD spec is too large to do this otherwise
     syncOptions:
+      - ServerSideApply=true
       - CreateNamespace=true
