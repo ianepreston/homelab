@@ -20,6 +20,23 @@ spec:
       remoteRef:
         key: "POSTGRES_MINIFLUX_PASS"
 ---
+apiVersion: external-secrets.io/v1beta1
+kind: ExternalSecret
+metadata:
+  name: miniflux-encoded-postgres-pass
+  namespace: miniflux
+  annotations:
+    argocd.argoproj.io/sync-options: SkipDryRunOnMissingResource=true
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    name: bitwarden-secretsmanager
+    kind: ClusterSecretStore
+  data:
+    - secretKey: POSTGRES_ENCODED_MINIFLUX_PASS
+      remoteRef:
+        key: "POSTGRES_ENCODED_MINIFLUX_PASS"
+---
 apiVersion: v1
 kind: Secret
 metadata:
@@ -114,8 +131,8 @@ spec:
             - name: HELPER_POSTGRES_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: miniflux-pg-secret
-                  key: password
+                  name: miniflux-encoded-postgres-pass
+                  key: POSTGRES_ENCODED_MINIFLUX_PASS
             - name: DATABASE_URL
               value: "postgres://$(HELPER_POSTGRES_USER):$(HELPER_POSTGRES_PASSWORD)@$(HELPER_POSTGRES_HOST):5432/miniflux/miniflux"
           image: ghcr.io/miniflux/miniflux:2.2.8-distroless
