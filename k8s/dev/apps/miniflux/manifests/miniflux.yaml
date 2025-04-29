@@ -122,7 +122,7 @@ spec:
             - name: RUN_MIGRATIONS
               value: "1"
             - name: HELPER_POSTGRES_HOST
-              value: miniflux-db-cnpg-v1.miniflux.svc.cluster.local
+              value: miniflux-db-cnpg-v1-rw
             - name: HELPER_POSTGRES_USER
               valueFrom:
                 secretKeyRef:
