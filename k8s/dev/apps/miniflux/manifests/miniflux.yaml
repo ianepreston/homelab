@@ -134,7 +134,7 @@ spec:
                   name: miniflux-encoded-postgres-pass
                   key: POSTGRES_ENCODED_MINIFLUX_PASS
             - name: DATABASE_URL
-              value: "postgres://$(HELPER_POSTGRES_USER):$(HELPER_POSTGRES_PASSWORD)@$(HELPER_POSTGRES_HOST):5432/miniflux/miniflux"
+              value: "postgres://$(HELPER_POSTGRES_USER):$(HELPER_POSTGRES_PASSWORD)@$(HELPER_POSTGRES_HOST):5432/miniflux"
           image: ghcr.io/miniflux/miniflux:2.2.8-distroless
           name: main
 ---
