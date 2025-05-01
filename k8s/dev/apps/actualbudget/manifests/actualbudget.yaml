@@ -57,11 +57,11 @@ spec:
         app.kubernetes.io/name: actualbudget
     spec:
       containers:
-        name: main
-        image: actualbudget/actual-server:25.4.0
-        volumeMounts:
-          - name: actualbudget-pv
-            mountPath: /data
+        - name: main
+          image: actualbudget/actual-server:25.4.0
+          volumeMounts:
+            - name: actualbudget-pv
+              mountPath: /data
       volumes:
         - name: actualbudget-pv
           persistentVolumeClaim:
