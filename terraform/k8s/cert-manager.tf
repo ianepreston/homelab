@@ -23,13 +23,14 @@ resource "cloudflare_api_token" "cert_manager" {
   policies = [{
     effect = "allow"
     permission_groups = [
+      { id = local.zone_read.id },
       { id = local.dns_write.id },
-      { id = local.zone_read.id }
     ]
     resources = {
       "com.cloudflare.api.account.zone.*" = "*"
     }
   }]
+  status = "active"
 }
 
 resource "bitwarden_secret" "cert-manager" {
