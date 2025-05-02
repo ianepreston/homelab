@@ -75,7 +75,7 @@ metadata:
 spec:
   secretName: actualbudget-web-ui-tls
   dnsNames:
-    - actualbudget.dk8s.ipreston.net
+    - actualbudget.<path:subdomain#SUBDOMAIN>
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -89,7 +89,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`actualbudget.dk8s.ipreston.net`)
+    - match: Host(`actualbudget.<path:subdomain#SUBDOMAIN>`)
       kind: Rule
       services:
         - name: actualbudget

@@ -7,7 +7,7 @@ metadata:
 spec:
   secretName: traefik-web-ui-tls
   dnsNames:
-    - traefik.dk8s.ipreston.net
+    - traefik.<path:subdomain#SUBDOMAIN>
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer

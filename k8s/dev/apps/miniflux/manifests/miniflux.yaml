@@ -112,7 +112,7 @@ spec:
       containers:
         - env:
             - name: miniflux
-              value: https://miniflux.dk8s.ipreston.net
+              value: https://miniflux.<path:subdomain#SUBDOMAIN>
             #- name: CREATE_ADMIN
             #  value: "1"
             - name: LOG_DATE_TIME
@@ -146,7 +146,7 @@ metadata:
 spec:
   secretName: miniflux-web-ui-tls
   dnsNames:
-    - miniflux.dk8s.ipreston.net
+    - miniflux.<path:subdomain#SUBDOMAIN>
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -160,7 +160,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`miniflux.dk8s.ipreston.net`)
+    - match: Host(`miniflux.<path:subdomain#SUBDOMAIN>`)
       kind: Rule
       services:
         - name: miniflux

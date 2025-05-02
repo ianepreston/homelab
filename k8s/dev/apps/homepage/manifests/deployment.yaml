@@ -28,7 +28,7 @@ spec:
           imagePullPolicy: Always
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
-              value: homepage.dk8s.ipreston.net
+              value: homepage.<path:subdomain#SUBDOMAIN>
           ports:
             - name: http
               containerPort: 3000

@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: longhorn-web-ui-tls
   dnsNames:
-    - longhorn.dk8s.ipreston.net
+    - longhorn.<path:subdomain#SUBDOMAIN>
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -20,7 +20,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`longhorn.dk8s.ipreston.net`) # <-- Replace with your FQDN
+    - match: Host(`longhorn.<path:subdomain#SUBDOMAIN>`) # <-- Replace with your FQDN
       priority: 10
       kind: Rule
       services:

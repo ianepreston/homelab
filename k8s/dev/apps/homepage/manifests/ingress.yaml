@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: homepage-web-ui-tls
   dnsNames:
-    - homepage.dk8s.ipreston.net
+    - homepage.<path:subdomain#SUBDOMAIN>
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
@@ -20,7 +20,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`homepage.dk8s.ipreston.net`) # <-- Replace with your FQDN
+    - match: Host(`homepage.<path:subdomain#SUBDOMAIN>`) # <-- Replace with your FQDN
       kind: Rule
       services:
         - name: homepage
