@@ -9,7 +9,7 @@ spec:
     server: https://kubernetes.default.svc
   project: default
   source:
-    path: k8s
+    path: k8s/dev
     repoURL: https://github.com/ianepreston/homelab
     targetRevision: HEAD
     directory:
