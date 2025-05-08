@@ -15,6 +15,18 @@ argo-cd:
     cmp:
       create: true
       plugins:
+        avp-kustomize:
+          discover:
+            find:
+              command:
+                - sh
+                - "-c"
+                - "find . -name 'kustomization.yaml'"
+          generate:
+            command:
+              - sh
+              - "-c"
+              - "kustomize build . | argocd-vault-plugin generate -"
         avp-helm:
           discover:
             find:
@@ -35,7 +47,7 @@ argo-cd:
               command:
                 - sh
                 - "-c"
-                - "find . -name '*.yaml' ! -name 'Chart.yaml' ! -name 'values.yaml' | xargs -I {} grep \"<path\\|avp\\.kubernetes\\.io\" {} | grep ."
+                - "find . -name '*.yaml' ! -name 'Chart.yaml' ! -name 'values.yaml' ! -name 'kustomization.yaml' | xargs -I {} grep \"<path\\|avp\\.kubernetes\\.io\" {} | grep ."
           generate:
             command:
               - argocd-vault-plugin
