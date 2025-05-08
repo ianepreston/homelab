@@ -1,3 +1,4 @@
+---
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
@@ -6,10 +7,11 @@ metadata:
 spec:
   secretName: kuard-web-ui-tls
   dnsNames:
-    - kuard.<path:subdomain#SUBDOMAIN>
+    - kuard.dk8s.ipreston.net
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
+
 ---
 apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
@@ -20,10 +22,11 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`kuard.<path:subdomain#SUBDOMAIN>`)
+    - match: Host(`kuard.dk8s.ipreston.net`)  # <-- Replace with your FQDN
       kind: Rule
       services:
         - name: kuard
           port: 80
   tls:
-    secretName: kuard-web-ui-tls
+      secretName: kuard-web-ui-tls
+
