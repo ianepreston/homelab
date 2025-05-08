@@ -12,7 +12,7 @@ traefik:
       enabled: true
       entryPoints:
         - websecure
-      matchRule: Host(`traefik.<path:subdomain#SUBDOMAIN>`)  # <-- Replace with a secret for the base domain eventually
+      matchRule: Host(`traefik.dk8s.ipreston.net`)  # <-- Replace with a secret for the base domain eventually
       # middlewares:
       #   - name: traefik-web-ui-middleware  # <-- Replace with your authentication middleware
       tls:
