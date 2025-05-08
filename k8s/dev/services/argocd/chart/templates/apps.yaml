@@ -14,7 +14,7 @@ spec:
     targetRevision: HEAD
     directory:
       recurse: true
-      include: "*.app.yaml"
+      include: "*.dev.app.yaml"
   syncPolicy:
     automated:
       prune: true
