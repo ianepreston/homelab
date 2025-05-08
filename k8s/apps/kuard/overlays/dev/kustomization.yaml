@@ -4,3 +4,5 @@ resources:
   - ../../base
 patches:
   - path: ./url.yaml
+configurations:
+  - ./nameReference.yaml
