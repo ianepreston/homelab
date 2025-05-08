@@ -1,0 +1,4 @@
+resources:
+  - ../../base/kuard/kuard-ingress.yaml
+  - ../../base/kuard/kuard-service.yaml
+  - ../../base/kuard/external-secret.yaml

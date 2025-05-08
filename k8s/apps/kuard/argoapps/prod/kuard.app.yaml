@@ -1,22 +1,22 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: cluster
+  name: kuard
   namespace: argocd
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
 spec:
   destination:
-    namespace: argocd
+    namespace: kuard
     server: https://kubernetes.default.svc
-  project: default
+  project: cluster
   source:
-    path: k8s/dev
-    repoURL: https://github.com/ianepreston/homelab
+    path: k8s/apps/kuard/overlays/prod
+    repoURL: https://github.com/ianepreston/homelab.git
     targetRevision: HEAD
-    directory:
-      recurse: true
-      include: "**/dev/**/*.app.yaml"
   syncPolicy:
     automated:
+      # set these to true once the app is working
       prune: true
       selfHeal: true
     syncOptions:
