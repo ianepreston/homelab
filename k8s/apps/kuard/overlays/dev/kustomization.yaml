@@ -3,3 +3,5 @@ kind: Kustomization
 namePrefix: "dev-"
 resources:
   - ../../base
+patches:
+  - path: ./url.yaml
