@@ -6,12 +6,3 @@ metadata:
 spec:
   dnsNames:
     - kuarddev.dk8s.ipreston.net
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: kuard-ingress
-  namespace: kuard
-spec:
-  routes:
-    - match: Host(`kuarddev.dk8s.ipreston.net`)

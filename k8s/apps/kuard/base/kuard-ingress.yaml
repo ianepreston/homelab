@@ -20,7 +20,7 @@ spec:
   entryPoints:
     - websecure
   routes:
-    - match: Host(`kuard.dk8s.ipreston.net`)
+    - match: Host(`kuarddev.dk8s.ipreston.net`)
       kind: Rule
       services:
         - name: kuard
