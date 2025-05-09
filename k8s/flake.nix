@@ -37,6 +37,7 @@
               talosctl
               kubectl
               kubernetes-helm
+              kustomize
               clusterctl
               argocd
               cilium-cli
