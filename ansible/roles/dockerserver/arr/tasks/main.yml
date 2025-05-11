@@ -139,7 +139,7 @@
   community.docker.docker_container:
     name: bazarr
     hostname: bazarr
-    image: linuxserver/bazarr:1.5.1
+    image: linuxserver/bazarr:1.5.2
     image_name_mismatch: recreate
     volumes:
       - bazarr_vol:/config
