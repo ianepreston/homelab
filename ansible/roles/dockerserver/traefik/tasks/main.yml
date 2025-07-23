@@ -72,7 +72,7 @@
   community.docker.docker_container:
     name: traefik
     hostname: traefik
-    image: "traefik:v3.3.6"
+    image: "traefik:v3.5.0"
     image_name_mismatch: recreate
     networks:
       - name: "traefik_net"
