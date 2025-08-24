@@ -28,3 +28,9 @@ talhelper gencommand bootstrap; # then run the output
 # Might have to wait a bit here or try again
 ./cilium.sh
 ```
+
+## Get your kubeconfig back
+
+```bash
+talosctl -n 192.168.40.7 kubeconfig
+```
