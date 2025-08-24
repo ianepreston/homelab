@@ -29,7 +29,7 @@
     networks:
       - name: miniflux_net
       - name: traefik_net
-    image: "miniflux/miniflux:2.2.8"
+    image: "miniflux/miniflux:2.2.12"
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
