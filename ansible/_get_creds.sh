@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 if [ ! -f creds.sh ]; then
 	echo "Credentials file doesn't already exist, loading from Bitwarden."
 	echo "Logging into bitwarden"
