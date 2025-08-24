@@ -8,7 +8,7 @@
   community.docker.docker_container:
     name: sabnzbd
     hostname: sabnzbd
-    image: linuxserver/sabnzbd:4.5.1
+    image: linuxserver/sabnzbd:4.5.2
     image_name_mismatch: recreate
     volumes:
       - sabnzbd_vol:/config
@@ -42,7 +42,7 @@
   community.docker.docker_container:
     name: prowlarr
     hostname: prowlarr
-    image: linuxserver/prowlarr:1.35.1
+    image: linuxserver/prowlarr:2.0.5
     image_name_mismatch: recreate
     volumes:
       - prowlarr_vol:/config
@@ -73,7 +73,7 @@
   community.docker.docker_container:
     name: sonarr
     hostname: sonarr
-    image: linuxserver/sonarr:4.0.14
+    image: linuxserver/sonarr:4.0.15
     image_name_mismatch: recreate
     volumes:
       - sonarr_vol:/config
@@ -106,7 +106,7 @@
   community.docker.docker_container:
     name: radarr
     hostname: radarr
-    image: linuxserver/radarr:5.22.4
+    image: linuxserver/radarr:5.26.2
     image_name_mismatch: recreate
     volumes:
       - radarr_vol:/config
@@ -139,7 +139,7 @@
   community.docker.docker_container:
     name: bazarr
     hostname: bazarr
-    image: linuxserver/bazarr:1.5.1
+    image: linuxserver/bazarr:1.5.2
     image_name_mismatch: recreate
     volumes:
       - bazarr_vol:/config
@@ -174,7 +174,7 @@
   community.docker.docker_container:
     name: mylar
     hostname: mylar
-    image: linuxserver/mylar3:0.8.2
+    image: linuxserver/mylar3:0.8.3
     volumes:
       - mylar_vol:/config/mylar
       - complete_downloads_vol:/downloads
