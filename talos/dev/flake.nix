@@ -1,7 +1,7 @@
 {
   description = "Setup Talos config for my dev cluster";
 
-  inputs.nixpkgs.url = "https://flakehub.com/f/NixOS/nixpkgs/0.1.*.tar.gz";
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs";
 
   outputs =
     { self, nixpkgs }:
