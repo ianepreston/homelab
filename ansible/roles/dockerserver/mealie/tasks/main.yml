@@ -3,7 +3,7 @@
     name: mealie_vol
 - name: Create mealie postgres volume
   community.docker.docker_volume:
-    name: mealie_pg16_vol
+    name: mealie_pg17_vol
 - name: Create mealie network
   community.docker.docker_network:
     name: mealie_net
@@ -13,7 +13,7 @@
     hostname: mealie-postgres
     networks:
       - name: mealie_net
-    image: postgres:16.10
+    image: postgres:17.6
     state: "started"
     container_default_behavior: compatibility
     env:
@@ -22,7 +22,7 @@
       POSTGRES_PASSWORD: "{{ mealie_postgres_pass }}"
     restart_policy: unless-stopped
     volumes:
-      - "mealie_pg16_vol:/var/lib/postgresql/data"
+      - "mealie_pg17_vol:/var/lib/postgresql/data"
 - name: Create mealie container
   community.docker.docker_container:
     name: mealie
@@ -30,7 +30,7 @@
     networks:
       - name: mealie_net
       - name: traefik_net
-    image: ghcr.io/mealie-recipes/mealie:v3.1.2
+    image: ghcr.io/mealie-recipes/mealie:v2.8.0
     state: "started"
     container_default_behavior: compatibility
     comparisons:
