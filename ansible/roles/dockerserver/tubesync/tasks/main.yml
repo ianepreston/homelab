@@ -13,7 +13,7 @@
     name: tubesync
     hostname: tubesync
     state: started
-    image: ghcr.io/meeb/tubesync:v0.15.8
+    image: ghcr.io/meeb/tubesync:v0.15.9
     image_name_mismatch: recreate
     networks:
       - name: tubesync_network
