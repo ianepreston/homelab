@@ -106,7 +106,7 @@
   community.docker.docker_container:
     name: radarr
     hostname: radarr
-    image: linuxserver/radarr:5.26.2
+    image: linuxserver/radarr:5.27.5
     image_name_mismatch: recreate
     volumes:
       - radarr_vol:/config
