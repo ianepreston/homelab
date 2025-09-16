@@ -94,7 +94,7 @@ argo-cd:
             mountPath: /usr/local/bin/argocd-vault-plugin
     initContainers:
       - name: download-tools
-        image: alpine:3.21
+        image: alpine:3.22
         command: [sh, -c]
         env:
           - name: AVP_VERSION
