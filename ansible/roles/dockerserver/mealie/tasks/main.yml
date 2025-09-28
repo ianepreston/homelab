@@ -30,7 +30,7 @@
     networks:
       - name: mealie_net
       - name: traefik_net
-    image: ghcr.io/mealie-recipes/mealie:v2.8.0
+    image: ghcr.io/mealie-recipes/mealie:v3.3.0
     state: "started"
     container_default_behavior: compatibility
     comparisons:
