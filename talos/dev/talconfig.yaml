@@ -1,6 +1,6 @@
 clusterName: dk8s
-talosVersion: v1.9.5
-kubernetesVersion: v1.32.3
+talosVersion: v1.11.2
+kubernetesVersion: v1.34.1
 endpoint: https://192.168.40.13:6443 # Talos endpoint, the VIP
 allowSchedulingOnControlPlanes: true
 cniConfig:
