@@ -17,10 +17,16 @@ nodes:
     ipAddress: 192.168.40.11
     controlPlane: true
     installDisk: /dev/nvme0n1
-    machineDisks:
-      - device: /dev/sda
-        partitions:
-          - mountpoint: /var/lib/longhorn
+    userVolumes: &uservolumes
+      # will mount to /var/mnt/longhorn
+      - name: longhorn
+        provisioning:
+          grow: true
+          minSize: 10GB
+          diskSelector:
+            match: disk.transport == "sata" && !disk.rotational && !system_disk
+        filesystem:
+          type: xfs
     networkInterfaces:
       - deviceSelector:
           physical: true
@@ -38,10 +44,7 @@ nodes:
     ipAddress: 192.168.40.7
     controlPlane: true
     installDisk: /dev/nvme0n1
-    machineDisks:
-      - device: /dev/sda
-        partitions:
-          - mountpoint: /var/lib/longhorn
+    userVolumes: *uservolumes
     networkInterfaces:
       - deviceSelector:
           physical: true
@@ -58,10 +61,7 @@ nodes:
     ipAddress: 192.168.40.9
     controlPlane: true
     installDisk: /dev/nvme0n1
-    machineDisks:
-      - device: /dev/sda
-        partitions:
-          - mountpoint: /var/lib/longhorn
+    userVolumes: *uservolumes
     networkInterfaces:
       - deviceSelector:
           physical: true
