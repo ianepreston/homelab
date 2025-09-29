@@ -1,4 +1,4 @@
-#!/bin/env bash
+#!/usr/bin/env bash
 echo "Installing cilium"
 CILIUM_CHART=$(cat ../../k8s/dev/services/cilium/chart/Chart.yaml)
 CILIUM_REPO=$(echo "$CILIUM_CHART" | yq eval '.dependencies[0].repository' -)
