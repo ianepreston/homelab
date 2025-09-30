@@ -6,3 +6,12 @@ tasks:
   default:
     cmd: task --list
     silent: true
+  bootstrap_cilium:
+    cmd: ./scripts/cilium.sh
+    desc: "Bootstrap cilium - needs to be fixed per cluster"
+  bootstrap_certmanager:
+    cmd: ./scripts/cert-manager.sh
+    desc: "Bootstrap cert-manager - needs to be fixed per cluster"
+  bootstrap_externalsecrets:
+    cmd: ./scripts/external-secrets.sh
+    desc: "Bootstrap external-secrets - needs to be fixed per cluster"
