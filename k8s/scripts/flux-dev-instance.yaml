@@ -1,0 +1,29 @@
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/fluxcd.controlplane.io/fluxinstance_v1.json
+apiVersion: fluxcd.controlplane.io/v1
+kind: FluxInstance
+metadata:
+  name: flux
+  namespace: flux-system
+spec:
+  distribution:
+    version: "2.x"
+    registry: "ghcr.io/fluxcd"
+  components:
+    - source-controller
+    - kustomize-controller
+    - helm-controller
+    - notification-controller
+    - image-reflector-controller
+    - image-automation-controller
+  cluster:
+    type: kubernetes
+    multitenant: false
+    networkPolicy: true
+    domain: "cluster.local"
+  sync:
+    kind: GitRepository
+    provider: github
+    url: "https://github.com/ianepreston/homelab.git"
+    ref: "refs/heads/main"
+    path: "k8s/clusters/dev"
+    pullSecret: "flux-system"

@@ -15,3 +15,6 @@ tasks:
   bootstrap_externalsecrets:
     cmd: ./scripts/external-secrets.sh
     desc: "Bootstrap external-secrets - needs to be fixed per cluster"
+  bootstrap_flux:
+    cmd: ./scripts/flux.sh
+    desc: "Bootstrap flux - needs to be fixed per cluster"
