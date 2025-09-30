@@ -39,9 +39,9 @@
               kubernetes-helm
               kustomize
               clusterctl
-              argocd
               cilium-cli
-              #bitwarden-secrets
+              argocd
+              fluxcd
               bws
               bitwarden-cli
             ];
