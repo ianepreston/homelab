@@ -44,6 +44,7 @@
               fluxcd
               bws
               bitwarden-cli
+              go-task
             ];
           };
         }
