@@ -1,8 +1,0 @@
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: kuard-web-ui-cert
-  namespace: kuard
-spec:
-  dnsNames:
-    - kuarddev.dk8s.ipreston.net
