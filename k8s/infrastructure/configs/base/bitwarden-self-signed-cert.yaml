@@ -10,13 +10,13 @@ spec:
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: bitwarden-bootstrap-certificate
+  name: bitwarden-bootstrap-ca
   namespace: cert-manager
 spec:
   # this is discouraged but required by ios
   commonName: cert-manager-bitwarden-tls
   isCA: true
-  secretName: bitwarden-tls-certs
+  secretName: bitwarden-ca-keypair
   subject:
     organizations:
       - external-secrets.io
@@ -43,7 +43,7 @@ metadata:
   name: bitwarden-certificate-issuer
 spec:
   ca:
-    secretName: bitwarden-tls-certs
+    secretName: bitwarden-ca-keypair
 ---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/cert-manager.io/certificate_v1.json
 apiVersion: cert-manager.io/v1
