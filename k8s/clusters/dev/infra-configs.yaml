@@ -2,23 +2,6 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: infra-controllers
-  namespace: flux-system
-spec:
-  interval: 1h
-  retryInterval: 1m
-  timeout: 5m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./k8s/infrastructure/controllers/dev
-  prune: true
-  wait: true
----
-# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
   name: infra-configs
   namespace: flux-system
 spec:
@@ -32,3 +15,4 @@ spec:
     name: flux-system
   path: ./k8s/infrastructure/configs/dev
   prune: true
+  wait: true

@@ -2,18 +2,15 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app cilium
+  name: infra-controllers
+  namespace: flux-system
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/infrastructure/controllers/base/cilium
-  prune: true
+  retryInterval: 1m
+  timeout: 5m
   sourceRef:
     kind: GitRepository
     name: flux-system
-    namespace: flux-system
-  targetNamespace: kube-system
-  timeout: 5m
-  wait: false
+  path: ./k8s/infrastructure/controllers/dev
+  prune: true
+  wait: true
