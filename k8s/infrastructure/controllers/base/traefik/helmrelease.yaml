@@ -1,0 +1,32 @@
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: traefik
+spec:
+  interval: 30m
+  chart:
+    spec:
+      chart: traefik
+      version: "37.1.2"
+      sourceRef:
+        kind: HelmRepository
+        name: traefik
+  values:
+    ports:
+      web:
+        redirections:
+          entryPoint:
+            to: websecure
+            scheme: https
+            permanent: true # <-- Change this to false if you want a temporary redirect
+    ingressRoute:
+      dashboard:
+        enabled: true
+        entryPoints:
+          - websecure
+        matchRule: Host(`traefik.dk8s.ipreston.net`) # <-- Replace with a secret for the base domain eventually
+        # middlewares:
+        #   - name: traefik-web-ui-middleware  # <-- Replace with your authentication middleware
+        tls:
+          secretName: traefik-web-ui-tls # <-- Replace with your TLS secret name
