@@ -14,7 +14,15 @@ spec:
         name: cilium
   values:
     hubble:
-      enabled: true
+      relay:
+        enabled: true
+      ui:
+        enabled: true
+      tls:
+        enabled: true
+        auto:
+          enabled: true
+          method: helm
     ipam:
       mode: kubernetes
     kubeProxyReplacement: true
