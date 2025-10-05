@@ -19,7 +19,7 @@
 # echo "Setting up bitwarden secrets"
 # Create the self signed certs required for communication between the sdk and bitwarden secrets
 # kubectl apply -f ./infrastructure/configs/base/bitwarden-self-signed-cert.yaml
-# bws run 'kubectl create secret generic bitwarden-access-token --namespace external-secrets --from-literal token="$machinetoken"'
+# bws run 'kubectl create secret generic bitwarden-access-token --namespace external-secrets --from-literal token="$BWS_MACHINE_TOKEN"'
 # Grab the organization and project ID from bws
 export PROJECT_ID=$(bws project list | jq -r '.[0].id')
 export ORGANIZATION_ID=$(bws project list | jq -r '.[0].organizationId')
