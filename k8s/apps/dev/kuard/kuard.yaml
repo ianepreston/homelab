@@ -20,4 +20,4 @@ spec:
   wait: true
   images:
     - name: kuard
-      newTag: green
+      newTag: "1.29.1"

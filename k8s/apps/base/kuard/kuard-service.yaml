@@ -22,7 +22,7 @@ spec:
     spec:
       containers:
         - name: kuard
-          image: gcr.io/kuar-demo/kuard-amd64:notused
+          image: nginx:notused
 ---
 apiVersion: v1
 kind: Service
