@@ -4,3 +4,10 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ./spegel.yaml
+patches:
+  - path: ./patch-ocirepository.yaml
+    target:
+      group: source.toolkit.fluxcd.io
+      version: v1
+      kind: OCIRepository
+      name: spegel
