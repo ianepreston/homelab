@@ -26,5 +26,6 @@
       "/kustomization\\.ya?ml$/",
       "/\\.yaml$/"
     ]
-  }
+  },
+  "prHourlyLimit": 0
 }
