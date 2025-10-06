@@ -33,6 +33,12 @@ nodes:
         dhcp: true
         vip: &vip
           ip: 192.168.40.13
+    machineFiles: &machinefiles
+      - content: |
+          [plugins."io.containerd.cri.v1.images"]
+          discard_unpacked_layers = false
+        op: create
+        path: /etc/cri/conf.d/20-customization.part
     schematic:
       customization:
         systemExtensions:
@@ -50,6 +56,7 @@ nodes:
           physical: true
         dhcp: true
         vip: *vip
+    machineFiles: *machinefiles
     schematic:
       customization:
         systemExtensions:
@@ -67,6 +74,7 @@ nodes:
           physical: true
         dhcp: true
         vip: *vip
+    machineFiles: *machinefiles
     schematic:
       customization:
         systemExtensions:
