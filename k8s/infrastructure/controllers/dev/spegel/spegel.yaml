@@ -18,3 +18,15 @@ spec:
   targetNamespace: *app
   timeout: 5m
   wait: true
+  patches:
+    - target:
+        kind: OCIRepository
+        name: spegel
+      patch: |-
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: OCIRepository
+        metadata:
+          name: spegel
+        spec:
+          ref:
+            tag: 0.4.0
