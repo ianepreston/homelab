@@ -20,4 +20,5 @@ spec:
   wait: true
   images:
     - name: nginx
+      # renovate: datasource=docker depName=nginx
       newTag: "1.29.0"

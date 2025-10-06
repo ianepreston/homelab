@@ -29,4 +29,5 @@ spec:
           name: spegel
         spec:
           ref:
+            # renovate: datasource=docker depName=ghcr.io/spegel-org/spegel
             tag: 0.4.0
