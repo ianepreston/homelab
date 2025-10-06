@@ -4,3 +4,10 @@ kind: Kustomization
 namespace: flux-system
 resources:
   - ./reloader.yaml
+patches:
+  - path: ./patch-helm-release.yaml
+    target:
+      group: helm.toolkit.fluxcd.io
+      version: v2
+      kind: HelmRelease
+      name: reloader
