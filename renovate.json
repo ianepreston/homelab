@@ -10,5 +10,15 @@
   ],
   "commitBodyTable": true,
   "rebaseWhen": "auto",
-  "platformCommit": "enabled"
+  "platformCommit": "enabled",
+  "flux": {
+    "managerFilePatterns": [
+      "/\\.yaml(?:\\.j2)?$/"
+    ]
+  },
+  "kubernetes": {
+    "managerFilePatterns": [
+      "/\\.yaml(?:\\.j2)?$/"
+    ]
+  }
 }
