@@ -19,5 +19,5 @@ spec:
   timeout: 5m
   wait: true
   images:
-    - name: kuard
+    - name: nginx
       newTag: "1.29.1"
