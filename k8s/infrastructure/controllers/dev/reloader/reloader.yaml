@@ -27,7 +27,7 @@ spec:
         spec:
           chart:
             spec:
-              version: "2.2.3"
+              version: "2.2.2"
       target:
         kind: HelmRelease
         name: reloader
