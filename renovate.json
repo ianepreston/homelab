@@ -20,5 +20,11 @@
     "managerFilePatterns": [
       "/\\.yaml(?:\\.j2)?$/"
     ]
+  },
+  "kustomize": {
+    "managerFilePatterns": [
+      "/kustomization\\.ya?ml$/",
+      "/\\.yaml$/"
+    ]
   }
 }
