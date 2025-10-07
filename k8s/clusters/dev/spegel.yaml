@@ -1,0 +1,35 @@
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app spegel
+  namespace: flux-system
+spec:
+  dependsOn:
+    - name: cilium
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 1h
+  path: ./k8s/apps/spegel/dev
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *app
+  timeout: 5m
+  wait: true
+  patches:
+    - target:
+        kind: OCIRepository
+        name: spegel
+      patch: |-
+        apiVersion: source.toolkit.fluxcd.io/v1
+        kind: OCIRepository
+        metadata:
+          name: spegel
+        spec:
+          ref:
+            # renovate: datasource=docker depName=ghcr.io/spegel-org/spegel
+            tag: 0.4.0
