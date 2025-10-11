@@ -38,7 +38,8 @@
       "additionalBranchPrefix": "{{parentDir}}-",
       "packagePatterns": [
         ".*"
-      ]
+      ],
+      "prTitle": "[{{parentDir}}] {{commitMessageAction}} {{commitMessageTopic}} {{commitMessageExtra}}"
     }
   ]
 }
