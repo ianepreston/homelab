@@ -23,4 +23,4 @@ spec:
   images:
     - name: nginx
       # renovate: datasource=docker depName=nginx
-      newTag: "1.29.0"
+      newTag: "1.29.2"
