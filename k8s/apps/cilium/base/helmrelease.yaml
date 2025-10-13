@@ -50,5 +50,8 @@ spec:
       hostRoot: "/sys/fs/cgroup/"
     k8sServiceHost: localhost
     k8sServicePort: 7445
+    l2announcements:
+      enabled: true
+    devices: "eth0,eth0.15,eth0.30"
     bgpControlPlane:
       enabled: true

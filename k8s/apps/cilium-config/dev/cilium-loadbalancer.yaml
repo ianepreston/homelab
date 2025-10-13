@@ -61,3 +61,15 @@ spec:
           gracefulRestart:
             enabled: true
             restartTimeSeconds: 120
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cilium.io/cliluml2announcementpolicy_v2alpha1.json
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: vlan15-l2
+spec:
+  serviceSelector:
+    matchLabels:
+      lb-pool: trust-pool
+  interfaces:
+    - "^eth0\\.15$"
