@@ -13,6 +13,11 @@ spec:
         kind: HelmRepository
         name: traefik
   values:
+    service:
+      enabled: true
+      type: LoadBalancer
+      labels:
+        lb-pool: trust-pool
     ports:
       web:
         redirections:

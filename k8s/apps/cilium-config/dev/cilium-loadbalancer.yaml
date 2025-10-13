@@ -4,6 +4,9 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: trust-pool
 spec:
+  serviceSelector:
+    matchLabels:
+      lb-pool: trust-pool
   blocks:
     - start: "192.168.15.21"
       stop: "192.168.15.26"
@@ -14,6 +17,9 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: guest-pool
 spec:
+  serviceSelector:
+    matchLabels:
+      lb-pool: guest-pool
   blocks:
     - start: "192.168.30.33"
       stop: "192.168.30.36"
@@ -24,6 +30,9 @@ kind: CiliumLoadBalancerIPPool
 metadata:
   name: lab-pool
 spec:
+  serviceSelector:
+    matchLabels:
+      lb-pool: lab-pool
   blocks:
     - start: "192.168.40.21"
       stop: "192.168.40.30"
