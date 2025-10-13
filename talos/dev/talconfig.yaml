@@ -29,11 +29,23 @@ nodes:
         filesystem:
           type: xfs
     networkInterfaces:
-      - deviceSelector:
-          physical: true
+      - interface: eth0
         dhcp: true
         vip: &vip
           ip: 192.168.40.13
+        vlans:
+          - vlanId: 15
+            addresses:
+              - "192.168.15.31/24" #20 plus lab address
+            routes:
+              - network: 192.168.15.0/24
+                gateway: 192.168.15.1
+          - vlanId: 30
+            addresses:
+              - "192.168.15.41/24" #30 plus lab address
+            routes:
+              - network: 192.168.30.0/24
+                gateway: 192.168.30.1
     machineFiles: &machinefiles
       - content: |
           [plugins."io.containerd.cri.v1.images"]
@@ -53,10 +65,22 @@ nodes:
     installDisk: /dev/nvme0n1
     userVolumes: *uservolumes
     networkInterfaces:
-      - deviceSelector:
-          physical: true
+      - interface: eth0
         dhcp: true
         vip: *vip
+        vlans:
+          - vlanId: 15
+            addresses:
+              - "192.168.15.27/24" #20 plus lab address
+            routes:
+              - network: 192.168.15.0/24
+                gateway: 192.168.15.1
+          - vlanId: 30
+            addresses:
+              - "192.168.15.37/24" #30 plus lab address
+            routes:
+              - network: 192.168.30.0/24
+                gateway: 192.168.30.1
     machineFiles: *machinefiles
     schematic:
       customization:
@@ -71,10 +95,22 @@ nodes:
     installDisk: /dev/nvme0n1
     userVolumes: *uservolumes
     networkInterfaces:
-      - deviceSelector:
-          physical: true
+      - interface: eth0
         dhcp: true
         vip: *vip
+        vlans:
+          - vlanId: 15
+            addresses:
+              - "192.168.15.29/24" #20 plus lab address
+            routes:
+              - network: 192.168.15.0/24
+                gateway: 192.168.15.1
+          - vlanId: 30
+            addresses:
+              - "192.168.15.39/24" #30 plus lab address
+            routes:
+              - network: 192.168.30.0/24
+                gateway: 192.168.30.1
     machineFiles: *machinefiles
     schematic:
       customization:
