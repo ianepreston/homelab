@@ -71,6 +71,10 @@
           sha256 = "sha256-2FiuKD8rbhUwtScNhgqAaUxOwPYpm4Oiqvd5Xloci0k=";
         };
 
+        "1.11.3" = {
+          version = "1.11.3";
+          sha256 = "sha256-fNOg0lqPLeo0PCgVQxzAfT6AurEk58PiJziBncCcGz8=";
+        };
         # nix-prefetch-url https://github.com/siderolabs/talos/releases/download/v1.11.1/talosctl-linux-amd64
         # "1.11.1" = {
         #   version = "1.11.1";
@@ -78,7 +82,7 @@
         # };
       };
 
-      selectedTalosctlVersion = "1.11.2"; # Change this to switch versions
+      selectedTalosctlVersion = "1.11.3"; # Change this to switch versions
       # Just grab the binary, figuring out reproducible builds for the whole toolchain sucks
       talosctlBinary =
         {
