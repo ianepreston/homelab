@@ -6,7 +6,7 @@ metadata:
   namespace: flux-system
 spec:
   dependsOn:
-    - name: traefik
+    - name: cilium
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
