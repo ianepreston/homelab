@@ -1,6 +1,7 @@
 clusterName: dk8s
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.11.2
+talosVersion: v1.11.3
 kubernetesVersion: v1.34.1
 endpoint: https://192.168.40.13:6443 # Talos endpoint, the VIP
 allowSchedulingOnControlPlanes: true
