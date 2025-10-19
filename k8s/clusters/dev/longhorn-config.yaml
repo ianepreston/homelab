@@ -20,3 +20,8 @@ spec:
   targetNamespace: longhorn
   timeout: 5m
   wait: true
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-config
+        optional: false
