@@ -17,6 +17,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: kube-system
+  targetNamespace: cert-manager
   timeout: 5m
   wait: true
