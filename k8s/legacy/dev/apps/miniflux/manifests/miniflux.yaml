@@ -135,7 +135,7 @@ spec:
                   key: POSTGRES_ENCODED_MINIFLUX_PASS
             - name: DATABASE_URL
               value: "postgres://$(HELPER_POSTGRES_USER):$(HELPER_POSTGRES_PASSWORD)@$(HELPER_POSTGRES_HOST):5432/miniflux"
-          image: ghcr.io/miniflux/miniflux:2.2.13-distroless
+          image: ghcr.io/miniflux/miniflux:2.2.14-distroless
           name: main
 ---
 apiVersion: cert-manager.io/v1
