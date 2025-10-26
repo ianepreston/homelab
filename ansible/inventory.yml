@@ -1,4 +1,4 @@
 ares:
   hosts:
-    infra-ares1.ipreston.net:
+    ares1.ipreston.net:
       ansible_connection: ssh

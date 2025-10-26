@@ -5,7 +5,7 @@
     driver_options:
       type: "nfs4"
       device: ":/volume1/content/{{ item.path }}"
-      o: "addr=192.168.15.3"
+      o: "addr=192.168.10.38"
   loop:
     - {name: books_vol, path: "books"}
     - {name: comics_vol, path: "Comics"}
@@ -16,22 +16,12 @@
     - {name: tv_vol, path: "TV"}
     - {name: misc_vids_vol, path: "Misc Videos"}
     # - {name: tubearchivist_vol, path: "tubearchivist"}
-    # - {name: tubesync_vol, path: "tubesync"}
-
-- name: Create tubesync vol
-  community.general.docker_volume:
-    name: "tubesync_vol"
-    recreate: "options-changed"
-    driver_options:
-      type: "cifs"
-      device: "//192.168.15.3/content/tubesync"
-      o: "addr=192.168.15.3,username=ipreston,password={{ laconia_pass}},file_mode=0777,dir_mode=0777"
-
+    - {name: tubesync_vol, path: "tubesync"}
 - name: Create smb comics volume
   community.general.docker_volume:
     name: "comics_smb_vol"
     recreate: "options-changed"
     driver_options:
       type: "cifs"
-      device: "//192.168.15.3/content/Comics"
-      o: "addr=192.168.15.3,username=ipreston,password={{ laconia_pass}},file_mode=0777,dir_mode=0777"
+      device: "//192.168.10.38/content/Comics"
+      o: "addr=192.168.10.38,username=ipreston,password={{ laconia_pass}},file_mode=0777,dir_mode=0777"

@@ -118,7 +118,7 @@
         key: "{{ miniflux_api_key }}"
         fields: ["unread"]
   - photos:
-      href: "http://laconiatrust.ipreston.net:5001/?launchApp=SYNO.Foto.AppInstance#/personal_space/timeline"
+      href: "http://laconia.ipreston.net:5001/?launchApp=SYNO.Foto.AppInstance#/personal_space/timeline"
       icon: nextcloud-photos
       description: Synology photo manager
   - wallabag:
@@ -142,12 +142,12 @@
       #   wan: "igc0"
       #   fields: ["load", "memory", "temp"]
   - laconia:
-      href: "http://laconiatrust.ipreston.net:5001"
+      href: "http://laconia.ipreston.net:5001"
       icon: synology
       description: NAS
       widget:
         type: diskstation
-        url: "http://laconiatrust.ipreston.net:5001"
+        url: "http://laconia.ipreston.net:5001"
         username: "ipreston"
         password: "{{ laconia_pass }}"
         fields: ["volumeAvailable", "resources.cpu", "resources.mem"]
