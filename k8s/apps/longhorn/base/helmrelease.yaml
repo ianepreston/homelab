@@ -17,3 +17,5 @@ spec:
       defaultClass: false # Going to define my own storageclasses later
     preUpgradeChecker:
       jobEnabled: false
+    defaultSettings:
+      storageMinimalAvailablePercentage: "10"
