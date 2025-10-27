@@ -28,6 +28,15 @@ nodes:
             match: disk.transport == "sata" && !disk.rotational && !system_disk
         filesystem:
           type: xfs
+      # will mount to /var/mnt/localpath
+      - name: localpath
+        provisioning:
+          grow: true
+          minSize: 10GB
+          diskSelector:
+            match: disk.transport == "sata" && !disk.rotational && !system_disk
+        filesystem:
+          type: xfs
     networkInterfaces:
       - interface: eth0
         dhcp: true
