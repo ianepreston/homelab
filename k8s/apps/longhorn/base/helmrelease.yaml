@@ -13,11 +13,5 @@ spec:
         kind: HelmRepository
         name: longhorn
   values:
-    # # https://github.com/longhorn/longhorn/releases/tag/v1.10.0
-    # upgradeVersionCheck: false
-    # image:
-    #   longhorn:
-    #     manager:
-    #       tag: v1.10.0-hotfix-1
     preUpgradeChecker:
       jobEnabled: false
