@@ -9,6 +9,7 @@ cniConfig:
 controlPlane:
   patches:
     - "@./patches/longhorn.yaml"
+    - "@./patches/local-path.yaml"
   schematic:
     customization:
       extraKernelArgs:
