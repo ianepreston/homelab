@@ -13,5 +13,7 @@ spec:
         kind: HelmRepository
         name: longhorn
   values:
+    persistence:
+      defaultClass: false # Going to define my own storageclasses later
     preUpgradeChecker:
       jobEnabled: false
