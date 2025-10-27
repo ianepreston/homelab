@@ -1,9 +1,9 @@
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
-  name: dbench-pv-claim-longhorn
+  name: dbench-pv-claim-longhorn-cnpg
 spec:
-  storageClassName: longhorn
+  storageClassName: longhorn-cnpg-strict-local
   accessModes:
     - ReadWriteOnce
   resources:
@@ -24,14 +24,6 @@ spec:
           env:
             - name: DBENCH_MOUNTPOINT
               value: /data
-              # - name: DBENCH_QUICK
-              #   value: "yes"
-              # - name: FIO_SIZE
-              #   value: 1G
-              # - name: FIO_OFFSET_INCREMENT
-              #   value: 256M
-              # - name: FIO_DIRECT
-              #   value: "0"
           volumeMounts:
             - name: dbench-pv
               mountPath: /data
@@ -39,5 +31,5 @@ spec:
       volumes:
         - name: dbench-pv
           persistentVolumeClaim:
-            claimName: dbench-pv-claim-longhorn
+            claimName: dbench-pv-claim-longhorn-cnpg
   backoffLimit: 4
