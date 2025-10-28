@@ -15,7 +15,7 @@ controlPlane:
       extraKernelArgs:
         - net.ifnames=0
 nodes:
-  - hostname: "d-hpp-1-lab"
+  - hostname: "d-hpp-1-lab.ipreston.net"
     ipAddress: 192.168.40.11
     controlPlane: true
     installDisk: /dev/nvme0n1
@@ -69,7 +69,7 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
-  - hostname: "d-hpp-2-lab"
+  - hostname: "d-hpp-2-lab.ipreston.net"
     ipAddress: 192.168.40.7
     controlPlane: true
     installDisk: /dev/nvme0n1
@@ -99,7 +99,7 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
-  - hostname: "d-hpp-3-lab"
+  - hostname: "d-hpp-3-lab.ipreston.net"
     ipAddress: 192.168.40.9
     controlPlane: true
     installDisk: /dev/nvme0n1
