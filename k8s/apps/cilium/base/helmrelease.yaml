@@ -52,6 +52,6 @@ spec:
     k8sServicePort: 6443
     l2announcements:
       enabled: true
-    devices: "eth0,eth0.15,eth0.30"
+    devices: "eth0"
     bgpControlPlane:
       enabled: true

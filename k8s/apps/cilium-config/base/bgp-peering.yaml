@@ -13,7 +13,7 @@ spec:
         matchExpressions:
           - {key: "io.cilium/bgp-announce", operator: NotIn, values: ['fakevalue']} # Should match all
       neighbors:
-        - peerAddress: '192.168.40.1/32'
+        - peerAddress: '192.168.10.1/32'
           peerASN: 64512
           eBGPMultihopTTL: 10
           connectRetryTimeSeconds: 120
