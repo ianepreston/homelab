@@ -17,7 +17,7 @@ spec:
       enabled: true
       type: LoadBalancer
       labels:
-        lb-pool: trust-pool
+        lb-pool: ip-pool
     ports:
       web:
         redirections:

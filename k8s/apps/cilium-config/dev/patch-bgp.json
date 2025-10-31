@@ -1,0 +1,7 @@
+[
+  {
+    "op": "replace",
+    "path": "/spec/virtualRouters/0/localASN",
+    "value": 65000
+  }
+]
