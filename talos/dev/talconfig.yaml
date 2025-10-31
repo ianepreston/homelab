@@ -2,7 +2,7 @@ clusterName: dk8s
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
 talosVersion: v1.11.3
 kubernetesVersion: v1.34.1
-endpoint: https://192.168.40.13:6443 # Talos endpoint, the VIP
+endpoint: https://192.168.10.140:6443 # Talos endpoint, the VIP
 allowSchedulingOnControlPlanes: true
 cniConfig:
   name: "none"
@@ -15,8 +15,8 @@ controlPlane:
       extraKernelArgs:
         - net.ifnames=0
 nodes:
-  - hostname: "d-hpp-1-lab.ipreston.net"
-    ipAddress: 192.168.40.11
+  - hostname: "d-hpp-1.ipreston.net"
+    ipAddress: 192.168.10.8
     controlPlane: true
     installDisk: /dev/nvme0n1
     userVolumes: &uservolumes
@@ -42,20 +42,7 @@ nodes:
       - interface: eth0
         dhcp: true
         vip: &vip
-          ip: 192.168.40.13
-        vlans:
-          - vlanId: 15
-            addresses:
-              - "192.168.15.31/24" #20 plus lab address
-            routes:
-              - network: 192.168.15.0/24
-                gateway: 192.168.15.1
-          - vlanId: 30
-            addresses:
-              - "192.168.30.41/24" #30 plus lab address
-            routes:
-              - network: 192.168.30.0/24
-                gateway: 192.168.30.1
+          ip: 192.168.10.140
     machineFiles: &machinefiles
       - content: |
           [plugins."io.containerd.cri.v1.images"]
@@ -69,8 +56,8 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
-  - hostname: "d-hpp-2-lab.ipreston.net"
-    ipAddress: 192.168.40.7
+  - hostname: "d-hpp-2.ipreston.net"
+    ipAddress: 192.168.10.36
     controlPlane: true
     installDisk: /dev/nvme0n1
     userVolumes: *uservolumes
@@ -78,19 +65,6 @@ nodes:
       - interface: eth0
         dhcp: true
         vip: *vip
-        vlans:
-          - vlanId: 15
-            addresses:
-              - "192.168.15.27/24" #20 plus lab address
-            routes:
-              - network: 192.168.15.0/24
-                gateway: 192.168.15.1
-          - vlanId: 30
-            addresses:
-              - "192.168.30.37/24" #30 plus lab address
-            routes:
-              - network: 192.168.30.0/24
-                gateway: 192.168.30.1
     machineFiles: *machinefiles
     schematic:
       customization:
@@ -99,8 +73,8 @@ nodes:
             - siderolabs/intel-ucode
             - siderolabs/iscsi-tools
             - siderolabs/util-linux-tools
-  - hostname: "d-hpp-3-lab.ipreston.net"
-    ipAddress: 192.168.40.9
+  - hostname: "d-hpp-3.ipreston.net"
+    ipAddress: 192.168.10.6
     controlPlane: true
     installDisk: /dev/nvme0n1
     userVolumes: *uservolumes
@@ -108,19 +82,6 @@ nodes:
       - interface: eth0
         dhcp: true
         vip: *vip
-        vlans:
-          - vlanId: 15
-            addresses:
-              - "192.168.15.29/24" #20 plus lab address
-            routes:
-              - network: 192.168.15.0/24
-                gateway: 192.168.15.1
-          - vlanId: 30
-            addresses:
-              - "192.168.30.39/24" #30 plus lab address
-            routes:
-              - network: 192.168.30.0/24
-                gateway: 192.168.30.1
     machineFiles: *machinefiles
     schematic:
       customization:
