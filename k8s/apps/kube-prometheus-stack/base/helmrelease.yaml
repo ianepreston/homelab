@@ -103,10 +103,12 @@ spec:
         queryLogFile: ""
         enableFeatures: []
         additionalArgs:
-          - --web.enable-lifecycle
-          - --storage.tsdb.wal-compression
-          - --query.max-concurrency=8
-          - --query.max-samples=10000000
+          - name: web.enable-lifecycle
+            value: "true"
+          - name: query.max-concurrency
+            value: "8"
+          - name: query.max-samples
+            value: "10000000"
         resources:
           requests:
             cpu: 500m
