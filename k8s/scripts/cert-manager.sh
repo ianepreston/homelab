@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 echo "Installing cert-manager"
-CERTMANAGER_REPO_SPEC=$(cat ./infrastructure/controllers/base/cert-manager/helmrepository.yaml)
+CERTMANAGER_REPO_SPEC=$(cat ../apps/cert-manager/base/helmrepository.yaml)
 CERTMANAGER_REPO_URL=$(echo "$CERTMANAGER_REPO_SPEC" | yq eval '.spec.url' -)
-CERTMANAGER_RELEASE_SPEC=$(cat ./infrastructure/controllers/base/cert-manager/helmrelease.yaml)
+CERTMANAGER_RELEASE_SPEC=$(kustomize build ../apps/cert-manager/dev | yq 'select(.kind == "HelmRelease")')
 CERTMANAGER_VERSION=$(echo "$CERTMANAGER_RELEASE_SPEC" | yq eval '.spec.chart.spec.version')
 CERTMANAGER_VALUES=$(echo "$CERTMANAGER_RELEASE_SPEC" | yq eval '.spec.values')
 echo "cert-manager repo: $CERTMANAGER_REPO_URL"
