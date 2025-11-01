@@ -157,8 +157,7 @@ spec:
     grafana:
       enabled: true
       admin:
-        user: admin
-        password: "CHANGE_ME"
+        existingSecret: "kube-prometheus-stack-grafana"
       service:
         type: ClusterIP
       ingress:
@@ -172,9 +171,6 @@ spec:
           - secretName: grafana-tls
             hosts:
               - grafana.${subdomain}.ipreston.net
-      env:
-        GF_SERVER_ROOT_URL: "https://grafana.${subdomain}.ipreston.net"
-        GF_SECURITY_ADMIN_PASSWORD: "CHANGE_ME"
       persistence:
         enabled: true
         type: pvc
