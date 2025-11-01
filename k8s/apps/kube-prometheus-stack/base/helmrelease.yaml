@@ -156,8 +156,9 @@ spec:
     # ---------------------------
     grafana:
       enabled: true
-      adminUser: admin
-      adminPassword: "CHANGE_ME"
+      admin:
+        user: admin
+        password: "CHANGE_ME"
       service:
         type: ClusterIP
       ingress:
