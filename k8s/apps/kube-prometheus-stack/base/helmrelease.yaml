@@ -173,13 +173,13 @@ spec:
           - secretName: grafana-tls
             hosts:
               - grafana.${subdomain}.ipreston.net
-      persistence:
-        enabled: true
-        type: pvc
-        storageClassName: longhorn-default
-        accessModes:
-          - ReadWriteOnce
-        size: 10Gi
+      # persistence:
+      #   enabled: true
+      #   type: sts
+      #   storageClassName: longhorn-default
+      #   accessModes:
+      #     - ReadWriteOnce
+      #   size: 10Gi
       # Automatically pick up dashboards/datasources from ConfigMaps across all namespaces
       sidecar:
         dashboards:
