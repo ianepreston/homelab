@@ -146,7 +146,7 @@ spec:
         enabled: true
         ingressClassName: traefik
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - alertmanager.${subdomain}.ipreston.net
         tls:
@@ -166,7 +166,7 @@ spec:
         enabled: true
         ingressClassName: traefik
         annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-prod"
+          cert-manager.io/cluster-issuer: "letsencrypt-production"
         hosts:
           - grafana.${subdomain}.ipreston.net
         tls:
