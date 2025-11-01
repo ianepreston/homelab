@@ -13,6 +13,8 @@ spec:
     prometheusOperator:
       crds:
         enabled: true
+        upgradeJob:
+          enabled: true
       # Keep the operator itself modest
       resources:
         requests:
