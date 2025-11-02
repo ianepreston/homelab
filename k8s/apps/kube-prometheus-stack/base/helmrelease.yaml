@@ -104,13 +104,6 @@ spec:
         allowOverlappingBlocks: false
         queryLogFile: ""
         enableFeatures: []
-        additionalArgs:
-          - name: web.enable-lifecycle
-            value: "true"
-          - name: query.max-concurrency
-            value: "8"
-          - name: query.max-samples
-            value: "10000000"
         resources:
           requests:
             cpu: 500m
