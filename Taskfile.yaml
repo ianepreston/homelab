@@ -24,7 +24,6 @@ env:
 includes:
   bootstrap: taskfiles/bootstrap
   status: taskfiles/status
-  terraform: taskfiles/terraform
   ansible: taskfiles/ansible
 # kubernetes: .taskfiles/kubernetes
 # op: .taskfiles/onepassword
