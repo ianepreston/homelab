@@ -1,0 +1,9 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+tasks:
+  ares1:
+    desc: "Run the playbook on ares1 docker host"
+    dir: '{{.ANSIBLE_DIR}}'
+    cmds:
+      - 'ansible-galaxy collection install -r ./collections/requirements.yml'
+      - 'ansible-playbook -i inventory.yml ares.yml'

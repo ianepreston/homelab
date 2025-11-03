@@ -81,6 +81,9 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
+              ansible
+              python311Packages.websocket_client
+              glibcLocales
               renovate
               terraform
               bws
@@ -92,6 +95,7 @@
               clusterctl
               cilium-cli
               fluxcd
+              minijinja
               bws
               bitwarden-cli
               go-task

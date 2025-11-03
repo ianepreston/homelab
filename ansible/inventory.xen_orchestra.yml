@@ -1,9 +1,0 @@
----
-plugin: "community.general.xen_orchestra"
-validate_certs: false
-use_ssl: false
-groups:
-  arch: "'arch' in tags"
-  dev: "'dev' in tags"
-  dmars: "'d-mars' in tags"
-  ares: "'ares' in tags"
