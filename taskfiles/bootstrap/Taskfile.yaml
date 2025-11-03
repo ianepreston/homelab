@@ -1,0 +1,7 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+tasks:
+  reset_talos:
+    desc: "Wipe a talos cluster back to maintenance mode"
+    dir: '{{.TALOS_DIR}}'
+    cmd: "talhelper gencommand reset --extra-flags '--system-labels-to-wipe STATE,EPHEMERAL --reboot --graceful=false'"

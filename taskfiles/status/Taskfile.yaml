@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+tasks:
+  echo:
+    desc: "Just check what my variables are going to be set to"
+    cmds:
+      - 'echo "ROOT_DIR is: {{.ROOT_DIR}}"'
+      - 'echo "BOOTSTRAP_DIR is: {{.BOOTSTRAP_DIR}}"'
+      - 'echo "CLUSTER is: {{.CLUSTER}}"'
+  talos_disks:
+    desc: "List disks on your talos nodes"
+    cmd: 'talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig get disks'
+  talhelper_health:
+    desc: "Check talos health with talhelper, make sure it's working"
+    dir: '{{.TALOS_DIR}}'
+    cmd: 'talhelper gencommand health | bash'
