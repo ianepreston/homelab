@@ -22,9 +22,10 @@ env:
   # SOPS_AGE_KEY_FILE: '{{.ROOT_DIR}}/age.key'
   TALOSCONFIG: '{{.TALOS_DIR}}/clusterconfig/talosconfig'
 includes:
+  ansible: taskfiles/ansible
   bootstrap: taskfiles/bootstrap
   status: taskfiles/status
-  ansible: taskfiles/ansible
+  talos: taskfiles/talos
 # kubernetes: .taskfiles/kubernetes
 # op: .taskfiles/onepassword
 # sops: .taskfiles/sops

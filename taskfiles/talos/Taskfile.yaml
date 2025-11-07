@@ -1,0 +1,11 @@
+# yaml-language-server: $schema=https://taskfile.dev/schema.json
+version: '3'
+tasks:
+  upgrade:
+    desc: "Upgrade Talos release"
+    dir: '{{.TALOS_DIR}}'
+    cmd: "talhelper gencommand upgrade | bash"
+  upgradek8s:
+    desc: "Upgrade Kubernetes release"
+    dir: '{{.TALOS_DIR}}'
+    cmd: "talhelper gencommand upgrade-k8s | bash"
