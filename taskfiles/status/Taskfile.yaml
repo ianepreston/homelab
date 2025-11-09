@@ -13,7 +13,6 @@ tasks:
   talos_disks_insecure:
     desc: "List disks on your talos nodes"
     cmds:
-      - echo {{ .RANDOM_CONTROLLER }}
       - 'talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{ .RANDOM_CONTROLLER }} get disks --insecure'
     vars:
       RANDOM_CONTROLLER:
