@@ -1,48 +1,31 @@
----
 - block:
-  - name: Create unifi config folder
-    ansible.builtin.file:
-      path: /home/ipreston/unifi_conf
-      state: directory
-      owner: root
-      group: docker
-      mode: '0700'
-  - name: Copy over mongo init script
-    ansible.builtin.template:
-      src: init-mongo.js.j2
-      dest: /home/ipreston/unifi_conf/init-mongo.js
-      owner: root
-      group: docker
-      mode: '0750'
+    - name: Create unifi config folder
+      ansible.builtin.file:
+        path: /home/ipreston/unifi_conf
+        state: directory
+        owner: root
+        group: docker
+        mode: '0700'
+    - name: Copy over mongo init script
+      ansible.builtin.template:
+        src: init-mongo.js.j2
+        dest: /home/ipreston/unifi_conf/init-mongo.js
+        owner: root
+        group: docker
+        mode: '0750'
   become: true
-
 - name: Create unifi app volume
   community.docker.docker_volume:
     name: unifi_vol
-  
 - name: Create unifi mongodb volume
   community.docker.docker_volume:
     name: unifi_mongo_vol
-
 - name: Create unifi mongodb config volume
   community.docker.docker_volume:
     name: unifi_mongo_config_vol
-  
 - name: Create unifi network
   community.docker.docker_network:
     name: unifi_net
-
-- name: Create infra vlan network
-  community.docker.docker_network:
-    name: infra_vlan
-    driver: ipvlan
-    driver_options:
-      parent: enX1
-    ipam_config:
-      - subnet: 192.168.10.0/24
-        gateway: 192.168.10.1
-        iprange: 192.168.10.0/24
-
 # This image is outdated and has vulnerabilities, but it's the
 # latest supported. Keep an eye on issue tracking.
 # Could not get the init script running. After you build the container,
@@ -64,15 +47,12 @@
       - unifi_mongo_vol:/data/db
       - unifi_mongo_config_vol:/data/configdb
       - /home/ipreston/unifi_conf/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
-
 - name: Create unifi network controller container
   community.docker.docker_container:
     name: unifi
     hostname: unifi
     networks:
       - name: unifi_net
-      - name: infra_vlan
-        ipv4_address: 192.168.10.41
     image: lscr.io/linuxserver/unifi-network-application:8.0.26-ls24
     image_name_mismatch: recreate
     state: "started"
@@ -97,5 +77,3 @@
       - 8880:8880 #optional
       - 6789:6789 #optional
       - 5514:5514/udp #optional
-
-    
