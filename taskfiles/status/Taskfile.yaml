@@ -10,6 +10,14 @@ tasks:
   talos_disks:
     desc: "List disks on your talos nodes"
     cmd: 'talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig get disks'
+  talos_disks_insecure:
+    desc: "List disks on your talos nodes"
+    cmds:
+      - echo {{ .RANDOM_CONTROLLER }}
+      - 'talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{ .RANDOM_CONTROLLER }} get disks --insecure'
+    vars:
+      RANDOM_CONTROLLER:
+        sh: talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info --output yaml | yq --exit-status '.endpoints[0]'
   talhelper_health:
     desc: "Check talos health with talhelper, make sure it's working"
     dir: '{{.TALOS_DIR}}'
