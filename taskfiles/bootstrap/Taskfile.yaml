@@ -8,7 +8,6 @@ tasks:
   wipe_sda_insecure:
     desc: "Wipe the sda (should be SATA SSD for pvcs) disk from maintenance mode"
     cmds:
-      - echo {{ .ALL_NODES }}
       - 'talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{ .ALL_NODES }} wipe disk sda --insecure'
     vars:
       ALL_NODES:
