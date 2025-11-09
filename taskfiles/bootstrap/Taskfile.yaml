@@ -5,3 +5,11 @@ tasks:
     desc: "Wipe a talos cluster back to maintenance mode"
     dir: '{{.TALOS_DIR}}'
     cmd: "talhelper gencommand reset --extra-flags '--system-labels-to-wipe STATE --system-labels-to-wipe EPHEMERAL --reboot --graceful=false' | bash"
+  wipe_sda_insecure:
+    desc: "Wipe the sda (should be SATA SSD for pvcs) disk from maintenance mode"
+    cmds:
+      - echo {{ .ALL_NODES }}
+      - 'talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{ .ALL_NODES }} wipe disk sda --insecure'
+    vars:
+      ALL_NODES:
+        sh: talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info --output yaml | yq --exit-status -r '.endpoints | join(",")'
