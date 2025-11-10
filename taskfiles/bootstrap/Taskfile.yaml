@@ -19,7 +19,7 @@ tasks:
   bootstrap_talos:
     desc: Bootstrap Talos
     cmds:
-      # - until talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{.RANDOM_CONTROLLER}} bootstrap; do sleep 5; done
+      - until talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{.RANDOM_CONTROLLER}} bootstrap; do sleep 5; done
       - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig kubeconfig --nodes {{.RANDOM_CONTROLLER}} --force {{.CLUSTER_DIR}} --force-context-name {{.CLUSTER}}
     vars:
       RANDOM_CONTROLLER:
