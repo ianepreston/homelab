@@ -9,3 +9,7 @@ tasks:
     desc: "Upgrade Kubernetes release"
     dir: '{{.TALOS_DIR}}'
     cmd: "talhelper gencommand upgrade-k8s | bash"
+  apply:
+    desc: "Apply talos config"
+    dir: '{{.TALOS_DIR}}'
+    cmd: "talhelper gencommand apply | bash"

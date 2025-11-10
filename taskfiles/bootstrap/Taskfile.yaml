@@ -12,3 +12,21 @@ tasks:
     vars:
       ALL_NODES:
         sh: talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info --output yaml | yq --exit-status -r '.endpoints | join(",")'
+  apply_talos:
+    desc: "Apply talos config"
+    dir: '{{.TALOS_DIR}}'
+    cmd: "talhelper gencommand apply --extra-flags '--insecure'| bash"
+  bootstrap_talos:
+    desc: Bootstrap Talos
+    cmds:
+      # - until talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{.RANDOM_CONTROLLER}} bootstrap; do sleep 5; done
+      - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig kubeconfig --nodes {{.RANDOM_CONTROLLER}} --force {{.CLUSTER_DIR}} --force-context-name {{.CLUSTER}}
+    vars:
+      RANDOM_CONTROLLER:
+        sh: talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info --output yaml | yq --exit-status '.endpoints[0]'
+    requires:
+      vars: [CLUSTER]
+    preconditions:
+      - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info
+      - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{.RANDOM_CONTROLLER}} get machineconfig
+      - which yq talosctl
