@@ -150,22 +150,13 @@ spec:
     # Grafana
     # ---------------------------
     grafana:
-      enabled: true
-      admin:
-        existingSecret: "kube-prometheus-stack-grafana"
-      service:
-        type: ClusterIP
-      ingress:
-        enabled: true
-        ingressClassName: traefik
-        annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-        hosts:
-          - grafana.${subdomain}.ipreston.net
-        tls:
-          - secretName: grafana-tls
-            hosts:
-              - grafana.${subdomain}.ipreston.net
+      enabled: false
+      forceDeployDashboards: true
+      operator:
+        dashboardsConfigMapRefEnabled: true
+        folder: observability
+        matchLabels:
+          grafana.internal/instance: grafana
       # persistence:
       #   enabled: true
       #   type: sts
