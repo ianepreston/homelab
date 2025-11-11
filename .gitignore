@@ -2,3 +2,4 @@
 bws.env
 k8s.env
 kubeconfig
+.tmp
