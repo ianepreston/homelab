@@ -1,0 +1,6 @@
+{{- $cluster := requiredEnv "CLUSTER" -}}
+{{- $ns := .Release.Namespace -}}
+{{- $name := .Release.Name -}}
+{{- $path := printf "../k8s/apps/%s/%s/ocirepository.yaml" $name $cluster -}}
+{{- exec "yq" (list ".spec.ref.tag // .spec.ref.semver" $path) | trim -}}
+

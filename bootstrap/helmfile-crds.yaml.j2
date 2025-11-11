@@ -1,0 +1,19 @@
+# yaml-language-server: $schema=https://json.schemastore.org/helmfile
+helmDefaults:
+  args: ['--include-crds', '--no-hooks']
+  postRenderer: bash
+  postRendererArgs: [-c, "yq ea --exit-status 'select(.kind == \"CustomResourceDefinition\")'"]
+
+releases:
+  - name: external-secrets
+    namespace: external-secrets
+    chart: oci://ghcr.io/external-secrets/charts/external-secrets
+    version: "{{ versions['external-secrets'] }}"
+  - name: grafana-operator
+    namespace: monitoring
+    chart: oci://ghcr.io/grafana/helm-charts/grafana-operator
+    version: "{{ versions['grafana-operator'] }}"
+  - name: kube-prometheus-stack
+    namespace: monitoring
+    chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
+    version: "{{ versions['kube-prometheus-stack'] }}"
