@@ -91,6 +91,7 @@
               talhelperPkg
               kubectl
               kubernetes-helm
+              helmfile
               kustomize
               clusterctl
               cilium-cli
@@ -99,6 +100,8 @@
               bws
               bitwarden-cli
               go-task
+              yq-go
+              jq
             ];
           };
         }
