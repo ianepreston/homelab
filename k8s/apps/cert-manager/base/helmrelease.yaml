@@ -5,17 +5,16 @@ metadata:
   name: cert-manager
 spec:
   interval: 30m
-  chart:
-    spec:
-      chart: cert-manager
-      version: "not-used"
-      sourceRef:
-        kind: HelmRepository
-        name: cert-manager
+  chartRef:
+    kind: OCIRepository
+    name: cert-manager
   values:
     crds:
       enabled: true
-      keep: true
     replicaCount: 3
     podDisruptionBudget:
       enabled: true
+    prometheus:
+      enabled: true
+      servicemonitor:
+        enabled: true
