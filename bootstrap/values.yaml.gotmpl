@@ -1,0 +1,7 @@
+{{- $cluster := requiredEnv "CLUSTER" -}}
+{{- $name := .Release.Name -}}
+{{- $apps := requiredEnv "CLUSTER_APPS" -}}
+{{- $path := printf "%s/%s/%s" $apps $name $cluster -}}
+{{ exec "bash" (list "-lc" (printf
+  "kustomize build %q | yq 'select(.kind==\"HelmRelease\" and .metadata.name==\"%s\" ) | .spec.values' -"
+  $path $name )) }}

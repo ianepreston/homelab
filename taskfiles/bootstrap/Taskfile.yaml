@@ -30,3 +30,73 @@ tasks:
       - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info
       - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{.RANDOM_CONTROLLER}} get machineconfig
       - which yq talosctl
+  k8s:
+    desc: "Bootstrap kubernetes resources into the cluster"
+    # internal: true
+    cmds:
+      - task: k8s_namespace
+      - task: k8s_crd_json
+      - task: k8s_render_helmfile_crds
+      - task: k8s_apply_crds
+      - task: k8s_install_charts
+  k8s_namespace:
+    desc: "Install namespaces"
+    internal: true
+    cmd: kubectl --kubeconfig {{.KUBECONFIG}} apply -f {{.BOOTSTRAP_DIR}}/namespace.yaml
+  k8s_crd_json:
+    desc: "Get versions of releases to install CRDs from"
+    internal: true
+    silent: true
+    cmds:
+      - |-
+        mkdir -p .tmp && echo '{}' | jq '.' > .tmp/crd-versions.json
+      - |-
+        for app in kube-prometheus-stack grafana-operator external-secrets; do
+          file="{{.CLUSTER_APPS}}/$app/{{.CLUSTER}}/ocirepository.yaml"
+          ver=$(yq -r '.spec.ref.tag // empty' "$file");
+          if [ -z "$ver" ]; then
+            echo "ERROR: version missing in $file (spec.chart.spec.version)"; exit 1;
+          fi
+          jq --arg app "$app" --arg ver "$ver" '. + {($app): ($ver)}' .tmp/crd-versions.json > .tmp/crd-versions.json.tmp && mv .tmp/crd-versions.json.tmp .tmp/crd-versions.json
+        done
+        jq -c '{versions: .}' .tmp/crd-versions.json > .tmp/crd-versions.context.json
+  k8s_render_helmfile_crds:
+    desc: Render Helmfile for CRD bootstrap from a minijinja template
+    internal: true
+    silent: true
+    cmds:
+      - >
+        minijinja-cli bootstrap/helmfile-crds.yaml.j2 .tmp/crd-versions.context.json > .tmp/helmfile-crds.yaml
+
+  k8s_apply_crds:
+    desc: Apply CRDs only using Helmfile
+    internal: true
+    cmds:
+      - helmfile --file .tmp/helmfile-crds.yaml template  | kubectl --kubeconfig {{.KUBECONFIG}} apply --server-side --filename -
+  k8s_install_charts:
+    desc: Install helm charts
+    internal: true
+    silent: true # lots of verbose output, good for debugging if you need it
+    cmds:
+      - helmfile --file {{.BOOTSTRAP_DIR}}/apps.yaml sync --hide-notes --log-level debug
+      # - echo $CLUSTER
+      # - echo $CLUSTER_APPS
+      # - helmfile --file {{.BOOTSTRAP_DIR}}/apps.yaml -l name=cilium template > .tmp/cilium-rendered.yaml
+      # - helmfile --file {{.BOOTSTRAP_DIR}}/apps.yaml -l name=cilium write-values --output-file-template=../.tmp/cilium-values.yaml
+    requires:
+      vars: [CLUSTER]
+    vars:
+      RANDOM_CONTROLLER:
+        sh: talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info --output yaml | yq --exit-status '.endpoints[0]'
+    env:
+      CLUSTER: '{{.CLUSTER}}'
+      CLUSTER_APPS: '{{.CLUSTER_APPS}}'
+      CLUSTER_DIR: '{{.CLUSTER_DIR}}'
+      KUBECONFIG: '{{.KUBECONFIG}}'
+    preconditions:
+      - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig config info
+      - talosctl --talosconfig {{.TALOS_CONFIG_DIR}}/talosconfig --nodes {{.RANDOM_CONTROLLER}} get machineconfig
+      - test -f {{.BOOTSTRAP_DIR}}/values.yaml.gotmpl
+      - test -f {{.BOOTSTRAP_DIR}}/version.txt.gotmpl
+      - test -f {{.BOOTSTRAP_DIR}}/apps.yaml
+      - which helmfile jq kubectl talosctl

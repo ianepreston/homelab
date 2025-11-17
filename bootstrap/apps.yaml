@@ -1,0 +1,110 @@
+# yaml-language-server: $schema=https://json.schemastore.org/helmfile
+helmDefaults:
+  cleanupOnFail: true
+  wait: true
+  waitForJobs: true
+releases:
+  - name: cilium
+    namespace: kube-system
+    atomic: true
+    chart: oci://ghcr.io/home-operations/charts-mirror/cilium
+    version: '{{ tpl (readFile "./version.txt.gotmpl") . | trim }}'
+    values: ['./values.yaml.gotmpl']
+    hooks:
+      - # Wait for cilium CRDs to be available
+        events: ['postsync']
+        command: bash
+        args:
+          - -c
+          - until kubectl  get crd ciliumloadbalancerippools.cilium.io ciliumbgpadvertisements.cilium.io ciliumbgppeerconfigs.cilium.io ciliumbgpclusterconfigs.cilium.io &>/dev/null; do sleep 5; done
+        showlogs: true
+        # - # Advertise Kubernetes VIP
+        #   events: ['postsync']
+        #   command: kubectl
+        #   args:
+        #     - --context={{ requiredEnv "CLUSTER" }}
+        #     - apply
+        #     - --namespace=kube-system
+        #     - --server-side
+        #     - --field-manager=kustomize-controller
+        #     - --filename={{ requiredEnv "CLUSTER_APPS" }}/kube-system/cilium/networking.yaml
+        #   showlogs: true
+  # - name: coredns
+  #   namespace: kube-system
+  #   atomic: true
+  #   chart: oci://ghcr.io/coredns/charts/coredns
+  #   version: 1.45.0
+  #   values: ['../templates/values.yaml.gotmpl']
+  #   needs: ['kube-system/cilium']
+  - name: cert-manager
+    namespace: cert-manager
+    atomic: true
+    chart: oci://quay.io/jetstack/charts/cert-manager
+    version: '{{ tpl (readFile "./version.txt.gotmpl") . | trim }}'
+    values: ['./values.yaml.gotmpl']
+    needs: ['kube-system/cilium']
+    hooks:
+      - events: ['postsync']
+        showlogs: true
+        command: bash
+        args:
+          - -lc
+          - |-
+            #Wait for core CRDs to exist before applying
+            until kubectl  get crd clusterissuers.cert-manager.io issuers.cert-manager.io certificates.cert-manager.io &>/dev/null; do
+              echo "waiting for cert-manager CRDs..."; sleep 5
+            done
+            # Apply bitwarden self-signed cert
+            kubectl  apply -f {{ requiredEnv "CLUSTER_APPS" }}/external-secrets-config/base/bitwarden-self-signed-cert.yaml
+            # Wait for bitwarden-css-certs to exist
+            for i in {1..60}; do
+              if kubectl  -n external-secrets get secret bitwarden-css-certs &>/dev/null; then
+                echo "CA secret bitwarden-css-certs is present."; break
+              fi
+              echo "Waiting for CA secret bitwarden-css-certs..."; sleep 5
+            done
+  - name: external-secrets
+    namespace: external-secrets
+    atomic: true
+    chart: oci://ghcr.io/external-secrets/charts/external-secrets
+    version: '{{ tpl (readFile "./version.txt.gotmpl") . | trim }}'
+    values: ['./values.yaml.gotmpl']
+    needs: ['cert-manager/cert-manager']
+    hooks:
+      - events: ['postsync']
+        showlogs: true
+        command: bash
+        args:
+          - -lc
+          - |
+            # Wait until external-secrets CRDs exist:
+            kubectl  wait --for=condition=Established --timeout=120s \
+            crd/clustersecretstores.external-secrets.io crd/externalsecrets.external-secrets.io
+            # bws exposes env vars to the subcommand. We use dry-run+apply to be idempotent:
+            bws run --project-id {{ requiredEnv "BWS_PROJECT"}} '
+              kubectl -n external-secrets \
+              create secret generic bitwarden-access-token \
+              --from-literal token="$BWS_MACHINE_TOKEN" \
+              --dry-run=client -o yaml | \
+              kubectl apply -f - \
+            '
+            bws run --project-id {{ requiredEnv "BWS_PROJECT"}} '
+              envsubst < ./clustersecretstore.tmpl.yaml | \
+              kubectl apply -f - \
+            '
+  - name: flux-operator
+    namespace: flux-system
+    atomic: true
+    chart: oci://ghcr.io/controlplaneio-fluxcd/charts/flux-operator
+    version: '{{ tpl (readFile "./version.txt.gotmpl") . | trim }}'
+    needs: ['external-secrets/external-secrets']
+    hooks:
+      - events: ['postsync']
+        showlogs: true
+        command: bash
+        args:
+          - -lc
+          - |
+            # Apply flux secret
+            kubectl apply -f {{ requiredEnv "CLUSTER_APPS" }}/flux-operator/base/external-secret.yaml
+            kubectl apply -f {{ requiredEnv "CLUSTER_APPS" }}/flux-operator/{{ requiredEnv "CLUSTER" }}/flux-instance.yaml
