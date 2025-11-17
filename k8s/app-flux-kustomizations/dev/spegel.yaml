@@ -33,3 +33,8 @@ spec:
           ref:
             # renovate: datasource=docker depName=ghcr.io/spegel-org/spegel
             tag: 0.4.0
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-config
+        optional: false

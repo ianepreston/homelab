@@ -24,3 +24,8 @@ spec:
     - name: nginx
       # renovate: datasource=docker depName=nginx
       newTag: "1.29.3"
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-config
+        optional: false
