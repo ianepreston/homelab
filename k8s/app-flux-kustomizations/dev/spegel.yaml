@@ -11,7 +11,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/apps/spegel/dev
+  path: ./k8s/apps/spegel/${clusterpath}
   prune: true
   sourceRef:
     kind: GitRepository

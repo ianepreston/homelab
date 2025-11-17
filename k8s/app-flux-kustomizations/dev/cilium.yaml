@@ -9,7 +9,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/apps/cilium/dev
+  path: ./k8s/apps/cilium/${clusterpath}
   prune: true
   sourceRef:
     kind: GitRepository

@@ -12,7 +12,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/apps/kube-prometheus-stack/dev
+  path: ./k8s/apps/kube-prometheus-stack/${clusterpath}
   prune: true
   sourceRef:
     kind: GitRepository

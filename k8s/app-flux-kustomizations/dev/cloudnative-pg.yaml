@@ -12,7 +12,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/apps/cloudnative-pg/dev
+  path: ./k8s/apps/cloudnative-pg/${clusterpath}
   prune: true
   sourceRef:
     kind: GitRepository

@@ -12,7 +12,7 @@ spec:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/apps/longhorn-config/dev
+  path: ./k8s/apps/longhorn-config/${clusterpath}
   prune: true
   sourceRef:
     kind: GitRepository
