@@ -4,3 +4,10 @@ kind: Kustomization
 resources:
   - ../base
   - ./ocirepository.yaml
+patches:
+  - path: ./patch-helm.yaml
+    target:
+      group: helm.toolkit.fluxcd.io
+      version: v2
+      kind: HelmRelease
+      name: cilium
