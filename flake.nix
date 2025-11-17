@@ -85,6 +85,7 @@
               python311Packages.websocket_client
               glibcLocales
               renovate
+              envsubst
               terraform
               bws
               talosctlPkg
