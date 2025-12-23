@@ -10,7 +10,7 @@
     hostname: miniflux-postgres
     networks:
       - name: miniflux_net
-    image: postgres:16.10
+    image: postgres:16.11
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
