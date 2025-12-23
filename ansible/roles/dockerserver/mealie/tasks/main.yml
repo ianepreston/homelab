@@ -13,7 +13,7 @@
     hostname: mealie-postgres
     networks:
       - name: mealie_net
-    image: postgres:17.6
+    image: postgres:17.7
     state: "started"
     container_default_behavior: compatibility
     env:
