@@ -26,7 +26,7 @@
     hostname: homepage
     networks:
       - name: traefik_net
-    image: "ghcr.io/gethomepage/homepage:v1.5.0"
+    image: "ghcr.io/gethomepage/homepage:v1.8.0"
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
