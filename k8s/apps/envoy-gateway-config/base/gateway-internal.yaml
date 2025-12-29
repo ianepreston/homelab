@@ -9,6 +9,8 @@ spec:
   infrastructure:
     annotations:
       lbipam.cilium.io/ips: ${SVC_GATEWAY_INTERNAL}
+    labels:
+      lb-pool: ip-pool
   listeners:
     - name: http
       protocol: HTTP
