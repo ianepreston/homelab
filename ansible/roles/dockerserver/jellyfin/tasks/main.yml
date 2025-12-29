@@ -21,7 +21,7 @@
       TZ: "America/Edmonton"
       PUID: "1026"
       PGID: "100"
-      JELLYFIN_PublishedServerUrl: "{{ ansible_default_ipv4.address }}"
+      JELLYFIN_PublishedServerUrl: "{{ ansible_facts['default_ipv4']['address'] }}"
       DOCKER_MODS: "linuxserver/mods:jellyfin-opencl-intel"
       LIBVA_DRIVER_NAME: "i965"
     restart_policy: unless-stopped
