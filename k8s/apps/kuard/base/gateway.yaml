@@ -6,7 +6,7 @@ metadata:
   namespace: kuard
 spec:
   parentRefs:
-    - name: envoy-gateway
+    - name: envoy-internal
       namespace: envoy-gateway
   hostnames:
     - "kuard.edk8s.ipreston.net"
