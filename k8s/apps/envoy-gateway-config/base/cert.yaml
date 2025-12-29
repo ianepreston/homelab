@@ -1,0 +1,16 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/cert-manager.io/certificate_v1.json
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ipreston
+  namespace: envoy-gateway
+spec:
+  secretName: ipreston-tls
+  commonName: "ipreston.net"
+  dnsNames:
+    - "ipreston.net"
+    - "*.ipreston.net"
+  issuerRef:
+    name: letsencrypt-production
+    kind: ClusterIssuer
