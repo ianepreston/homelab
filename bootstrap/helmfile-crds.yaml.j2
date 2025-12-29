@@ -13,3 +13,7 @@ releases:
     namespace: monitoring
     chart: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
     version: "{{ versions['kube-prometheus-stack'] }}"
+  - name: envoy-gateway
+    namespace: envoy-gateway
+    chart: oci://mirror.gcr.io/envoyproxy/gateway-helm
+    version: "{{ versions['envoy-gateway'] }}"

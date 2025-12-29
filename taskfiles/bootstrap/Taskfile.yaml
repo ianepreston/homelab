@@ -51,9 +51,9 @@ tasks:
       - |-
         mkdir -p .tmp && echo '{}' | jq '.' > .tmp/crd-versions.json
       - |-
-        for app in kube-prometheus-stack grafana-operator external-secrets; do
+        for app in kube-prometheus-stack grafana-operator external-secrets envoy-gateway; do
           file="{{.CLUSTER_APPS}}/$app/{{.CLUSTER}}/ocirepository.yaml"
-          ver=$(yq -r '.spec.ref.tag // empty' "$file");
+          ver=$(yq -r '.spec.ref.tag' "$file");
           if [ -z "$ver" ]; then
             echo "ERROR: version missing in $file (spec.chart.spec.version)"; exit 1;
           fi
