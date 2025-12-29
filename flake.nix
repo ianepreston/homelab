@@ -25,13 +25,17 @@
           version = "1.11.3";
           sha256 = "sha256-fNOg0lqPLeo0PCgVQxzAfT6AurEk58PiJziBncCcGz8=";
         };
+        "1.12.0" = {
+          version = "1.12.0";
+          sha256 = "sha256-EaJ0XPkrAWtHg6z161a/w5Su3mGpdt0Xtej20JOX4io=";
+        };
       };
       # nix-prefetch-url https://github.com/siderolabs/talos/releases/download/v1.11.1/talosctl-linux-amd64
-      # "1.11.1" = {
-      #   version = "1.11.1";
+      # "1.12.0" = {
+      #   version = "1.12.0";
       #   sha256 = "sha256-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=";
       # };
-      selectedTalosctlVersion = "1.11.3"; # Change this to switch versions
+      selectedTalosctlVersion = "1.12.0"; # Change this to switch versions
       talosctlBinary =
         {
           pkgs,
