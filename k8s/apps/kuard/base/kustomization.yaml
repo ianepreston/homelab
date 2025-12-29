@@ -5,4 +5,4 @@ resources:
   - ./kuard-ingress.yaml
   - ./kuard-service.yaml
   - ./external-secret.yaml
-  - ./gateway.yaml
+  - ./http-route.yaml
