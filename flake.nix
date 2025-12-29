@@ -82,7 +82,6 @@
           default = pkgs.mkShell {
             packages = with pkgs; [
               ansible
-              python311Packages.websocket_client
               glibcLocales
               renovate
               envsubst
