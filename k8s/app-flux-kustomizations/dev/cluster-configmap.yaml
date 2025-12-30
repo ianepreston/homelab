@@ -5,6 +5,7 @@ metadata:
   name: cluster-config
   namespace: flux-system
 data:
+  esubdomain: edk8s
   subdomain: dk8s
   clusterpath: dev
   SVC_GATEWAY_INTERNAL: 192.168.10.142

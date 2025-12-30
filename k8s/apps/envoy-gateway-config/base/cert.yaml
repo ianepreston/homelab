@@ -10,7 +10,7 @@ spec:
   commonName: "ipreston.net"
   dnsNames:
     - "ipreston.net"
-    - "*.ipreston.net"
+    - "*${esubdomain}.ipreston.net"
   issuerRef:
     name: letsencrypt-production
     kind: ClusterIssuer
