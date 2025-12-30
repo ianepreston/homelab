@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/helm.toolkit.fluxcd.io/helmrelease_v2.json
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
@@ -78,7 +79,7 @@ spec:
         externalLabels:
           cluster: dev
         # Let Prometheus discover ServiceMonitors/PodMonitors & Rules from ALL namespaces.
-        # This is key so it can pick up Cilium/Traefik/Longhorn monitors installed by their charts.
+        # This is key so it can pick up Cilium/Longhorn monitors installed by their charts.
         serviceMonitorSelector: {}
         serviceMonitorNamespaceSelector: {}
         podMonitorSelector: {}
