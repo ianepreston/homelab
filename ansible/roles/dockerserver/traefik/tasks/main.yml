@@ -1,78 +1,73 @@
 ---
-
-
 - block:
-  - name: Create traefik config folder
-    ansible.builtin.file:
-      path: /home/ipreston/traefik_conf
-      state: directory
-      owner: root
-      group: docker
-      mode: '0700'
-  - name: Copy over traefik main config
-    ansible.builtin.template:
-      src: traefik.yml.j2
-      dest: /home/ipreston/traefik_conf/traefik.yml
-      owner: root
-      group: docker
-      mode: '0600'
-    notify: restart traefik
-  - name: create acme folder
-    ansible.builtin.file:
-      path: /home/ipreston/traefik_conf/acme
-      state: directory
-      owner: root
-      group: docker
-      mode: '0700'
-  - name: Ensure acme.json file exists
-    ansible.builtin.file:
-      path: /home/ipreston/traefik_conf/acme/acme.json
-      access_time: preserve
-      modification_time: preserve
-      state: touch
-      owner: root
-      group: docker
-      mode: '0600'
-  - name: create rules folder
-    ansible.builtin.file:
-      path: /home/ipreston/traefik_conf/rules
-      state: directory
-      owner: root
-      group: docker
-      mode: '0700'
-  - name: Put middlewares in rules
-    ansible.builtin.template:
-      src: middlewares.yml.j2
-      dest: /home/ipreston/traefik_conf/rules/middlewares.yml
-      owner: root
-      group: docker
-      mode: '0600'
-  - name: Put middlewares chains in rules
-    ansible.builtin.template:
-      src: middlewares-chains.yml.j2
-      dest: /home/ipreston/traefik_conf/rules/middlewares-chains.yml
-      owner: root
-      group: docker
-      mode: '0600'
-  - name: Put tls options in rules
-    ansible.builtin.copy:
-      src: tls-opts.yml
-      dest: /home/ipreston/traefik_conf/rules/tls-opts.yml
-      owner: root
-      group: docker
-      mode: '0600'
-
+    - name: Create traefik config folder
+      ansible.builtin.file:
+        path: /home/ipreston/traefik_conf
+        state: directory
+        owner: root
+        group: docker
+        mode: '0700'
+    - name: Copy over traefik main config
+      ansible.builtin.template:
+        src: traefik.yml.j2
+        dest: /home/ipreston/traefik_conf/traefik.yml
+        owner: root
+        group: docker
+        mode: '0600'
+      notify: restart traefik
+    - name: create acme folder
+      ansible.builtin.file:
+        path: /home/ipreston/traefik_conf/acme
+        state: directory
+        owner: root
+        group: docker
+        mode: '0700'
+    - name: Ensure acme.json file exists
+      ansible.builtin.file:
+        path: /home/ipreston/traefik_conf/acme/acme.json
+        access_time: preserve
+        modification_time: preserve
+        state: touch
+        owner: root
+        group: docker
+        mode: '0600'
+    - name: create rules folder
+      ansible.builtin.file:
+        path: /home/ipreston/traefik_conf/rules
+        state: directory
+        owner: root
+        group: docker
+        mode: '0700'
+    - name: Put middlewares in rules
+      ansible.builtin.template:
+        src: middlewares.yml.j2
+        dest: /home/ipreston/traefik_conf/rules/middlewares.yml
+        owner: root
+        group: docker
+        mode: '0600'
+    - name: Put middlewares chains in rules
+      ansible.builtin.template:
+        src: middlewares-chains.yml.j2
+        dest: /home/ipreston/traefik_conf/rules/middlewares-chains.yml
+        owner: root
+        group: docker
+        mode: '0600'
+    - name: Put tls options in rules
+      ansible.builtin.copy:
+        src: tls-opts.yml
+        dest: /home/ipreston/traefik_conf/rules/tls-opts.yml
+        owner: root
+        group: docker
+        mode: '0600'
   become: true
-
 - name: Create traefik network
   community.docker.docker_network:
     name: traefik_net
-
 - name: Start traefik
   community.docker.docker_container:
     name: traefik
     hostname: traefik
-    image: "traefik:v3.5.4"
+    image: "traefik:v3.6.6"
     image_name_mismatch: recreate
     networks:
       - name: "traefik_net"
