@@ -38,7 +38,7 @@
     hostname: unifi-mongo
     networks:
       - name: unifi_net
-    image: docker.io/mongo:4.4.29
+    image: docker.io/mongo:4.4.30
     image_name_mismatch: recreate
     state: "started"
     container_default_behavior: compatibility
