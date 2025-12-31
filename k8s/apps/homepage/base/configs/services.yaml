@@ -1,12 +1,24 @@
-- My First Group:
-    - My First Service:
-        href: http://localhost/
-        description: Homepage is awesome
-- My Second Group:
-    - My Second Service:
-        href: http://localhost/
-        description: Homepage is the best
-- My Third Group:
-    - My Third Service:
-        href: http://localhost/
-        description: Homepage is 😎
+---
+- Infrastructure:
+    - pfsense:
+        href: "https://behemoth.ipreston.net:10443"
+        icon: pfsense
+        description: router
+    - laconia:
+        href: "http://laconia.ipreston.net:5001"
+        icon: synology
+        description: NAS
+        # widget:
+        #   type: diskstation
+        #   url: "http://laconia.ipreston.net:5001"
+        #   username: "ipreston"
+        #   password: "{{ laconia_pass }}"
+        #   fields: ["volumeAvailable", "resources.cpu", "resources.mem"]
+    - unifi:
+        href: "https://192.168.10.41:8443"
+        icon: unifi
+        description: WiFi controller
+    - blikvm:
+        href: "http://blikvm.ipreston.net"
+        icon: "pikvm"
+        description: "KVM over IP"
