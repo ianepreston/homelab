@@ -8,12 +8,12 @@
         href: "http://laconia.ipreston.net:5001"
         icon: synology
         description: NAS
-        # widget:
-        #   type: diskstation
-        #   url: "http://laconia.ipreston.net:5001"
-        #   username: "ipreston"
-        #   password: "{{ laconia_pass }}"
-        #   fields: ["volumeAvailable", "resources.cpu", "resources.mem"]
+        widget:
+          type: diskstation
+          url: "https://laconia.ipreston.net:5001"
+          username: "ipreston"
+          password: "{{HOMEPAGE_VAR_LACONIA_PASSWORD}}"
+          fields: ["volumeAvailable", "resources.cpu", "resources.mem"]
     - unifi:
         href: "https://192.168.10.41:8443"
         icon: unifi

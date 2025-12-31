@@ -6,6 +6,9 @@ metadata:
   namespace: homepage
   labels:
     app.kubernetes.io/name: homepage
+  annotations:
+    reloader.stakater.com/auto: "true"
+    secret.reloader.stakater.com/reload: "laconia-password"
 spec:
   revisionHistoryLimit: 3
   replicas: 1
@@ -30,6 +33,11 @@ spec:
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: homepage.${subdomain}.ipreston.net
+            - name: HOMEPAGE_VAR_LACONIA_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: laconia-password
+                  key: LACONIA_PASSWORD
           ports:
             - name: http
               containerPort: 3000
