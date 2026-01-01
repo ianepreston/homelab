@@ -9,6 +9,7 @@ metadata:
     gethomepage.dev/description: Budget Tracker
     gethomepage.dev/group: Consumption
     gethomepage.dev/name: Actualbudget
+    gethomepage.dev/icon: actual-budget
 spec:
   parentRefs:
     - name: envoy-internal
