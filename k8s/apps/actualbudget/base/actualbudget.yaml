@@ -1,3 +1,4 @@
+---
 kind: Namespace
 apiVersion: v1
 metadata:
@@ -58,7 +59,7 @@ spec:
     spec:
       containers:
         - name: main
-          image: actualbudget/actual-server:25.12.0
+          image: actualbudget/actual-server:not-used
           volumeMounts:
             - name: actualbudget-pv
               mountPath: /data
@@ -66,33 +67,3 @@ spec:
         - name: actualbudget-pv
           persistentVolumeClaim:
             claimName: actualbudget-pvc
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: actualbudget-web-ui-cert
-  namespace: actualbudget
-spec:
-  secretName: actualbudget-web-ui-tls
-  dnsNames:
-    - actualbudget.dk8s.ipreston.net
-  issuerRef:
-    name: letsencrypt-production
-    kind: ClusterIssuer
----
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
-metadata:
-  name: actualbudget-ingress
-  namespace: actualbudget
-spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`actualbudget.dk8s.ipreston.net`)
-      kind: Rule
-      services:
-        - name: actualbudget
-          port: 80
-  tls:
-    secretName: actualbudget-web-ui-tls
