@@ -33,3 +33,6 @@ layout:
     header: true
     style: row
     columns: 4
+providers:
+  longhorn:
+    url: http://longhorn-frontend.longhorn.svc.cluster.local:80

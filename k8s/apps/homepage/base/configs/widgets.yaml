@@ -31,3 +31,8 @@
     timezone: "America/Edmonton"
     units: metric
     cache: 5 # Time in minutes to cache API responses, to stay within limits
+- longhorn:
+    expanded: true
+    total: true
+    labels: true
+    nodes: true
