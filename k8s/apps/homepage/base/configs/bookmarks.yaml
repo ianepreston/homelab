@@ -1,17 +1,5 @@
 ---
-- Developer:
-    - Github:
-        - abbr: GH
-          href: https://github.com/
-          icon: github
-    - blog:
-        - abbr: ip
-          href: "http://blog.ianpreston.ca/"
-    - Databricks Academy:
-        - abbr: db
-          icon: "https://www.svgrepo.com/show/330261/databricks.svg"
-          href: "https://customer-academy.databricks.com/learn/signin"
-- General:
+- Web:
     - calendar:
         - href: "https://calendar.google.com/calendar/"
           icon: google-calendar
@@ -24,12 +12,23 @@
     - gmail:
         - href: "https://mail.google.com/mail/u/0/#inbox"
           icon: gmail
+    - maps:
+        - href: "https://google.com/maps"
+          icon: google-maps
     - openslum:
         - href: "https://open-slum.org/"
           icon: google-play-books
     - annas-archive:
         - href: "https://annas-archive.org/"
           icon: google-play-books
-    - maps:
-        - href: "https://google.com/maps"
-          icon: google-maps
+    - Github:
+        - abbr: GH
+          href: https://github.com/
+          icon: github
+    - blog:
+        - abbr: ip
+          href: "http://blog.ianpreston.ca/"
+    - Databricks Academy:
+        - abbr: db
+          icon: "https://www.svgrepo.com/show/330261/databricks.svg"
+          href: "https://customer-academy.databricks.com/learn/signin"
