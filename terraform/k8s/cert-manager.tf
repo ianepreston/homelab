@@ -26,9 +26,9 @@ resource "cloudflare_api_token" "cert_manager" {
       { id = local.zone_read.id },
       { id = local.dns_write.id },
     ]
-    resources = {
+    resources = jsonencode({
       "com.cloudflare.api.account.zone.*" = "*"
-    }
+    })
   }]
   status = "active"
 }
