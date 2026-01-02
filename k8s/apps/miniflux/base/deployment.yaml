@@ -44,8 +44,8 @@ spec:
         - env:
             - name: miniflux
               value: https://miniflux.${subdomain}.ipreston.net
-            #- name: CREATE_ADMIN
-            #  value: "1"
+            - name: CREATE_ADMIN
+              value: "1"
             - name: LOG_DATE_TIME
               value: "1"
             - name: PORT
