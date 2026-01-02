@@ -21,8 +21,3 @@ variable "cloudflare_api_token" {
   sensitive   = true
 }
 
-variable "subdomain" {
-  description = "subdomain ingress should point to eg dk8s.hostname.net"
-  type        = string
-  sensitive   = true
-}
