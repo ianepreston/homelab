@@ -8,6 +8,8 @@ metadata:
 spec:
   dependsOn:
     - name: envoy-gateway-config
+    - name: cloudnative-pg-config
+    - name: longhorn-config
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
