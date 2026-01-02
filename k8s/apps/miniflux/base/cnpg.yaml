@@ -9,6 +9,7 @@ spec:
   description: Postgres cluster for the miniflux application
   imageCatalogRef:
     kind: ClusterImageCatalog
+    apiGroup: postgresql.cnpg.io
     name: standard-postgres-catalog
     major: 17
   resources:
