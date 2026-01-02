@@ -21,3 +21,10 @@ variable "cloudflare_api_token" {
   sensitive   = true
 }
 
+variable "email" {
+  description = "email address for notifications or whatever"
+  type        = string
+  sensitive   = true
+}
+
+
