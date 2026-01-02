@@ -94,6 +94,7 @@
               talosctlPkg
               talhelperPkg
               kubectl
+              kubectl-cnpg
               kubernetes-helm
               helmfile
               kustomize
