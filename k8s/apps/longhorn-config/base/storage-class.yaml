@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.1/storageclass.json
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
@@ -7,8 +8,8 @@ metadata:
     storageclass.kubernetes.io/is-default-class: "true"
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
 parameters:
   numberOfReplicas: "2"
   dataLocality: "best-effort"
@@ -23,10 +24,16 @@ metadata:
   name: longhorn-cnpg-strict-local
 provisioner: driver.longhorn.io
 allowVolumeExpansion: true
-reclaimPolicy: Delete
-volumeBindingMode: Immediate
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
 parameters:
   numberOfReplicas: "1"
   dataLocality: "strict-local"
   fsType: "xfs"
   dataEngine: "v1"
+  # Cleanup dead replicas quickly
+  staleReplicaTimeout: "30"
+  # Better space reclamation for DB churn
+  unmapMarkSnapChainRemoved: "true"
+  # strict-local can't migrate; prevents confusion
+  migratable: "false"
