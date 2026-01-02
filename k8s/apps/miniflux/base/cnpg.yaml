@@ -24,7 +24,7 @@ spec:
   instances: 2
   storage:
     size: 2Gi
-    storageClass: local-path
+    storageClass: longhorn-cnpg-strict-local
   superuserSecret:
     name: miniflux-pg-superuser-secret
   bootstrap:
