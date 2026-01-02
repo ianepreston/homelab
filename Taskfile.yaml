@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://taskfile.dev/schema.json
 version: "3"
 set: [pipefail]
@@ -22,6 +23,9 @@ vars:
     sh: |
       bws project list | jq -r --arg name '{{.PROJECT_NAME}}' '
         map(select(.name == $name)) | .[0].organizationId // empty'
+  TFC_AGENT_TOKEN:
+    sh: |
+      bws secret list | jq -r 'first(.[] | select(.key == "TFC_AGENT_TOKEN") | .value)'
 dotenv:
   - '{{.ROOT_DIR}}/bws.env'
   # - '{{.SHARED_APPS}}/kube-tools/system-upgrade/versions.env'
@@ -55,6 +59,7 @@ tasks:
       - echo "TALOSCONFIG={{.TALOS_CONFIG_DIR}}/talosconfig" >> {{.ROOT_DIR}}/k8s.env
       - echo "BWS_PROJECT={{.BWS_PROJECT}}" >> {{.ROOT_DIR}}/k8s.env
       - echo "BWS_ORG={{.BWS_ORG}}" >> {{.ROOT_DIR}}/k8s.env
+      - echo "TFC_AGENT_TOKEN={{.TFC_AGENT_TOKEN}}" >> {{.ROOT_DIR}}/k8s.env
       - echo "context set to {{.CLUSTER}}"
   unset_context:
     desc: "Remove kubernetes and talos context"

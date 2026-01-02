@@ -108,6 +108,30 @@
               yq-go
               jq
             ];
+            shellHook = ''
+              #Cleanup any stale containers from previous runs
+              CONTAINER_NAME="tfc-agent-homelab"
+              ENV_FILE="./k8s.env"
+              if [ -f "$ENV_FILE" ]; then
+                set -a
+                source "$ENV_FILE"
+                set +a
+              fi
+              if [ "$(docker ps -aq -f name=$CONTAINER_NAME)" ]; then
+                echo "🧹 Cleaning up existing TFC Agent..."
+                docker stop $CONTAINER_NAME > /dev/null 2>&1
+                docker rm $CONTAINER_NAME > /dev/null 2>&1
+              fi
+              #Start the agent in the background
+              # --network host: Ensures the agent can reach local IPs (like Authentik)
+              # --rm: Automatically remove container on stop
+              docker run -d \
+                --name $CONTAINER_NAME \
+                --network host \
+                -e TFC_AGENT_TOKEN="$TFC_AGENT_TOKEN" \
+                -e TFC_AGENT_NAME="nix-$(hostname)" \
+                hashicorp/tfc-agent:latest > /dev/null
+            '';
           };
         }
       );
