@@ -50,10 +50,17 @@ spec:
               value: "80"
             - name: RUN_MIGRATIONS
               value: "1"
-            - name: DATABASE_URL
+            - name: DB_USER
               valueFrom:
                 secretKeyRef:
                   name: ${APP}-cnpg-db-app
-                  key: uri
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: ${APP}-cnpg-db-app
+                  key: password
+            - name: DATABASE_URL
+              value: "host=${APP}-pooler-rw user=$(DB_USER) password=$(DB_PASS) dbname=${APP}"
           image: ghcr.io/miniflux/miniflux:not-used
           name: main

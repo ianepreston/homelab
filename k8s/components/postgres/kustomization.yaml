@@ -5,6 +5,7 @@ kind: Component
 resources:
   - ./cluster.yaml
   - ./podmonitor.yaml
+  - ./pooler.yaml
 patches:
   - target:
       group: helm.toolkit.fluxcd.io
