@@ -8,3 +8,4 @@ data:
   subdomain: dk8s
   clusterpath: dev
   SVC_GATEWAY_INTERNAL: 192.168.10.142
+  PG_MAJOR: 18
