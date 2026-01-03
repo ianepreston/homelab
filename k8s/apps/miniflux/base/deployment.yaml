@@ -61,6 +61,6 @@ spec:
                   name: ${APP}-cnpg-db-app
                   key: password
             - name: DATABASE_URL
-              value: "host=${APP}-pooler-rw user=$(DB_USER) password=$(DB_PASS) dbname=${APP}"
+              value: "host=${APP}-pooler user=$(DB_USER) password=$(DB_PASS) dbname=${APP}"
           image: ghcr.io/miniflux/miniflux:not-used
           name: main
