@@ -29,3 +29,15 @@ resource "bitwarden_secret" "authentik_bootstrap_email" {
   project_id = var.bitwarden_project_id
 }
 
+resource "random_password" "authentik_secret_key" {
+  length  = 16
+  special = true
+}
+
+resource "bitwarden_secret" "authentik_secret_key" {
+  key        = "AUTHENTIK_SECRET_KEY"
+  value      = random_password.authentik_secret_key.result
+  note       = "Key for Authentik"
+  project_id = var.bitwarden_project_id
+}
+
