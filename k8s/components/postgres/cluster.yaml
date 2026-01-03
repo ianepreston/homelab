@@ -25,11 +25,7 @@ spec:
   storage:
     size: ${DB_STORAGE:=5Gi}
     storageClass: longhorn-cnpg-strict-local
-  superuserSecret:
-    name: ${APP}-pg-superuser-secret
   bootstrap:
     initdb:
       database: ${APP}
       owner: ${APP}
-      secret:
-        name: ${APP}-pg-secret

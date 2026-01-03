@@ -53,7 +53,7 @@ spec:
             - name: DATABASE_URL
               valueFrom:
                 secretKeyRef:
-                  name: ${APP}-pg-secret
+                  name: ${APP}-cnpg-db-app
                   key: uri
           # - name: HELPER_POSTGRES_HOST
           #   value: ${APP}-cnpg-db-rw
