@@ -55,21 +55,5 @@ spec:
                 secretKeyRef:
                   name: ${APP}-cnpg-db-app
                   key: uri
-          # - name: HELPER_POSTGRES_HOST
-          #   value: ${APP}-cnpg-db-rw
-          # - name: HELPER_POSTGRES_USER
-          #   value: ${APP}
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: ${APP}-pg-secret
-          #       key: username
-          # - name: HELPER_POSTGRES_PASSWORD
-          #   valueFrom:
-          #     secretKeyRef:
-          #       name: ${APP}-pg-secret
-          #       key: password
-          # - name: DATABASE_URL
-          #   value: "host=$(HELPER_POSTGRES_HOST) user=${APP} password=$(HELPER_POSTGRES_PASSWORD) dbname=${APP}"
-
           image: ghcr.io/miniflux/miniflux:not-used
           name: main
