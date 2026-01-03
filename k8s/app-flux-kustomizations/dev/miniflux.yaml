@@ -6,10 +6,17 @@ metadata:
   name: &app miniflux
   namespace: flux-system
 spec:
+  components:
+    - ../../components/postgres
+  healthCheckExprs:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      # Check if the 'Ready' condition is 'True'
+      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+      # Optional: Explicitly fail if 'Ready' is 'False' (usually Flux just waits)
+      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
   dependsOn:
     - name: envoy-gateway-config
-    - name: cloudnative-pg-config
-    - name: longhorn-config
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
@@ -20,7 +27,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: miniflux
+  targetNamespace: *app
   timeout: 5m
   wait: true
   images:
@@ -28,6 +35,9 @@ spec:
       # renovate: datasource=docker depName=ghcr.io/miniflux/miniflux
       newTag: "2.2.15-distroless"
   postBuild:
+    substitute:
+      APP: *app
+      DB_STORAGE: 2Gi
     substituteFrom:
       - kind: ConfigMap
         name: cluster-config

@@ -2,12 +2,12 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: miniflux
-  namespace: miniflux
+  name: &app miniflux
+  namespace: *app
   labels:
-    app.kubernetes.io/instance: miniflux
-    app.kubernetes.io/name: miniflux
-    app.kubernetes.io/service: miniflux
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
+    app.kubernetes.io/service: *app
 spec:
   type: ClusterIP
   ports:
@@ -16,55 +16,60 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app.kubernetes.io/instance: miniflux
-    app.kubernetes.io/name: miniflux
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: miniflux
-  namespace: miniflux
+  name: &app miniflux
+  namespace: *app
   labels:
-    app.kubernetes.io/instance: miniflux
-    app.kubernetes.io/name: miniflux
+    app.kubernetes.io/instance: *app
+    app.kubernetes.io/name: *app
 spec:
   strategy:
     type: Recreate
   selector:
     matchLabels:
-      app.kubernetes.io/name: miniflux
-      app.kubernetes.io/instance: miniflux
+      app.kubernetes.io/name: *app
+      app.kubernetes.io/instance: *app
   template:
     metadata:
       labels:
-        app.kubernetes.io/instance: miniflux
-        app.kubernetes.io/name: miniflux
+        app.kubernetes.io/instance: *app
+        app.kubernetes.io/name: *app
     spec:
       containers:
         - env:
-            - name: miniflux
+            - name: *app
               value: https://miniflux.${subdomain}.ipreston.net
-            - name: CREATE_ADMIN
-              value: "1"
             - name: LOG_DATE_TIME
               value: "1"
             - name: PORT
               value: "80"
             - name: RUN_MIGRATIONS
               value: "1"
-            - name: HELPER_POSTGRES_HOST
-              value: miniflux-db-cnpg-v1-rw
-            - name: HELPER_POSTGRES_USER
-              valueFrom:
-                secretKeyRef:
-                  name: miniflux-pg-secret
-                  key: username
-            - name: HELPER_POSTGRES_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: miniflux-encoded-postgres-pass
-                  key: POSTGRES_ENCODED_MINIFLUX_PASS
             - name: DATABASE_URL
-              value: "postgres://$(HELPER_POSTGRES_USER):$(HELPER_POSTGRES_PASSWORD)@$(HELPER_POSTGRES_HOST):5432/miniflux"
+              valueFrom:
+                secretKeyRef:
+                  name: ${APP}-pg-secret
+                  key: uri
+          # - name: HELPER_POSTGRES_HOST
+          #   value: ${APP}-cnpg-db-rw
+          # - name: HELPER_POSTGRES_USER
+          #   value: ${APP}
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: ${APP}-pg-secret
+          #       key: username
+          # - name: HELPER_POSTGRES_PASSWORD
+          #   valueFrom:
+          #     secretKeyRef:
+          #       name: ${APP}-pg-secret
+          #       key: password
+          # - name: DATABASE_URL
+          #   value: "host=$(HELPER_POSTGRES_HOST) user=${APP} password=$(HELPER_POSTGRES_PASSWORD) dbname=${APP}"
+
           image: ghcr.io/miniflux/miniflux:not-used
           name: main
