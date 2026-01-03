@@ -1,0 +1,42 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/kustomize.toolkit.fluxcd.io/kustomization_v1.json
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: &app authentik
+  namespace: flux-system
+spec:
+  components:
+    - ../../../components/postgres
+  healthCheckExprs:
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Cluster
+      # Check if the 'Ready' condition is 'True'
+      current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
+    - apiVersion: postgresql.cnpg.io/v1
+      kind: Pooler
+      # Wait for the Pooler to report instances are ready
+      current: status.instances > 0
+  dependsOn:
+    - name: envoy-gateway-config
+  commonMetadata:
+    labels:
+      app.kubernetes.io/name: *app
+  interval: 1h
+  path: ./k8s/apps/authentik/${clusterpath}
+  prune: true
+  sourceRef:
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
+  targetNamespace: *app
+  timeout: 5m
+  wait: true
+  postBuild:
+    substitute:
+      APP: *app
+      DB_STORAGE: 2Gi
+    substituteFrom:
+      - kind: ConfigMap
+        name: cluster-config
+        optional: false
