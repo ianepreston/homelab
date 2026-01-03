@@ -33,7 +33,5 @@ parameters:
   dataEngine: "v1"
   # Cleanup dead replicas quickly
   staleReplicaTimeout: "30"
-  # Better space reclamation for DB churn
-  unmapMarkSnapChainRemoved: "true"
   # strict-local can't migrate; prevents confusion
   migratable: "false"
