@@ -13,8 +13,6 @@ spec:
       kind: Cluster
       # Check if the 'Ready' condition is 'True'
       current: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'True')
-      # Optional: Explicitly fail if 'Ready' is 'False' (usually Flux just waits)
-      failed: status.conditions.filter(e, e.type == 'Ready').all(e, e.status == 'False')
   dependsOn:
     - name: envoy-gateway-config
   commonMetadata:
