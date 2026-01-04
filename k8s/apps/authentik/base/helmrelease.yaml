@@ -26,7 +26,6 @@ spec:
             secretKeyRef:
               name: ${APP}-cnpg-db-app
               key: username
-          value: *app
         - name: AUTHENTIK_POSTGRESQL__PASSWORD
           valueFrom:
             secretKeyRef:
