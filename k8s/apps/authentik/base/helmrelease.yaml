@@ -54,7 +54,7 @@ spec:
       route:
         main:
           enabled: true
-          hostnames: ["${subdomain}.ipreston.net"]
+          hostnames: ["authentik.${subdomain}.ipreston.net"]
           parentRefs:
             - name: envoy-internal
               namespace: envoy-gateway
