@@ -1,0 +1,15 @@
+---
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: ReferenceGrant
+metadata:
+  name: allow-ext-auth
+  namespace: authentik
+spec:
+  from:
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: longhorn
+  to:
+    - group: ""
+      kind: Service
+      name: ak-outpost-proxy-outpost
