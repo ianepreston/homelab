@@ -62,5 +62,23 @@ spec:
                   key: password
             - name: DATABASE_URL
               value: "host=${APP}-pooler user=$(DB_USER) password=$(DB_PASS) dbname=${APP}"
+            - name: OAUTH2_PROVIDER
+              value: "oidc"
+            - name: OAUTH2_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux-auth
+                  key: OAUTH2_CLIENT_ID
+            - name: OAUTH2_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: miniflux-auth
+                  key: OAUTH2_CLIENT_SECRET
+            - name: OAUTH2_REDIRECT_URL
+              value: "https://miniflux.${subdomain}.ipreston.net/oauth2/oidc/callback"
+            - name: OAUTH2_OIDC_DISCOVERY_ENDPOINT
+              value: "https://authentik.${subdomain}.ipreston.net/application/o/miniflux/"
+            - name: OAUTH2_USER_CREATION
+              value: "1"
           image: ghcr.io/miniflux/miniflux:not-used
           name: main

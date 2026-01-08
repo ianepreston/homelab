@@ -37,3 +37,44 @@ resource "authentik_policy_binding" "proxy" {
   group    = authentik_group.default[each.value.group].id
   order    = 0
 }
+
+data "bitwarden_secret" "oauth_client_id" {
+  for_each = local.oauth_apps
+  key      = "${upper(each.key)}_CLIENT_ID"
+}
+
+data "bitwarden_secret" "oauth_client_secret" {
+  for_each = local.oauth_apps
+  key      = "${upper(each.key)}_CLIENT_SECRET"
+}
+
+resource "authentik_provider_oauth2" "oauth2" {
+  for_each              = local.oauth_apps
+  name                  = each.key
+  client_id             = data.bitwarden_secret.oauth_client_id[each.key].value
+  client_secret         = data.bitwarden_secret.oauth_client_secret[each.key].value
+  authorization_flow    = data.authentik_flow.default-auth.id
+  authentication_flow   = data.authentik_flow.default-authn.id
+  invalidation_flow     = data.authentik_flow.default-invalidation.id
+  property_mappings     = each.value.property_mappings
+  access_token_validity = "hours=4"
+  signing_key           = data.authentik_certificate_key_pair.generated.id
+  allowed_redirect_uris = [
+    {
+      matching_mode = "strict",
+      url           = each.value.redirect_uri,
+    }
+  ]
+}
+
+resource "authentik_application" "application" {
+  for_each           = local.oauth_apps
+  name               = each.key
+  slug               = lower(each.key)
+  protocol_provider  = authentik_provider_oauth2.oauth2[each.key].id
+  group              = authentik_group.default[each.value.group].name
+  open_in_new_tab    = true
+  meta_icon          = each.value.icon_url
+  meta_launch_url    = each.value.launch_url
+  policy_engine_mode = "all"
+}
