@@ -39,6 +39,7 @@
       "packagePatterns": [
         ".*"
       ],
+      "separateMajorMinor": true,
       "prTitle": "[{{parentDir}}] {{commitMessageAction}} {{commitMessageTopic}} {{commitMessageExtra}}"
     }
   ]
