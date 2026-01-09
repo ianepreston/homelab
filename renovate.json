@@ -35,12 +35,20 @@
         "kubernetes",
         "kustomize"
       ],
-      "additionalBranchPrefix": "{{parentDir}}-",
+      "additionalBranchPrefix": "{{parentDir}}-v{{currentMajor}}-",
       "packagePatterns": [
         ".*"
       ],
       "separateMajorMinor": true,
       "prTitle": "[{{parentDir}}] {{commitMessageAction}} {{commitMessageTopic}} {{commitMessageExtra}}"
+    },
+    {
+      //Explicitly pin the v17 track so it doesn't try to go to v18
+      "matchPackageNames": [
+        "ghcr.io/cloudnative-pg/postgresql"
+      ],
+      "matchCurrentVersion": "/^17\\./",
+      "allowedVersions": "< 18.0.0"
     }
   ]
 }
