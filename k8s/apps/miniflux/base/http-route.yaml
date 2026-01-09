@@ -4,6 +4,12 @@ kind: HTTPRoute
 metadata:
   name: miniflux-route
   namespace: miniflux
+  annotations:
+    gethomepage.dev/enabled: true
+    gethomepage.dev/description: RSS Reader
+    gethomepage.dev/group: Consumption
+    gethomepage.dev/name: Miniflux
+    gethomepage.dev/icon: miniflux
 spec:
   parentRefs:
     - name: envoy-internal
