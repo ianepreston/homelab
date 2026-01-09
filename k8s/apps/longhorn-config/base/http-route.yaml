@@ -4,6 +4,13 @@ kind: HTTPRoute
 metadata:
   name: longhorn-route
   namespace: longhorn
+  annotations:
+    gethomepage.dev/enabled: true
+    gethomepage.dev/description: Cluster Storage
+    gethomepage.dev/group: Infrastructure
+    gethomepage.dev/name: Longhorn
+    gethomepage.dev/icon: longhorn
+    gethomepage.dev/pod-selector: "app.kubernetes.io/name=longhorn-ui"
 spec:
   parentRefs:
     - name: envoy-internal
