@@ -67,8 +67,14 @@ spec:
     # ---------------------------
     prometheus:
       enabled: true
-      ingress:
-        enabled: false # Usually keep Prometheus UI internal; use kubectl port-forward when needed
+      route:
+        main:
+          enabled: true
+          hostnames: ["prometheus.${subdomain}.ipreston.net"]
+          parentRefs:
+            - name: envoy-internal
+              namespace: envoy-gateway
+              sectionName: https
       prometheusSpec:
         replicas: 1
         logLevel: info
@@ -117,6 +123,14 @@ spec:
     # ---------------------------
     alertmanager:
       enabled: true
+      route:
+        main:
+          enabled: true
+          hostnames: ["alertmanager.${subdomain}.ipreston.net"]
+          parentRefs:
+            - name: envoy-internal
+              namespace: envoy-gateway
+              sectionName: https
       alertmanagerSpec:
         replicas: 1
         retention: 120h
@@ -135,18 +149,6 @@ spec:
           limits:
             cpu: 500m
             memory: 600Mi
-      # Public access to Alertmanager (optional). Set your real domain + cluster issuer.
-      ingress:
-        enabled: true
-        ingressClassName: traefik
-        annotations:
-          cert-manager.io/cluster-issuer: "letsencrypt-production"
-        hosts:
-          - alertmanager.${subdomain}.ipreston.net
-        tls:
-          - secretName: alertmanager-tls
-            hosts:
-              - alertmanager.${subdomain}.ipreston.net
     # ---------------------------
     # Grafana
     # ---------------------------
