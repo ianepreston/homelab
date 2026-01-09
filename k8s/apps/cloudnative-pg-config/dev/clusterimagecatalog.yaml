@@ -7,8 +7,8 @@ metadata:
 spec:
   images:
     - major: 17
-      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=semver:^17
       image: ghcr.io/cloudnative-pg/postgresql:17.7-standard-trixie
     - major: 18
-      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql
+      # renovate: datasource=docker depName=ghcr.io/cloudnative-pg/postgresql versioning=semver:^18
       image: ghcr.io/cloudnative-pg/postgresql:18.0-standard-trixie
