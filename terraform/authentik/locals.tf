@@ -18,6 +18,13 @@ locals {
     }
   }
   oauth_apps = {
+    actualbudget = {
+      group             = "home"
+      icon_url          = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/actual-budget.png"
+      redirect_uri      = "https://actualbudget.${var.CLUSTER_DOMAIN}/openid/callback"
+      launch_url        = "https://actualbudget.${var.CLUSTER_DOMAIN}"
+      property_mappings = local.default_property_mappings
+    }
     miniflux = {
       group             = "media"
       icon_url          = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/miniflux.png"

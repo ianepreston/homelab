@@ -59,6 +59,21 @@ spec:
     spec:
       containers:
         - name: main
+          env:
+            - name: ACTUAL_OPENID_DISCOVERY_URL
+              value: https://authentik.${subdomain}.ipreston.net/application/o/actualbudget/
+            - name: ACTUAL_OPENID_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: actualbudget-auth
+                  key: ACTUAL_OPENID_CLIENT_ID
+            - name: ACTUAL_OPENID_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: actualbudget-auth
+                  key: ACTUAL_OPENID_CLIENT_SECRET
+            - name: ACTUAL_OPENID_SERVER_HOSTNAME
+              value: "https://actualbudget.${subdomain}.ipreston.net"
           image: actualbudget/actual-server:not-used
           volumeMounts:
             - name: actualbudget-pv
