@@ -9,6 +9,9 @@ spec:
     - group: gateway.envoyproxy.io
       kind: SecurityPolicy
       namespace: longhorn
+    - group: gateway.envoyproxy.io
+      kind: SecurityPolicy
+      namespace: monitoring
   to:
     - group: ""
       kind: Service

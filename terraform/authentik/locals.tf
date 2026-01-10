@@ -10,11 +10,23 @@ locals {
     users          = { name = "Users" }
   }
   proxy_apps = {
+    AlertManager = {
+      group         = "infrastructure"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/alertmanager.png"
+      launch_url    = "https://alertmanager.${var.CLUSTER_DOMAIN}"
+      internal_host = "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local"
+    }
     Longhorn = {
       group         = "infrastructure"
       icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/longhorn.png"
       launch_url    = "https://longhorn.${var.CLUSTER_DOMAIN}"
       internal_host = "http://longhorn-frontend.longhorn-system.svc.cluster.local"
+    }
+    Prometheus = {
+      group         = "infrastructure"
+      icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/prometheus.png"
+      launch_url    = "https://prometheus.${var.CLUSTER_DOMAIN}"
+      internal_host = "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
     }
   }
   oauth_apps = {

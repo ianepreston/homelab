@@ -1,0 +1,29 @@
+---
+# yaml-language-server: $schema=https://kube-schemas.pages.dev/gateway.envoyproxy.io/securitypolicy_v1alpha1.json
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: SecurityPolicy
+metadata:
+  name: kube-prometheus-auth-policy
+  namespace: monitoring
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: kube-prometheus-stack-alertmanager
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: kube-prometheus-stack-prometheus
+  extAuth:
+    headersToExtAuth:
+      - cookie
+    http:
+      backendRefs:
+        - name: ak-outpost-proxy-outpost
+          namespace: authentik
+          port: 9000
+      # Authentik Envoy implementation requires this specific path
+      path: /outpost.goauthentik.io/auth/envoy
+      # # Pass these headers to Authentik so it knows which app is being accessed
+      headersToBackend:
+        - set-cookie
+        - x-authentik-*
