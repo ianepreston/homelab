@@ -89,7 +89,7 @@ spec:
       prometheusSpec:
         externalLabels:
           cluster: ${subdomain}
-        externalUrl: prometheus.${subdomain}.ipreston.net
+        externalUrl: https://prometheus.${subdomain}.ipreston.net
         resources:
           requests:
             cpu: 100m
