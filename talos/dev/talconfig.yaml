@@ -11,6 +11,7 @@ controlPlane:
   patches:
     - "@./patches/longhorn.yaml"
     - "@./patches/local-path.yaml"
+    - "@./patches/monitoring.yaml"
   schematic:
     customization:
       extraKernelArgs:
