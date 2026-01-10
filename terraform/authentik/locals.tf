@@ -11,7 +11,7 @@ locals {
   }
   proxy_apps = {
     AlertManager = {
-      group         = "infrastructure"
+      group         = "monitoring"
       icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/alertmanager.png"
       launch_url    = "https://alertmanager.${var.CLUSTER_DOMAIN}"
       internal_host = "http://kube-prometheus-stack-alertmanager.monitoring.svc.cluster.local"
@@ -23,7 +23,7 @@ locals {
       internal_host = "http://longhorn-frontend.longhorn-system.svc.cluster.local"
     }
     Prometheus = {
-      group         = "infrastructure"
+      group         = "monitoring"
       icon_url      = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/prometheus.png"
       launch_url    = "https://prometheus.${var.CLUSTER_DOMAIN}"
       internal_host = "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local"
