@@ -93,6 +93,8 @@ spec:
             gethomepage.dev/group: "Infrastructure"
             gethomepage.dev/icon: "prometheus"
             gethomepage.dev/pod-selector: "app.kubernetes.io/name=prometheus"
+            gethomepage.dev/widget.type: "prometheus"
+            gethomepage.dev/widget.url: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
           hostnames: ["prometheus.${subdomain}.ipreston.net"]
           parentRefs:
             - name: envoy-internal
