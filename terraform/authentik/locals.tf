@@ -37,6 +37,13 @@ locals {
       launch_url        = "https://actualbudget.${var.CLUSTER_DOMAIN}"
       property_mappings = local.default_property_mappings
     }
+    Grafana = {
+      group             = "monitoring"
+      icon_url          = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/grafana.png"
+      redirect_uri      = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
+      launch_url        = "https://grafana.${var.CLUSTER_DOMAIN}/login/generic_oauth"
+      property_mappings = local.default_property_mappings
+    },
     miniflux = {
       group             = "media"
       icon_url          = "https://raw.githubusercontent.com/homarr-labs/dashboard-icons/main/png/miniflux.png"
