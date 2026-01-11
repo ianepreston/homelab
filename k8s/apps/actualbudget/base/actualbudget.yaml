@@ -1,9 +1,4 @@
 ---
-kind: Namespace
-apiVersion: v1
-metadata:
-  name: actualbudget
----
 kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
