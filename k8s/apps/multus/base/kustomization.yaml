@@ -2,6 +2,19 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
+namespace: multus
+components:
+  - ../../../components/namespace
 resources:
-  - ./namespace.yaml
   - ./multus.yaml
+patches:
+  - target:
+      kind: Namespace
+      name: multus
+    patch: |-
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: multus
+        labels:
+          pod-security.kubernetes.io/enforce: privileged
