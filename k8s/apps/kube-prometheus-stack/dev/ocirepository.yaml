@@ -10,4 +10,4 @@ spec:
     operation: copy
   url: oci://ghcr.io/prometheus-community/charts/kube-prometheus-stack
   ref:
-    tag: "80.13.3"
+    tag: "80.14.4"
