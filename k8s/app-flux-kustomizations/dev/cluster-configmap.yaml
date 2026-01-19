@@ -9,3 +9,5 @@ data:
   clusterpath: dev
   SVC_GATEWAY_INTERNAL: 192.168.10.142
   PG_MAJOR: "18"
+  LACONIA_BACKUPS_VOLUME: k8s-dev-backups
+  LACONIA_CONTENT_VOLUME: dev-content

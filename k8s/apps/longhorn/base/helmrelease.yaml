@@ -14,6 +14,9 @@ spec:
         kind: HelmRepository
         name: longhorn
   values:
+    defaultBackupStore:
+      backupTarget: nfs://laconia.ipreston.net:/volume1/${LACONIA_BACKUPS_VOLUME}/longhorn
+      pollInterval: "300"
     persistence:
       defaultClass: false # Going to define my own storageclasses later
     preUpgradeChecker:
