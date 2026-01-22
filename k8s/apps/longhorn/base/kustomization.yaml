@@ -2,7 +2,7 @@
 # yaml-language-server: $schema=https://json.schemastore.org/kustomization
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
-namespace: longhorn-system
+namespace: longhorn
 components:
   - ../../../components/namespace
 resources:
@@ -12,11 +12,11 @@ resources:
 patches:
   - target:
       kind: Namespace
-      name: longhorn-system
+      name: longhorn
     patch: |-
       apiVersion: v1
       kind: Namespace
       metadata:
-        name: longhorn-system
+        name: longhorn
         labels:
           pod-security.kubernetes.io/enforce: privileged

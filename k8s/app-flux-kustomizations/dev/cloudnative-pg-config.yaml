@@ -18,7 +18,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  targetNamespace: cnpg-system
   timeout: 5m
   wait: true
   postBuild:
