@@ -1,7 +1,7 @@
 ---
 clusterName: dk8s
 # renovate: datasource=docker depName=ghcr.io/siderolabs/installer
-talosVersion: v1.12.1
+talosVersion: v1.12.2
 kubernetesVersion: v1.35.0
 endpoint: https://192.168.10.140:6443 # Talos endpoint, the VIP
 allowSchedulingOnControlPlanes: true
@@ -40,8 +40,9 @@ nodes:
             match: disk.transport == "sata" && !disk.rotational && !system_disk
         filesystem:
           type: xfs
-    networkInterfaces:
-      - interface: eth0
+    networkInterfaces: &networkInterfaces
+      - deviceSelector:
+          physical: true
         dhcp: true
         vip: &vip
           ip: 192.168.10.140
@@ -63,10 +64,7 @@ nodes:
     controlPlane: true
     installDisk: /dev/nvme0n1
     userVolumes: *uservolumes
-    networkInterfaces:
-      - interface: eth0
-        dhcp: true
-        vip: *vip
+    networkInterfaces: *networkInterfaces
     machineFiles: *machinefiles
     schematic:
       customization:
@@ -80,10 +78,7 @@ nodes:
     controlPlane: true
     installDisk: /dev/nvme0n1
     userVolumes: *uservolumes
-    networkInterfaces:
-      - interface: eth0
-        dhcp: true
-        vip: *vip
+    networkInterfaces: *networkInterfaces
     machineFiles: *machinefiles
     schematic:
       customization:
