@@ -1,3 +1,4 @@
+---
 # yaml-language-server: $schema=https://kube-schemas.pages.dev/cilium.io/cliluml2announcementpolicy_v2alpha1.json
 apiVersion: cilium.io/v2alpha1
 kind: CiliumL2AnnouncementPolicy
@@ -9,4 +10,5 @@ spec:
       lb-pool: ip-pool
   interfaces:
     - "^eth0$"
+    - "^enp1s0$"
   loadBalancerIPs: true
