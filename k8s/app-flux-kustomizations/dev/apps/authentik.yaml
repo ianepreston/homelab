@@ -17,8 +17,6 @@ spec:
       kind: Pooler
       # Wait for the Pooler to report instances are ready
       current: status.instances > 0
-  dependsOn:
-    - name: envoy-gateway-config
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

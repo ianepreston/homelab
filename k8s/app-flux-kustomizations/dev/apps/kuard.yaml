@@ -6,8 +6,6 @@ metadata:
   name: &app kuard
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: envoy-gateway-config
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

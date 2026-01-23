@@ -3,14 +3,11 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app envoy-gateway
+  name: platform-dev
   namespace: flux-system
 spec:
-  commonMetadata:
-    labels:
-      app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/apps/envoy-gateway/${clusterpath}
+  path: ./k8s/app-flux-kustomizations/dev/platform
   prune: true
   sourceRef:
     kind: GitRepository
@@ -19,7 +16,6 @@ spec:
   timeout: 5m
   wait: true
   postBuild:
-    substituteFrom:
-      - kind: ConfigMap
-        name: cluster-config
-        optional: false
+    substitute:
+      subdomain: dk8s
+      clusterpath: dev

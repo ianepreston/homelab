@@ -6,8 +6,6 @@ metadata:
   name: &app reloader
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: cilium
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

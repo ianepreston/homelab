@@ -6,9 +6,6 @@ metadata:
   name: &app kube-prometheus-stack
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: envoy-gateway-config
-    - name: longhorn-config
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app

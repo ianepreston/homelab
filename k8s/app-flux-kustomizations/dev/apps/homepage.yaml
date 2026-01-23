@@ -3,16 +3,14 @@
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: &app multus
+  name: &app homepage
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: envoy-gateway-config
   commonMetadata:
     labels:
       app.kubernetes.io/name: *app
   interval: 1h
-  path: ./k8s/apps/multus/${clusterpath}
+  path: ./k8s/apps/homepage/${clusterpath}
   prune: true
   sourceRef:
     kind: GitRepository
@@ -20,6 +18,10 @@ spec:
     namespace: flux-system
   timeout: 5m
   wait: true
+  images:
+    - name: ghcr.io/gethomepage/homepage
+      # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
+      newTag: "v1.9.0"
   postBuild:
     substituteFrom:
       - kind: ConfigMap
