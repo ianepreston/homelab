@@ -5,12 +5,12 @@
         icon: pfsense
         description: router
     - laconia:
-        href: "http://laconia.ipreston.net:5001"
+        href: "http://laconia.ipreston.net"
         icon: synology
         description: NAS
         widget:
           type: diskstation
-          url: "https://laconia.ipreston.net:5001"
+          url: "https://laconia.ipreston.net"
           username: "ipreston"
           password: "{{HOMEPAGE_VAR_LACONIA_PASSWORD}}"
           fields: ["volumeAvailable", "resources.cpu", "resources.mem"]
