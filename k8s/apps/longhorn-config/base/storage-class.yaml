@@ -16,6 +16,32 @@ parameters:
   fsType: "xfs"
   replicaAutoBalance: "least-effort"
   dataEngine: "v1"
+  recurringJobSelector: |
+    [
+      {"name": "backup", "isGroup": true},
+      {"name": "snapshot", "isGroup": true},
+      {"name": "weekly-trim", "isGroup": false}
+    ]
+---
+# yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.1/storageclass.json
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: longhorn-nosnaps
+provisioner: driver.longhorn.io
+allowVolumeExpansion: true
+reclaimPolicy: Retain
+volumeBindingMode: WaitForFirstConsumer
+parameters:
+  numberOfReplicas: "2"
+  dataLocality: "best-effort"
+  fsType: "xfs"
+  replicaAutoBalance: "least-effort"
+  dataEngine: "v1"
+  recurringJobSelector: |
+    [
+      {"name": "weekly-trim", "isGroup": false}
+    ]
 ---
 # yaml-language-server: $schema=https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/v1.34.1/storageclass.json
 apiVersion: storage.k8s.io/v1
@@ -31,7 +57,10 @@ parameters:
   dataLocality: "strict-local"
   fsType: "xfs"
   dataEngine: "v1"
-  # Cleanup dead replicas quickly
-  staleReplicaTimeout: "30"
-  # strict-local can't migrate; prevents confusion
-  migratable: "false"
+  staleReplicaTimeout: "30" # Cleanup dead replicas quickly
+  unmapMarkSnapChainRemoved: "true" # Better space reclamation for DB churn
+  migratable: "false" # strict-local can't migrate; prevents confusion
+  recurringJobSelector: |
+    [
+      {"name": "weekly-trim", "isGroup": false}
+    ]

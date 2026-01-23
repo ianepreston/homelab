@@ -7,3 +7,4 @@ resources:
   - ./http-route.yaml
   - ./securitypolicy.yaml
   - ./storage-class.yaml
+  - ./backups.yaml
