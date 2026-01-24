@@ -126,11 +126,11 @@ spec:
         scrapeConfigSelectorNilUsesHelmValues: false
         serviceMonitorSelectorNilUsesHelmValues: false
         retention: 30d
-        retentionSize: 10GB
+        retentionSize: 16GB
         storageSpec:
           volumeClaimTemplate:
             spec:
               storageClassName: longhorn-default
               resources:
                 requests:
-                  storage: 10Gi
+                  storage: 24Gi
