@@ -6,7 +6,7 @@
     name: memos
     hostname: memos
     state: started
-    image: neosmemo/memos:0.25
+    image: neosmemo/memos:0.26
     image_name_mismatch: recreate
     networks:
       - name: "traefik_net"
