@@ -10,7 +10,7 @@ spec:
   suspend: false # Set to true for DR
   dependsOn:
     - name: platform-dev
-  path: ./k8s/app-flux-kustomizations/dev/apps
+  path: ./k8s/app-flux-kustomizations/apps/dev
   prune: true
   sourceRef:
     kind: GitRepository
