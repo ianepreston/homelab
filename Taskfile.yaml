@@ -38,6 +38,7 @@ includes:
   bootstrap: taskfiles/bootstrap
   status: taskfiles/status
   talos: taskfiles/talos
+  garage: taskfiles/garage
 # kubernetes: .taskfiles/kubernetes
 # op: .taskfiles/onepassword
 # sops: .taskfiles/sops

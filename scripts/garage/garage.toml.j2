@@ -1,0 +1,26 @@
+replication_factor = 1
+metadata_dir = "/var/lib/garage/meta"
+data_dir = "/var/lib/garage/data"
+db_engine = "sqlite"
+block_size = "10M"
+compression_level = 1
+rpc_secret = "{{GARAGE_RPC_SECRET}}"
+rpc_bind_addr = "[::]:3901"
+rpc_bind_outgoing = false
+allow_world_readable_secrets = false # Might have to set this true depending on synology permissions
+
+[s3_api]
+api_bind_addr = "[::]:3900"
+s3_region = "garage"
+root_domain = ".s3.laconia.ipreston.net"
+
+[s3_web]
+bind_addr = "[::]:3902"
+root_domain = ".garage.laconia.ipreston.net"
+add_host_to_metrics = true
+
+[admin]
+api_bind_addr = "0.0.0.0:3903"
+metrics_token = "{{GARAGE_METRICS_TOKEN}}"
+metrics_require_token = true
+admin_token = "{{GARAGE_ADMIN_TOKEN}}"

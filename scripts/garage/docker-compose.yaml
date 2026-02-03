@@ -1,0 +1,15 @@
+---
+# version: "3"
+services:
+  garage:
+    image: dxflrs/garage:v2.2.0
+    # network_mode: "host"
+    restart: unless-stopped
+    ports:
+      - "3900:3900"
+      - "3902:3902"
+      - "3903:3903"
+    volumes:
+      - /volume1/garage/config/garage.toml:/etc/garage.toml
+      - /volume1/garage/data/meta:/var/lib/garage/meta
+      - /volume1/garage/data/data:/var/lib/garage/data

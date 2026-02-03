@@ -1,0 +1,29 @@
+---
+version: '3'
+tasks:
+  setup_garage:
+    desc: copy over configs and stand up the container
+    cmds:
+      - task: copy_garage_config
+      - task: docker_compose
+  copy_garage_config:
+    internal: true
+    desc: Copy templated garage config to laconia
+    cmds:
+      - mkdir -p .tmp
+      - 'echo "---" > .tmp/garage-settings.yaml'
+      - |
+        bws run --project-id $BWS_PROJECT 'echo "GARAGE_ADMIN_TOKEN": "$GARAGE_ADMIN_TOKEN" >> .tmp/garage-settings.yaml'
+      - |
+        bws run --project-id $BWS_PROJECT 'echo "GARAGE_METRICS_TOKEN": "$GARAGE_METRICS_TOKEN" >> .tmp/garage-settings.yaml'
+      - |
+        bws run --project-id $BWS_PROJECT 'echo "GARAGE_RPC_SECRET": "$GARAGE_RPC_SECRET" >> .tmp/garage-settings.yaml'
+      - minijinja-cli scripts/garage/garage.toml.j2 .tmp/garage-settings.yaml > .tmp/garage.toml
+      - scp -O .tmp/garage.toml laconia:/volume1/garage/config/
+      - rm .tmp/garage*
+  docker_compose:
+    internal: true
+    desc: copy compose file and start it
+    cmds:
+      - scp -O scripts/garage/docker-compose.yaml laconia:/volume1/garage/config/
+      - ssh laconia "cd /volume1/garage/config && sudo /usr/local/bin/docker-compose up -d"
