@@ -21,7 +21,7 @@ spec:
   images:
     - name: nginx
       # renovate: datasource=docker depName=nginx
-      newTag: "1.29.4"
+      newTag: "1.29.5"
   postBuild:
     substituteFrom:
       - kind: ConfigMap
