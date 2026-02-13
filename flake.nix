@@ -21,9 +21,9 @@
       ];
       talosctlVersions = {
 
-        "1.12.1" = {
-          version = "1.11.3";
-          sha256 = "sha256-fNOg0lqPLeo0PCgVQxzAfT6AurEk58PiJziBncCcGz8=";
+        "1.12.4" = {
+          version = "1.12.4";
+          sha256 = "sha256-a4X2M3IeAtMciiimM8nNjr+35BZ3/ynpQjaggtTNbNk=";
         };
         "1.12.2" = {
           version = "1.12.2";
@@ -35,7 +35,7 @@
       #   version = "1.12.0";
       #   sha256 = "sha256-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx=";
       # };
-      selectedTalosctlVersion = "1.12.2"; # Change this to switch versions
+      selectedTalosctlVersion = "1.12.4"; # Change this to switch versions
       talosctlBinary =
         {
           pkgs,
