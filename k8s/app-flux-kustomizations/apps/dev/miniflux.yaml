@@ -32,7 +32,7 @@ spec:
   images:
     - name: ghcr.io/miniflux/miniflux
       # renovate: datasource=docker depName=ghcr.io/miniflux/miniflux
-      newTag: "2.2.16-distroless"
+      newTag: "2.2.17-distroless"
   postBuild:
     substitute:
       APP: *app
