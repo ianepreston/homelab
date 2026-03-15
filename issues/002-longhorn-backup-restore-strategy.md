@@ -1,45 +1,48 @@
 # Issue 002: Longhorn Backup and Restore Strategy
 
-**Date**: 2026-03-15
-**Status**: Open
-**Severity**: Medium - operational risk during disaster recovery
+**Date**: 2026-03-15 **Status**: Open **Severity**: Medium - operational risk
+during disaster recovery
 
 ## Summary
 
-While the Longhorn backup infrastructure is well-configured with multi-tier retention
-policies to NAS, there are gaps in restore testability and volume identification that
-would make disaster recovery challenging. The primary issue is that Longhorn volumes
-use internal UUIDs that don't correlate to PVC names, making it difficult to identify
-which backup belongs to which application.
+While the Longhorn backup infrastructure is well-configured with multi-tier
+retention policies to NAS, there are gaps in restore testability and volume
+identification that would make disaster recovery challenging. The primary issue
+is that Longhorn volumes use internal UUIDs that don't correlate to PVC names,
+making it difficult to identify which backup belongs to which application.
 
 ## Current State
 
 ### What's Working Well
 
 1. **Backup Target**: Correctly configured to NFS on Synology NAS
+
    ```
    nfs://laconia.ipreston.net:/volume1/k8s-dev-backups/longhorn
    ```
 
 2. **Retention Policy**: Well-structured tiered approach
-   | Job | Schedule | Retention | Purpose |
-   |-----|----------|-----------|---------|
-   | backup-daily | 2 AM | 7 days | Quick recovery |
-   | backup-weekly | 4 AM Sunday | 4 weeks | Medium-term |
-   | backup-monthly | 6 AM 1st | 12 months | Long-term archive |
-   | snap-hourly | :15 each hour | 24 hours | Point-in-time recovery |
 
-3. **StorageClass Configuration**: `reclaimPolicy: Retain` prevents accidental deletion
+   | Job            | Schedule      | Retention | Purpose                |
+   | -------------- | ------------- | --------- | ---------------------- |
+   | backup-daily   | 2 AM          | 7 days    | Quick recovery         |
+   | backup-weekly  | 4 AM Sunday   | 4 weeks   | Medium-term            |
+   | backup-monthly | 6 AM 1st      | 12 months | Long-term archive      |
+   | snap-hourly    | :15 each hour | 24 hours  | Point-in-time recovery |
 
-4. **PVC Naming**: Apps use predictable names (`actualbudget-pvc`, `grafana-pvc`)
+3. **StorageClass Configuration**: `reclaimPolicy: Retain` prevents accidental
+   deletion
+
+4. **PVC Naming**: Apps use predictable names (`actualbudget-pvc`,
+   `grafana-pvc`)
 
 ### The Problems
 
 #### Problem 1: Volume UUID vs PVC Name Mismatch
 
-Longhorn generates internal volume names as UUIDs (e.g., `pvc-a1b2c3d4-e5f6-...`).
-When viewing backups in the Longhorn UI or on the NAS, you see these UUIDs, not
-the friendly PVC names like `actualbudget-pvc`.
+Longhorn generates internal volume names as UUIDs (e.g.,
+`pvc-a1b2c3d4-e5f6-...`). When viewing backups in the Longhorn UI or on the NAS,
+you see these UUIDs, not the friendly PVC names like `actualbudget-pvc`.
 
 ```
 NAS backup directory structure:
@@ -69,19 +72,7 @@ unknowns:
 3. Are the NFS backups actually usable?
 4. What permissions/credentials are needed to access backups?
 
-#### Problem 3: Missing StorageClass
-
-`actualbudget` references `storageClassName: longhorn` but this StorageClass
-doesn't exist. The defined classes are:
-- `longhorn-default` (default)
-- `longhorn-nosnaps`
-- `longhorn-cnpg-strict-local`
-
-This likely works because Kubernetes falls back to the default StorageClass, but
-it means actualbudget isn't getting the `longhorn-default` recurring jobs attached
-properly. The volume may not be getting backed up.
-
-#### Problem 4: StatefulSet PVC Naming
+#### Problem 3: StatefulSet PVC Naming
 
 For StatefulSets (Prometheus, Alertmanager), PVC names follow the pattern:
 `<volumeClaimTemplate.name>-<statefulset-name>-<ordinal>`
@@ -89,31 +80,25 @@ For StatefulSets (Prometheus, Alertmanager), PVC names follow the pattern:
 Example: `prometheus-db-prometheus-kube-prometheus-stack-prometheus-0`
 
 This is predictable, but:
+
 - Still maps to a Longhorn UUID internally
 - Long names are truncated in some UIs
 - Ordinal-based naming complicates restore ordering
 
 ## Recommended Changes
 
-### Change 1: Add Longhorn Volume Labels
+### Change 1: Add Labels to PVCs for Volume Identification
 
-Configure Longhorn to preserve Kubernetes labels on volumes. This allows you to
-identify volumes by app name in the Longhorn UI and backup metadata.
+Longhorn propagates Kubernetes labels from PVCs to volumes, and these labels
+appear in backup metadata. Adding identifying labels to PVCs enables you to
+determine which backup belongs to which application during DR.
 
-**File**: `k8s/apps/longhorn/base/helmrelease.yaml`
+#### For Directly-Managed PVCs
 
-Add to `defaultSettings`:
-```yaml
-defaultSettings:
-  storageMinimalAvailablePercentage: "10"
-  # Add these:
-  kubernetesClusterAutoscalerEnabled: false
-  systemManagedPodsImagePullPolicy: IfNotPresent
-```
-
-More importantly, add labels to PVCs at the app level:
+Add labels to PVCs you define directly in your manifests.
 
 **Example for `k8s/apps/actualbudget/base/actualbudget.yaml`**:
+
 ```yaml
 kind: PersistentVolumeClaim
 metadata:
@@ -121,51 +106,141 @@ metadata:
   labels:
     app.kubernetes.io/name: actualbudget
     app.kubernetes.io/component: data
-    backup.longhorn.io/volume-name: actualbudget-data  # Custom label for identification
+    backup.longhorn.io/volume-name: actualbudget-data
 ```
 
-These labels are propagated to the Longhorn volume and appear in backup metadata,
-making identification possible during DR.
+#### For StatefulSet PVCs (Prometheus, Alertmanager, etc.)
 
-### Change 2: Fix actualbudget StorageClass Reference
+For volumes created by StatefulSets, you cannot label the PVC directly since
+Kubernetes creates them from the `volumeClaimTemplate`. Instead, add labels to
+the template in the Helm values.
 
-**File**: `k8s/apps/actualbudget/base/actualbudget.yaml`
+**Example for kube-prometheus-stack** in `helmrelease.yaml`:
 
-```diff
- kind: PersistentVolumeClaim
- metadata:
-   name: actualbudget-pvc
- spec:
--  storageClassName: longhorn
-+  storageClassName: longhorn-default
+```yaml
+prometheus:
+  prometheusSpec:
+    storageSpec:
+      volumeClaimTemplate:
+        metadata:
+          labels:
+            app.kubernetes.io/name: prometheus
+            app.kubernetes.io/component: tsdb
+            backup.longhorn.io/volume-name: prometheus-metrics
+        spec:
+          storageClassName: longhorn-default
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 50Gi
+
+alertmanager:
+  alertmanagerSpec:
+    storage:
+      volumeClaimTemplate:
+        metadata:
+          labels:
+            app.kubernetes.io/name: alertmanager
+            app.kubernetes.io/component: state
+            backup.longhorn.io/volume-name: alertmanager-state
 ```
 
-This ensures the backup recurring jobs are attached to the volume.
+**Note**: Existing PVCs won't pick up new labels automatically. For StatefulSet
+PVCs, you would need to delete and recreate the PVC (losing data), or manually
+patch the PVC labels with
+`kubectl label pvc <name> -n <ns> backup.longhorn.io/volume-name=<value>`.
 
-### Change 3: Create Volume-to-App Mapping Document
+### Change 2: Automated PVC-to-Volume Mapping Export
 
-Create a reference document that maps PVC names to their purposes. This serves as
-a DR runbook reference.
+While labels help identify volumes in the Longhorn UI, an automated export of
+the PVC-to-volume mapping provides a reliable DR reference without depending on
+manual processes.
 
-**File**: `docs/longhorn-volume-inventory.md` (or similar)
+**Key points about PVC-to-volume mappings:**
 
-| PVC Name | Namespace | App | Data Type | Priority | Notes |
-|----------|-----------|-----|-----------|----------|-------|
-| actualbudget-pvc | actualbudget | Actual Budget | User financial data | High | Critical user data |
-| grafana-pvc | monitoring | Grafana | Dashboards, preferences | Medium | Can recreate from GitOps |
-| prometheus-db-* | monitoring | Prometheus | Metrics history | Low | Historical only |
-| alertmanager-db-* | monitoring | Alertmanager | Silences, state | Low | Can recreate |
+- The `spec.volumeName` (the Longhorn UUID) is stable once a PVC is bound
+- It only changes if you delete and recreate the PVC
+- An automated export ensures you always have a current mapping without
+  remembering to run it
 
-During cluster operation, periodically update this with:
-```bash
-kubectl get pvc -A -o custom-columns=\
-'NAMESPACE:.metadata.namespace,NAME:.metadata.name,VOLUME:.spec.volumeName,SIZE:.spec.resources.requests.storage'
+**File**: `k8s/apps/longhorn-config/base/pvc-inventory-export.yaml`
+
+```yaml
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pvc-inventory-export
+  namespace: longhorn
+spec:
+  schedule: "0 3 * * *" # 3 AM daily
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: pvc-inventory-exporter
+          containers:
+            - name: export
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  DATE=$(date +%Y%m%d)
+
+                  # Export PVC mappings as JSON
+                  kubectl get pvc -A -o json > /export/pvc-inventory-${DATE}.json
+
+                  # Export human-readable summary
+                  kubectl get pvc -A -o custom-columns=\
+                  'NAMESPACE:.metadata.namespace,NAME:.metadata.name,VOLUME:.spec.volumeName,LABELS:.metadata.labels' \
+                  > /export/pvc-inventory-${DATE}.txt
+
+                  # Keep last 30 days of exports
+                  find /export -name "pvc-inventory-*" -mtime +30 -delete
+              volumeMounts:
+                - name: export-volume
+                  mountPath: /export
+          volumes:
+            - name: export-volume
+              nfs:
+                server: laconia.ipreston.net
+                path: /volume1/k8s-dev-backups/pvc-inventory
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pvc-inventory-exporter
+  namespace: longhorn
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pvc-reader
+rules:
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pvc-inventory-exporter
+subjects:
+  - kind: ServiceAccount
+    name: pvc-inventory-exporter
+    namespace: longhorn
+roleRef:
+  kind: ClusterRole
+  name: pvc-reader
+  apiGroup: rbac.authorization.k8s.io
 ```
 
-This gives you the PVC-to-Longhorn-volume mapping that you can store alongside
-your GitOps repo.
+This complements the labeling strategy: labels help you identify volumes in the
+Longhorn UI during normal operations, while the automated export gives you a
+reliable mapping file for DR scenarios when the cluster is gone.
 
-### Change 4: Implement Backup Verification Job
+### Change 3: Implement Backup Verification Job
 
 Create a Kubernetes CronJob that periodically verifies backup integrity.
 
@@ -179,7 +254,7 @@ kind: CronJob
 metadata:
   name: longhorn-backup-verify
 spec:
-  schedule: "0 8 * * 1"  # 8 AM Monday
+  schedule: "0 8 * * 1" # 8 AM Monday
   jobTemplate:
     spec:
       template:
@@ -201,19 +276,42 @@ spec:
 The actual implementation would use Longhorn's API or CLI to enumerate backups
 and verify their state.
 
-## Restore Testing Procedure
+## Restore Procedures
+
+### Understanding Longhorn Restore Workflow
+
+When you rebuild a cluster and redeploy your GitOps manifests:
+
+1. **Flux deploys your app manifests** including PVC definitions
+2. **Kubernetes creates new PVCs** which Longhorn provisions as new, empty
+   volumes
+3. **New UUIDs are generated** - these are different from your backed-up volumes
+
+The backed-up data still exists on the NAS, but it's associated with the _old_
+volume UUIDs. To restore, you must either:
+
+- **Option A**: Restore before deploying apps - create volumes from backup
+  first, then deploy apps pointing to those volumes
+- **Option B**: Restore after deployment - delete the empty PVC, restore from
+  backup to the same PVC name
+
+**There is no automatic restoration**. Longhorn will discover old backups when
+you configure the same backup target, but it won't automatically associate them
+with new PVCs.
 
 ### Pre-requisites
 
 1. Access to NAS at `laconia.ipreston.net`
 2. Longhorn UI accessible at `longhorn.dk8s.ipreston.net`
 3. `kubectl` configured for the cluster
+4. PVC inventory export from `/volume1/k8s-dev-backups/pvc-inventory/`
 
 ### Test 1: Single Volume Restore (Non-Destructive)
 
 This test restores a backup to a NEW volume, without affecting the running app.
 
 1. **Identify the volume to test**
+
    ```bash
    kubectl get pvc actualbudget-pvc -n actualbudget -o jsonpath='{.spec.volumeName}'
    # Returns: pvc-xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx
@@ -224,6 +322,7 @@ This test restores a backup to a NEW volume, without affecting the running app.
    - Note the most recent backup name
 
 3. **Create a restore PVC**
+
    ```yaml
    apiVersion: v1
    kind: PersistentVolumeClaim
@@ -240,10 +339,11 @@ This test restores a backup to a NEW volume, without affecting the running app.
        - ReadWriteOnce
      resources:
        requests:
-         storage: 200Mi  # Match original size
+         storage: 200Mi # Match original size
    ```
 
 4. **Verify the restored data**
+
    ```bash
    # Create a temporary pod to mount and inspect
    kubectl run restore-verify --rm -it --image=alpine \
@@ -265,42 +365,98 @@ This test restores a backup to a NEW volume, without affecting the running app.
 
 ### Test 2: Full Disaster Recovery Simulation
 
-This is a more comprehensive test simulating complete cluster loss.
+This simulates complete cluster loss and restoration.
 
-1. **Document current state**
+#### Phase 1: Before Cluster Wipe (or from existing exports)
+
+```bash
+# If cluster is still running, export current state
+kubectl get pvc -A -o json > pvc-inventory-$(date +%Y%m%d).json
+kubectl get volumes.longhorn.io -n longhorn -o json > longhorn-volumes-$(date +%Y%m%d).json
+
+# Or retrieve from automated exports on NAS
+ls /mnt/laconia/k8s-dev-backups/pvc-inventory/
+```
+
+#### Phase 2: After Cluster Rebuild
+
+1. **Deploy Longhorn first** with the same backup target configuration
+
+2. **Wait for backup discovery**
+
    ```bash
-   # Export PVC to volume mappings
-   kubectl get pvc -A -o json > pvc-inventory-$(date +%Y%m%d).json
-
-   # Export volume details from Longhorn
-   kubectl get volumes.longhorn.io -n longhorn -o json > longhorn-volumes-$(date +%Y%m%d).json
+   kubectl get backupvolumes.longhorn.io -n longhorn
+   # Should list all previously backed-up volumes by their old UUIDs
    ```
 
-2. **Verify NAS accessibility**
-   ```bash
-   # From a machine that can reach the NAS
-   ls -la /mnt/laconia/k8s-dev-backups/longhorn/backupstore/volumes/
-   # Should see UUID-named directories
+3. **Identify which backup corresponds to which app** using:
+   - The PVC inventory export (maps PVC names to UUIDs)
+   - Volume labels visible in Longhorn UI (if you added them)
+
+4. **For each critical app, restore BEFORE deploying the app**:
+
+   a. In Longhorn UI: Backup > Select the correct volume UUID > Create Volume
+   - Name the new volume something identifiable (e.g., `actualbudget-restored`)
+
+   b. Create a PV and PVC pointing to the restored volume:
+
+   ```yaml
+   apiVersion: v1
+   kind: PersistentVolume
+   metadata:
+     name: actualbudget-pv
+   spec:
+     capacity:
+       storage: 200Mi
+     accessModes:
+       - ReadWriteOnce
+     persistentVolumeReclaimPolicy: Retain
+     storageClassName: longhorn-default
+     csi:
+       driver: driver.longhorn.io
+       volumeHandle: actualbudget-restored # The volume name from step a
+       fsType: ext4
+   ---
+   apiVersion: v1
+   kind: PersistentVolumeClaim
+   metadata:
+     name: actualbudget-pvc
+     namespace: actualbudget
+   spec:
+     storageClassName: longhorn-default
+     volumeName: actualbudget-pv # Bind to specific PV
+     accessModes:
+       - ReadWriteOnce
+     resources:
+       requests:
+         storage: 200Mi
    ```
 
-3. **After cluster wipe and rebuild**
+   c. Then deploy the app - it will use the pre-existing PVC with restored data
 
-   a. Deploy Longhorn with the same backup target configuration
+5. **Alternative: Restore after app deployment**
 
-   b. Wait for Longhorn to discover existing backups
-      ```bash
-      kubectl get backupvolumes.longhorn.io -n longhorn
-      # Should list all previously backed-up volumes
-      ```
+   If the app was already deployed with an empty volume:
 
-   c. For each critical app, restore using the backup UI or API:
-      - Longhorn UI > Backup > Select volume > Create DR Volume
-      - Or use `kubectl apply` with dataSource pointing to backup
+   ```bash
+   # Scale down the app
+   kubectl scale deployment actualbudget -n actualbudget --replicas=0
 
-4. **Restore priority order**
-   1. actualbudget (critical user data)
-   2. grafana (if dashboards aren't in GitOps)
-   3. prometheus/alertmanager (optional - historical metrics)
+   # Delete the empty PVC (data loss of empty volume is fine)
+   kubectl delete pvc actualbudget-pvc -n actualbudget
+
+   # Create PV/PVC pointing to restored backup (as above)
+   kubectl apply -f restored-pvc.yaml
+
+   # Scale app back up
+   kubectl scale deployment actualbudget -n actualbudget --replicas=1
+   ```
+
+#### Restore Priority Order
+
+1. **actualbudget** - Critical user data
+2. **grafana** - Only if dashboards aren't in GitOps
+3. **prometheus/alertmanager** - Optional, historical metrics only
 
 ### Test 3: Backup Freshness Verification
 
@@ -317,17 +473,16 @@ kubectl get backups.longhorn.io -n longhorn \
 
 ## Implementation Priority
 
-1. **Immediate** (before cluster wipe):
-   - Export current PVC-to-volume mapping
+1. **Immediate** (before any cluster changes):
    - Verify NAS backup target is accessible and contains data
-   - Fix actualbudget StorageClass reference
+   - Run PVC inventory export manually and save to NAS
 
-2. **During rebuild**:
-   - Add labels to PVCs for better identification
-   - Document the restore procedure while it's fresh
+2. **Short-term**:
+   - Add labels to PVCs (direct and StatefulSet templates)
+   - Deploy automated PVC inventory export CronJob
+   - Run Test 1 (single volume restore) to validate procedure
 
-3. **Post-rebuild**:
-   - Run Test 1 (single volume restore)
+3. **Ongoing**:
    - Set up backup verification CronJob
    - Schedule quarterly DR drill (Test 2)
 
