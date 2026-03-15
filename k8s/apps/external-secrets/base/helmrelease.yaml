@@ -12,8 +12,8 @@ spec:
   values:
     installCRDs: true
     podAnnotations:
-      secret.reloader.stakater.com/reload: "bitwarden-css-certs"
+      secret.reloader.stakater.com/reload: "bitwarden-ca-keypair"
     bitwarden-sdk-server:
       enabled: true
       podAnnotations:
-        secret.reloader.stakater.com/reload: "bitwarden-css-certs,bitwarden-secrets-manager,bitwarden-secrets-manager-secrets,bitwarden-tls-certs,bitwarden-access-token"
+        secret.reloader.stakater.com/reload: "bitwarden-ca-keypair,bitwarden-secrets-manager,bitwarden-secrets-manager-secrets,bitwarden-tls-certs,bitwarden-access-token"
