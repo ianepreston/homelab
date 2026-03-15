@@ -1,8 +1,7 @@
 # Issue 001: External-Secrets CA Certificate Mismatch
 
-**Date**: 2026-03-15
-**Status**: Open
-**Severity**: High - blocks all secret synchronization
+**Date**: 2026-03-15 **Status**: Open **Severity**: High - blocks all secret
+synchronization
 
 ## Summary
 
@@ -58,11 +57,11 @@ cert-manager creates a PKI (Public Key Infrastructure) hierarchy:
 
 When cert-manager creates a secret for a Certificate, it includes three keys:
 
-| Key | Contents |
-|-----|----------|
-| `tls.crt` | The leaf certificate (PEM encoded) |
-| `tls.key` | The private key for the leaf certificate |
-| `ca.crt` | **A snapshot of the CA certificate at issuance time** |
+| Key       | Contents                                              |
+| --------- | ----------------------------------------------------- |
+| `tls.crt` | The leaf certificate (PEM encoded)                    |
+| `tls.key` | The private key for the leaf certificate              |
+| `ca.crt`  | **A snapshot of the CA certificate at issuance time** |
 
 **Critical behavior**: The `ca.crt` field is populated once when the certificate
 is issued and represents the CA that signed this specific certificate. It is NOT
@@ -105,11 +104,11 @@ data:
 
 ### Current State (verified by sha256sum)
 
-| Secret | ca.crt Hash | When Captured |
-|--------|-------------|---------------|
-| `bitwarden-ca-keypair` | `440247b7...` | Current CA (Jan 2026) |
-| `bitwarden-tls-certs` | `347aaff4...` | Old CA snapshot |
-| `bitwarden-css-certs` | `e330a619...` | Different old CA snapshot |
+| Secret                 | ca.crt Hash   | When Captured             |
+| ---------------------- | ------------- | ------------------------- |
+| `bitwarden-ca-keypair` | `440247b7...` | Current CA (Jan 2026)     |
+| `bitwarden-tls-certs`  | `347aaff4...` | Old CA snapshot           |
+| `bitwarden-css-certs`  | `e330a619...` | Different old CA snapshot |
 
 All three should contain the same CA certificate, but they don't.
 
@@ -129,17 +128,17 @@ spec:
       bitwardenServerSDKURL: https://bitwarden-sdk-server.external-secrets.svc.cluster.local:9998
       caProvider:
         type: Secret
-        name: bitwarden-css-certs    # ← References a LEAF certificate secret
+        name: bitwarden-css-certs # ← References a LEAF certificate secret
         namespace: external-secrets
-        key: ca.crt                  # ← Uses the embedded (potentially stale) CA copy
+        key: ca.crt # ← Uses the embedded (potentially stale) CA copy
 ```
 
 **Problem**: The ClusterSecretStore trusts whatever CA is embedded in
 `bitwarden-css-certs`. This is a leaf certificate secret where `ca.crt` is just
 a snapshot from when the certificate was last renewed.
 
-Meanwhile, `bitwarden-sdk-server` presents a certificate from `bitwarden-tls-certs`,
-which may have a different CA snapshot embedded in it.
+Meanwhile, `bitwarden-sdk-server` presents a certificate from
+`bitwarden-tls-certs`, which may have a different CA snapshot embedded in it.
 
 ### The TLS Handshake Failure
 
@@ -180,13 +179,15 @@ spec:
       bitwardenServerSDKURL: https://bitwarden-sdk-server.external-secrets.svc.cluster.local:9998
       caProvider:
         type: Secret
-        name: bitwarden-ca-keypair   # ← Reference the ACTUAL CA secret
+        name: bitwarden-ca-keypair # ← Reference the ACTUAL CA secret
         namespace: external-secrets
-        key: ca.crt                  # ← This is the authoritative CA certificate
+        key: ca.crt # ← This is the authoritative CA certificate
 ```
 
 **Why this works**:
-- `bitwarden-ca-keypair` IS the CA - its `ca.crt`/`tls.crt` is the actual CA certificate
+
+- `bitwarden-ca-keypair` IS the CA - its `ca.crt`/`tls.crt` is the actual CA
+  certificate
 - When the CA rotates, this secret is updated directly by cert-manager
 - The ClusterSecretStore will always use the current CA
 - No dependency on leaf certificate renewal timing
@@ -255,7 +256,8 @@ CA rotates
 
 ### File: `k8s/apps/external-secrets/base/helmrelease.yaml`
 
-Add the CA keypair to the reloader annotation so the controller picks up CA rotations:
+Add the CA keypair to the reloader annotation so the controller picks up CA
+rotations:
 
 ```diff
  apiVersion: helm.toolkit.fluxcd.io/v2
@@ -288,17 +290,21 @@ don't exist or aren't relevant.
 
 After applying the code changes, you'll need to sync the current state:
 
-1. **Delete the stale leaf certificate secrets** to force re-issuance with current CA:
+1. **Delete the stale leaf certificate secrets** to force re-issuance with
+   current CA:
+
    ```bash
    kubectl delete secret bitwarden-tls-certs bitwarden-css-certs -n external-secrets
    ```
 
 2. **Wait for cert-manager to recreate them**:
+
    ```bash
    kubectl get certificates -n external-secrets -w
    ```
 
 3. **Verify CA hashes now match**:
+
    ```bash
    kubectl get secret bitwarden-ca-keypair -n external-secrets -o jsonpath='{.data.ca\.crt}' | base64 -d | sha256sum
    kubectl get secret bitwarden-tls-certs -n external-secrets -o jsonpath='{.data.ca\.crt}' | base64 -d | sha256sum
@@ -307,6 +313,7 @@ After applying the code changes, you'll need to sync the current state:
    ```
 
 4. **Restart deployments** (or wait for reloader):
+
    ```bash
    kubectl rollout restart deployment/bitwarden-sdk-server deployment/external-secrets -n external-secrets
    ```
@@ -332,15 +339,15 @@ spec:
   dnsNames:
     - bitwarden-secrets-manager.external-secrets.svc.cluster.local
   usages:
-    - client auth  # ← This is a CLIENT certificate
+    - client auth # ← This is a CLIENT certificate
   issuerRef:
     name: bitwarden-certificate-issuer
 ```
 
-This appears to be a client certificate (note `usages: [client auth]`) that would
-be used for mTLS if the bitwarden-sdk-server required client authentication.
-However, the current setup doesn't appear to use mTLS - the SDK server only
-requires server TLS (`bitwarden-tls-certs`).
+This appears to be a client certificate (note `usages: [client auth]`) that
+would be used for mTLS if the bitwarden-sdk-server required client
+authentication. However, the current setup doesn't appear to use mTLS - the SDK
+server only requires server TLS (`bitwarden-tls-certs`).
 
 The `bitwarden-css-certs` secret was likely created for potential mTLS use and
 then repurposed as a convenient place to get the CA certificate. This was a
@@ -352,10 +359,10 @@ mistake because:
 
 ## Affected Components
 
-| Component | Current Status | After Fix |
-|-----------|---------------|-----------|
-| external-secrets controller | Cannot verify server cert | Will use correct CA |
-| bitwarden-sdk-server | Serving valid cert | No change needed |
-| ClusterSecretStore | Points to stale CA | Points to canonical CA |
-| All ExternalSecrets | SecretSyncedError | Should recover |
-| Downstream Flux Kustomizations | Blocked | Should reconcile |
+| Component                      | Current Status            | After Fix              |
+| ------------------------------ | ------------------------- | ---------------------- |
+| external-secrets controller    | Cannot verify server cert | Will use correct CA    |
+| bitwarden-sdk-server           | Serving valid cert        | No change needed       |
+| ClusterSecretStore             | Points to stale CA        | Points to canonical CA |
+| All ExternalSecrets            | SecretSyncedError         | Should recover         |
+| Downstream Flux Kustomizations | Blocked                   | Should reconcile       |
