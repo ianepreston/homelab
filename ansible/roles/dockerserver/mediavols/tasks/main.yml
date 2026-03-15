@@ -1,3 +1,4 @@
+---
 - name: Create content volumes
   community.general.docker_volume:
     name: "{{item.name}}"
@@ -13,6 +14,7 @@
     - {name: incomplete_downloads_vol, path: "Downloads/incomplete"}
     - {name: watch_downloads_vol, path: "Downloads/watch"}
     - {name: movies_vol, path: "Movies"}
+    - {name: music_vol, path: "taylor_music"}
     - {name: tv_vol, path: "TV"}
     - {name: misc_vids_vol, path: "Misc Videos"}
     # - {name: tubearchivist_vol, path: "tubearchivist"}
