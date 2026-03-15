@@ -4,7 +4,7 @@ apiVersion: v1
 metadata:
   name: actualbudget-pvc
 spec:
-  storageClassName: longhorn
+  storageClassName: longhorn-default
   accessModes:
     - ReadWriteOnce
   resources:
