@@ -36,6 +36,11 @@ spec:
         externalUrl: https://alertmanager.${subdomain}.ipreston.net
         storage:
           volumeClaimTemplate:
+            metadata:
+              labels:
+                app.kubernetes.io/name: alertmanager
+                app.kubernetes.io/component: state
+                backup.longhorn.io/volume-name: alertmanager-state
             spec:
               storageClassName: longhorn-default
               resources:
@@ -129,6 +134,11 @@ spec:
         retentionSize: 16GB
         storageSpec:
           volumeClaimTemplate:
+            metadata:
+              labels:
+                app.kubernetes.io/name: prometheus
+                app.kubernetes.io/component: tsdb
+                backup.longhorn.io/volume-name: prometheus-metrics
             spec:
               storageClassName: longhorn-default
               resources:

@@ -3,6 +3,10 @@ kind: PersistentVolumeClaim
 apiVersion: v1
 metadata:
   name: actualbudget-pvc
+  labels:
+    app.kubernetes.io/name: actualbudget
+    app.kubernetes.io/component: data
+    backup.longhorn.io/volume-name: actualbudget-data
 spec:
   storageClassName: longhorn-default
   accessModes:
