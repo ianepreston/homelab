@@ -1,0 +1,69 @@
+---
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: pvc-inventory-export
+  namespace: longhorn
+spec:
+  schedule: "0 3 * * *" # 3 AM daily
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          serviceAccountName: pvc-inventory-exporter
+          containers:
+            - name: export
+              image: bitnami/kubectl:latest
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  DATE=$(date +%Y%m%d)
+
+                  # Export PVC mappings as JSON
+                  kubectl get pvc -A -o json > /export/pvc-inventory-${DATE}.json
+
+                  # Export human-readable summary
+                  kubectl get pvc -A -o custom-columns=\
+                  'NAMESPACE:.metadata.namespace,NAME:.metadata.name,VOLUME:.spec.volumeName,LABELS:.metadata.labels' \
+                  > /export/pvc-inventory-${DATE}.txt
+
+                  # Keep last 30 days of exports
+                  find /export -name "pvc-inventory-*" -mtime +30 -delete
+              volumeMounts:
+                - name: export-volume
+                  mountPath: /export
+          volumes:
+            - name: export-volume
+              nfs:
+                server: laconia.ipreston.net
+                path: /volume1/k8s-${clusterpath}-backups/pvc-inventory
+          restartPolicy: OnFailure
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: pvc-inventory-exporter
+  namespace: longhorn
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: pvc-reader
+rules:
+  - apiGroups: [""]
+    resources: ["persistentvolumeclaims"]
+    verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: pvc-inventory-exporter
+subjects:
+  - kind: ServiceAccount
+    name: pvc-inventory-exporter
+    namespace: longhorn
+roleRef:
+  kind: ClusterRole
+  name: pvc-reader
+  apiGroup: rbac.authorization.k8s.io
