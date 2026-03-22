@@ -17,7 +17,7 @@ resource "authentik_group" "default" {
 # }
 
 resource "authentik_user" "ian" {
-  username = "iPreston"
+  username = "ian"
   name     = "Ian Preston"
   email    = var.email
   groups = concat(
