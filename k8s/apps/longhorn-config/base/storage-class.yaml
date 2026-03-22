@@ -58,7 +58,6 @@ parameters:
   fsType: "xfs"
   dataEngine: "v1"
   staleReplicaTimeout: "30" # Cleanup dead replicas quickly
-  unmapMarkSnapChainRemoved: "true" # Better space reclamation for DB churn
   migratable: "false" # strict-local can't migrate; prevents confusion
   recurringJobSelector: |
     [
