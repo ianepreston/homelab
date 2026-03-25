@@ -1,0 +1,34 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spierscraper-config
+data:
+  config.yaml: |
+    filters:
+      chinos:
+        fits:
+          - "Contemporary"
+        sizes:
+          - "34"
+          - "33"
+      sport_coats:
+        fits:
+          - "Contemporary"
+        sizes:
+          - "34R"
+      shirts:
+        fits:
+          - "Contemporary"
+        sizes:
+          - "15.5/34"
+      outerwear:
+        sizes:
+          - "L"
+          - "M"
+      knitwear:
+        sizes:
+          - "M"
+    rate_limit_seconds: 1.5
+    cache_ttl_hours: 24
+    cache_path: "/data/cache"
