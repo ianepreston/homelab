@@ -10,6 +10,10 @@ spec:
     spec:
       template:
         spec:
+          securityContext:
+            runAsUser: 0
+            runAsGroup: 0
+            fsGroup: 0
           serviceAccountName: pvc-inventory-exporter
           containers:
             - name: export
