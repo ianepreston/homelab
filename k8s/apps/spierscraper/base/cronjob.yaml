@@ -30,7 +30,7 @@ spec:
           containers:
             - name: spierscraper
               image: ghcr.io/ianepreston/spierscraper:latest
-              args: ["-c", "/config/config.yaml"]
+              args: ["--config", "/config/config.yaml"]
               env:
                 - name: DISCORD_WEBHOOK_URL
                   valueFrom:
