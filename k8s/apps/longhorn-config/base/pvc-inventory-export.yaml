@@ -21,12 +21,12 @@ spec:
                   DATE=$(date +%Y%m%d)
 
                   # Export PVC mappings as JSON
-                  kubectl get pvc -A -o json > /export/pvc-inventory-${DATE}.json
+                  kubectl get pvc -A -o json > /export/pvc-inventory-$${DATE}.json
 
                   # Export human-readable summary
                   kubectl get pvc -A -o custom-columns=\
                   'NAMESPACE:.metadata.namespace,NAME:.metadata.name,VOLUME:.spec.volumeName,LABELS:.metadata.labels' \
-                  > /export/pvc-inventory-${DATE}.txt
+                  > /export/pvc-inventory-$${DATE}.txt
 
                   # Keep last 30 days of exports
                   find /export -name "pvc-inventory-*" -mtime +30 -delete
