@@ -20,15 +20,29 @@ data:
       shirts:
         fits:
           - "Contemporary"
-        sizes:
-          - "15.5/34"
-      outerwear:
-        sizes:
           - "L"
           - "M"
-      knitwear:
+          - "15.5"
         sizes:
+          - "34"
+      outerwear:
+        fits:
+          - "Contemporary"
+          - "L (42)"
+          - "M (40)"
+        sizes:
+          - "40"
+          - "42"
+      knitwear:
+        fits:
           - "M"
+      other:
+        fits:
+            - 'Contemporary'
+            - "L"
+            - "L (42)"
+            - "M"
+            - "M (40)"
     rate_limit_seconds: 1.5
     cache_ttl_hours: 24
     cache_path: "/data/cache"
