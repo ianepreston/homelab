@@ -29,7 +29,7 @@ spec:
           restartPolicy: OnFailure
           containers:
             - name: spierscraper
-              image: ghcr.io/ianepreston/spierscraper:latest
+              image: ghcr.io/ianepreston/spierscraper:1d4821ba290192bdb7859e0195bc4a7558654cd0
               args: ["--config", "/config/config.yaml"]
               env:
                 - name: DISCORD_WEBHOOK_URL
