@@ -25,6 +25,22 @@ spec:
   storage:
     size: ${DB_STORAGE:=5Gi}
     storageClass: longhorn-cnpg-strict-local
+  backup:
+    retentionPolicy: "${RETENTION_POLICY:=90d}"
+    barmanObjectStore:
+      wal:
+        compression: snappy # continuous, runs on primary - minimize CPU overhead
+      data:
+        compression: gzip # weekly, runs on replica - higher compression is worth more cpu
+      destinationPath: "s3://${CNPG_BACKUP_BUCKET}/${APP}-cnpg-db"
+      endpointURL: "https://s3.laconia.ipreston.net"
+      s3Credentials:
+        accessKeyId:
+          key: ACCESS_KEY_ID
+          name: cnpg-backup-creds
+        secretAccessKey:
+          key: SECRET_ACCESS_KEY
+          name: cnpg-backup-creds
   bootstrap:
     initdb:
       database: ${APP}
