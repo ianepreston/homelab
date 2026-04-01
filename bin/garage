@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+if [ -t 0 ] && [ -t 1 ]; then
+  exec ssh -t -o RemoteCommand=none laconia "bash -lc 'sudo docker exec -t config-garage-1 /garage $*'"
+else
+  exec ssh -o RemoteCommand=none laconia "bash -lc 'sudo docker exec config-garage-1 /garage $*'"
+fi
