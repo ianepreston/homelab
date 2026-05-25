@@ -34,17 +34,17 @@
   "prHourlyLimit": 0,
   "packageRules": [
     {
-      "managers": [
+      "matchManagers": [
         "flux",
         "kubernetes",
         "kustomize"
       ],
       "additionalBranchPrefix": "{{parentDir}}-v{{currentMajor}}-",
-      "packagePatterns": [
-        ".*"
-      ],
       "separateMajorMinor": true,
-      "prTitle": "[{{parentDir}}] {{commitMessageAction}} {{commitMessageTopic}} {{commitMessageExtra}}"
+      "prTitle": "[{{parentDir}}] {{commitMessageAction}} {{commitMessageTopic}} {{commitMessageExtra}}",
+      "matchPackageNames": [
+        "/.*/"
+      ]
     },
     {
       //Explicitly pin the v17 track so it doesn't try to go to v18
