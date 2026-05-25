@@ -11,6 +11,10 @@
   "commitBodyTable": true,
   "rebaseWhen": "auto",
   "platformCommit": "enabled",
+  "automerge": true,
+  "automergeType": "pr",
+  "automergeStrategy": "squash",
+  "ignoreTests": false,
   "flux": {
     "managerFilePatterns": [
       "/\\.yaml(?:\\.j2)?$/"
