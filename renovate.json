@@ -14,6 +14,7 @@
   "automerge": true,
   "automergeType": "pr",
   "automergeStrategy": "squash",
+  "platformAutomerge": false,
   "ignoreTests": false,
   "flux": {
     "managerFilePatterns": [
