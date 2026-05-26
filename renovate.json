@@ -15,7 +15,7 @@
   "automergeType": "pr",
   "automergeStrategy": "squash",
   "platformAutomerge": false,
-  "ignoreTests": false,
+  "ignoreTests": true,
   "flux": {
     "managerFilePatterns": [
       "/\\.yaml(?:\\.j2)?$/"
