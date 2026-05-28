@@ -2,7 +2,7 @@
 # version: "3"
 services:
   garage:
-    image: dxflrs/garage:v2.2.0
+    image: dxflrs/garage:v2.3.0
     # network_mode: "host"
     restart: unless-stopped
     ports:
