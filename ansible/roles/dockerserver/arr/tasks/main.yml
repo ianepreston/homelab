@@ -9,7 +9,7 @@
   community.docker.docker_container:
     name: sabnzbd
     hostname: sabnzbd
-    image: linuxserver/sabnzbd:5.0.3
+    image: linuxserver/sabnzbd:5.0.4
     image_name_mismatch: recreate
     volumes:
       - sabnzbd_vol:/config
