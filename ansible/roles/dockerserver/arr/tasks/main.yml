@@ -43,7 +43,7 @@
   community.docker.docker_container:
     name: prowlarr
     hostname: prowlarr
-    image: linuxserver/prowlarr:2.3.5
+    image: linuxserver/prowlarr:2.5.2
     image_name_mismatch: recreate
     volumes:
       - prowlarr_vol:/config
