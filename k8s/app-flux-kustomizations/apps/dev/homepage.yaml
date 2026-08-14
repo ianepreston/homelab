@@ -21,7 +21,7 @@ spec:
   images:
     - name: ghcr.io/gethomepage/homepage
       # renovate: datasource=docker depName=ghcr.io/gethomepage/homepage
-      newTag: "v1.13.2"
+      newTag: "v2.0.0"
   postBuild:
     substituteFrom:
       - kind: ConfigMap
