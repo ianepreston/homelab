@@ -83,14 +83,6 @@ spec:
               persistentVolumeClaim:
                 claimName: grafana-pvc
   httpRoute:
-    metadata:
-      annotations:
-        gethomepage.dev/enabled: "true"
-        gethomepage.dev/description: Dashboards
-        gethomepage.dev/group: Infrastructure
-        gethomepage.dev/name: Grafana
-        gethomepage.dev/icon: grafana
-        gethomepage.dev/pod-selector: "app=grafana"
     spec:
       hostnames:
         - grafana.${subdomain}.ipreston.net

@@ -88,5 +88,5 @@ affected pods when a secret rotates. Nothing sensitive is committed here.
 
 ## Notes
 
-- `issues/` — troubleshooting write-ups for problems worth remembering.
+- Issues and troubleshooting write-ups are tracked as GitHub issues.
 - `scripts/performancetest/` — storage benchmark manifests (Longhorn vs local-path vs NAS).

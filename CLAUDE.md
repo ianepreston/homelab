@@ -130,11 +130,11 @@ kubectl logs -n external-secrets deployment/bitwarden-sdk-server --tail=100
 # Compare CA certificates (should all match)
 kubectl get secret bitwarden-css-certs -n external-secrets -o jsonpath='{.data.ca\.crt}' | base64 -d | sha256sum
 kubectl get secret bitwarden-tls-certs -n external-secrets -o jsonpath='{.data.ca\.crt}' | base64 -d | sha256sum
-kubectl get secret bitwarden-ca-keypair -n external-secrets -o jsonpath='{.data.ca\.crt}' | base64 -d | sha256sum
+kubectl get secret bitwarden-ca-keypair -n cert-manager -o jsonpath='{.data.ca\.crt}' | base64 -d | sha256sum
 ```
 
 ### Issue Tracking
-Active issues and troubleshooting notes are documented in the `issues/` directory.
+Active issues are tracked as GitHub issues on `ianepreston/homelab`.
 
 ### Claude Code Permissions
 The `.claude/settings.local.json` is configured for read-only diagnostics:

@@ -17,12 +17,6 @@ spec:
       route:
         main:
           enabled: true
-          annotations:
-            gethomepage.dev/enabled: "true"
-            gethomepage.dev/name: "Alertmanager"
-            gethomepage.dev/group: "Infrastructure"
-            gethomepage.dev/icon: "alertmanager"
-            gethomepage.dev/pod-selector: "app.kubernetes.io/name=alertmanager"
           hostnames: ["alertmanager.${subdomain}.ipreston.net"]
           parentRefs:
             - name: envoy-internal
@@ -93,14 +87,6 @@ spec:
       route:
         main:
           enabled: true
-          annotations:
-            gethomepage.dev/enabled: "true"
-            gethomepage.dev/name: "Prometheus"
-            gethomepage.dev/group: "Infrastructure"
-            gethomepage.dev/icon: "prometheus"
-            gethomepage.dev/pod-selector: "app.kubernetes.io/name=prometheus"
-            gethomepage.dev/widget.type: "prometheus"
-            gethomepage.dev/widget.url: "http://kube-prometheus-stack-prometheus.monitoring.svc.cluster.local:9090"
           hostnames: ["prometheus.${subdomain}.ipreston.net"]
           parentRefs:
             - name: envoy-internal
