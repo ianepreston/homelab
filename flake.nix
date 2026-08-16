@@ -85,7 +85,6 @@
         {
           default = pkgs.mkShell {
             packages = with pkgs; [
-              ansible
               awscli2
               glibcLocales
               renovate

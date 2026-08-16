@@ -13,7 +13,6 @@ vars:
   TALOS_DIR: '{{.ROOT_DIR}}/talos/{{.CLUSTER}}'
   TALOS_CONFIG_DIR: '{{.ROOT_DIR}}/talos/{{.CLUSTER}}/clusterconfig'
   TERRAFORM_DIR: '{{.ROOT_DIR}}/terraform'
-  ANSIBLE_DIR: '{{.ROOT_DIR}}/ansible'
   PROJECT_NAME: 'k8s{{.CLUSTER}}'
   BWS_PROJECT:
     sh: |
@@ -34,7 +33,6 @@ env:
   MINIJINJA_CONFIG_FILE: '{{.ROOT_DIR}}/.minijinja.toml'
   TALOSCONFIG: '{{.TALOS_CONFIG_DIR}}/talosconfig'
 includes:
-  ansible: taskfiles/ansible
   bootstrap: taskfiles/bootstrap
   status: taskfiles/status
   talos: taskfiles/talos

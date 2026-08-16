@@ -5,11 +5,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Project Overview
 
 Infrastructure as Code (IaC) repository for a personal Kubernetes homelab running on Talos Linux. The stack combines:
-- **Talos Linux** (v1.12.4) with Kubernetes v1.35.0 on XCP-ng hypervisor
+- **Talos Linux** (v1.12.4) with Kubernetes v1.35.0
 - **Flux CD v2** for GitOps-based deployment
 - **TalHelper** for Talos configuration management
-- **Terraform** for infrastructure provisioning (XCP-ng VMs, Authentik, Cloudflare)
-- **Ansible** for Docker host management (separate from K8s cluster)
+- **Terraform** for infrastructure provisioning (Authentik, Cloudflare)
 
 ## Common Commands
 
@@ -37,9 +36,6 @@ task unset_context
 # Terraform
 cd terraform/k8s && terraform plan -var-file=../values.tfvars
 
-# Ansible (Docker host)
-ansible-playbook -i ansible/inventory.yml ansible/ares.yml
-
 # Flux status
 flux get kustomizations
 flux get helmreleases -A
@@ -56,8 +52,7 @@ talhelper genconfig
 - `k8s/components/` - Shared kustomize components (namespace, postgres)
 - `k8s/app-flux-kustomizations/` - Flux Kustomization overlays per app
 - `talos/dev/` - Talos cluster config (talconfig.yaml, patches/)
-- `terraform/` - IaC modules (authentik, xcpng, cloudflare, k8s)
-- `ansible/` - Docker host configuration (ares.yml)
+- `terraform/` - IaC modules (authentik, k8s)
 - `bootstrap/` - Cluster bootstrap automation (helmfile, CRD templates)
 - `taskfiles/` - Modular task definitions
 
@@ -99,7 +94,7 @@ base/
 Uses Nix flake (`flake.nix`) with direnv. Required tools are automatically available:
 - kubectl, helm, helmfile, kustomize
 - talosctl, talhelper
-- terraform, ansible
+- terraform
 - flux, cilium-cli
 - bws (Bitwarden Secrets), minijinja-cli
 
