@@ -33,8 +33,8 @@ task unset_context
 
 ### Manual Operations
 ```bash
-# Terraform
-cd terraform/k8s && terraform plan -var-file=../values.tfvars
+# Terraform (variables come from the Terraform Cloud workspace)
+cd terraform/k8s && terraform plan
 
 # Flux status
 flux get kustomizations
@@ -47,7 +47,7 @@ talhelper genconfig
 ## Architecture
 
 ### Directory Structure
-- `k8s/apps/` - Kubernetes application definitions (26 apps)
+- `k8s/apps/` - Kubernetes application definitions (27 apps)
 - `k8s/clusters/dev/` - Flux cluster configuration
 - `k8s/components/` - Shared kustomize components (namespace, postgres)
 - `k8s/app-flux-kustomizations/` - Flux Kustomization overlays per app
