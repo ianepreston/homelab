@@ -7,7 +7,7 @@ releases:
   - name: cilium
     namespace: kube-system
     atomic: true
-    chart: oci://ghcr.io/home-operations/charts-mirror/cilium
+    chart: oci://quay.io/cilium/charts/cilium
     version: '{{ tpl (readFile "./version.txt.gotmpl") . | trim }}'
     values: ['./values.yaml.gotmpl']
     hooks:
